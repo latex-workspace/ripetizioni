@@ -1,0 +1,16 @@
+#nome;cognome;email;classe
+Luca;Rossi;luca.rossi@example.com;3
+Giulia;Bianchi;giulia.bianchi@example.com;2
+Marco;Verdi;marco.verdi@example.com;4
+Sara;Conti;sara.conti@example.com;1
+Francesco;Esposito;francesco.esposito@example.com;5
+Elena;Ricci;elena.ricci@example.com;3
+Matteo;Ferrari;matteo.ferrari@example.com;2
+Chiara;Romano;chiara.romano@example.com;4
+Alessandro;Gallo;alessandro.gallo@example.com;1
+Federica;Marini;federica.marini@example.com;5
+Andrea;Costa;andrea.costa@example.com;3
+Valentina;Barbieri;valentina.barbieri@example.com;2
+Davide;Leone;davide.leone@example.com;4
+Martina;Greco;martina.greco@example.com;1
+Simone;Moretti;simone.moretti@example.com;5

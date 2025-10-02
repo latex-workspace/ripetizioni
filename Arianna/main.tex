@@ -1,0 +1,113 @@
+%&../../.preamble
+\endofdump
+
+\usetikzlibrary{external}
+\tikzset{external/system call={pdflatex --shell-escape --fmt=../.preamble --halt-on-error -jobname "\image" "\endofdump\texsource"}}
+\tikzexternalize[prefix=tikz/]
+
+\title{Matematica}
+\author{Marini Mattia}
+\date{Maggio 2025}
+
+\begin{document}
+\maketitle
+\license{Ripetizioni Arianna}
+\tableofcontents
+\newpage
+\section{Studio di funzione}
+\begin{enumerate}
+	\item \textit{Dominio}
+	      \begin{itemize}
+		      \item Trovo valori per i quali la funzione non ha senso
+	      \end{itemize}
+	\item \textit{Segno}
+	      \begin{itemize}
+		      \item Risolvo equazione associata
+		      \item Trovo zeri e intervalli in cui la funzione è positiva o negativa
+	      \end{itemize}
+	\item \textit{Limiti}
+	      \begin{itemize}
+		      \item Vedo come funzione si comporta a $ \pm \infty $ $ \rightarrow \lim_{x \to \pm \infty} f(x) $:
+		      \item Vedo come funzione si comporta ad estremi del dominio e in punti esculsi dal dominio
+		      \item Trovo asintoti orizzontali, verticali ed obliqui
+		            \begin{itemize}
+			            \item Verticali: se $ \lim_{x \to x_0} f(x) = \pm \infty  $ dove $ x_0 $ è un punto escluso dal dominio
+			            \item Orizzontali: se $ \lim_{x \to \pm\infty} f(x) = k $, dove $ k $ è numero finito
+			            \item Obliqui: se $ \lim_{x \to \pm\infty} \frac{f(x)}{x} = m $ dove $ m $ è finino ed è il coefficiente angolare della retta asintoto. Il quozioente di tale retta è : $ \lim_{x \to \pm \infty} \left[f(x) - mx\right] $
+		            \end{itemize}
+	      \end{itemize}
+	\item \textit{Derivata prima}
+	      \begin{itemize}
+		      \item se $ f'\left(x\right) > 0 $ allora $ f $ cresce
+		      \item se $ f'\left(x\right) < 0 $ allora $ f $ decresce
+		      \item se $ f'\left(x\right) = 0 $ allora ho 3 opzioni:
+		            \begin{itemize}
+			            \item Punto di minimo locale/assoluto
+			            \item Punto di massimo locale/assoluto
+			            \item Flesso a tangenza orizzontale
+		            \end{itemize}
+	      \end{itemize}
+	\item \textit{Derivata seconda}
+	      \begin{itemize}
+		      \item se $ f''\left(x\right) > 0 $ allora $ f $ ha concavità verso l'alto
+		      \item se $ f''\left(x\right) < $ allora $ f $ ha concavità verso il basso
+		      \item se $ f''\left(x\right) = 0 $ allora non si può dire nulla
+	      \end{itemize}
+\end{enumerate}
+\subsection{Esercizi}
+\begin{esercizio}{Studio di funzione}
+	Studia la seguente funzione:
+	\[
+		x ln\left(x^2 \right)
+	\]
+\end{esercizio}
+\begin{tikzpicture}
+	\begin{axis}[
+			xmin=-4, xmax=4,
+			ymin=-2,ymax=2,
+			restrict y to domain = -4:4, domain=-4:4, width=0.9\textwidth, height=0.9\textwidth, grid=major, samples=200,  ylabel=$f(x)$, xlabel=$x$, legend entries={$ $}]
+		\addplot[black, thick] {x * ln(x^2)};
+		\node (m1)[blackdot, label={90:$ m_1 $}] at (-0.38, {(-0.38) * ln((-0.38)^2)}) {};
+		\node (m2)[blackdot, label={90:$ m_2 $}] at (0.38, {0.38 * ln(0.38^2)}) {};
+		%
+		\node [whitedot] at (0, {0 * ln(0^2)}) {};
+		%
+		\node [blackdot, label={110:$ x_0 $}] at (-1, {(-1) * ln((-1)^2)}) {};
+		\node [blackdot, label={110:$ x_1 $}] at (1, {1 * ln(1^2)}) {};
+	\end{axis}
+\end{tikzpicture}
+\vskip3mm
+\begin{itemize}
+	\item $ f'\left(x\right) = ln\left(x^2 \right) + 2 $
+	\item $ f''\left(x\right) = \frac{2}{x} $
+	\item No asintoti
+\end{itemize}
+
+
+\begin{esercizio}{Studio di funzione}
+	Studia la seguente funzione:
+	\[
+		\frac{x^2  + 1}{x}
+	\]
+\end{esercizio}
+
+\begin{tikzpicture}
+	\begin{axis}[
+			xmin=-10, xmax=10,
+			ymin=-8,ymax=8,
+			restrict y to domain = -40:40, domain=-10:10, width=0.9\textwidth, height=0.9\textwidth, grid=major, samples=201,  ylabel=$f(x)$, xlabel=$x$, legend entries={$ $}, unbounded coords=jump]
+		\addplot[black, thick] {(x^2 + 1)/x};
+		\addplot[dashed] {x};
+		\node [blackdot, label={90:$ M $}] at (-1, {((-1)^2 + 1)/(-1)}) {};
+		\node [blackdot, label={-90:$ m $}] at (1, {(1^2 + 1)/1}) {};
+		\draw [dashed](0,-8)--(0,8);
+	\end{axis}
+\end{tikzpicture}
+\begin{itemize}
+	\item $ f'\left(x\right) = \frac{x^2 -1}{x^2 } $
+	\item $ f''\left(x\right) = \frac{2}{x^3} $
+	\item Asintoto verticale $ x=0 $ e obliquo $ y = x $
+\end{itemize}
+\vskip3mm
+
+\end{document}

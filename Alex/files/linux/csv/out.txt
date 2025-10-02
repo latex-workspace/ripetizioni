@@ -1,0 +1,15 @@
+Rossi;Luca;3;luca.rossi@example.com
+Bianchi;Giulia;2;giulia.bianchi@example.com
+Verdi;Marco;4;marco.verdi@example.com
+Conti;Sara;1;sara.conti@example.com
+Esposito;Francesco;5;francesco.esposito@example.com
+Ricci;Elena;3;elena.ricci@example.com
+Ferrari;Matteo;2;matteo.ferrari@example.com
+Romano;Chiara;4;chiara.romano@example.com
+Gallo;Alessandro;1;alessandro.gallo@example.com
+Marini;Federica;5;federica.marini@example.com
+Costa;Andrea;3;andrea.costa@example.com
+Barbieri;Valentina;2;valentina.barbieri@example.com
+Leone;Davide;4;davide.leone@example.com
+Greco;Martina;1;martina.greco@example.com
+Moretti;Simone;5;simone.moretti@example.com
