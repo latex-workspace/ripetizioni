@@ -1739,16 +1739,16 @@ Collezione di esercizi, divisi per categoria
 		\item Il punteggio viene assegnato così:
 		      \begin{itemize}
 			      \item Colore giusto: \verb|+1|
-			      \item Un punteggio che varia da 0 a 3 in base alla distanza del numero previsto da quello estratto, ad esempio, detto $ n_e $ il numero \textit{estratto} e  $ n_p $ il numero \textit{previsto}
+			      \item Un punteggio che varia da 0 a 4 in base alla distanza del numero previsto da quello estratto, ad esempio, detto $ n_e $ il numero \textit{estratto} e  $ n_p $ il numero \textit{previsto}
 			            \[
-				            1 - \frac{\left|n_e - n_p\right|}{8}
+				            \left(1 - \frac{\left|n_e - n_p\right|}{8}\right) \cdot 4
 			            \]
 			      \item Se colore e numero sono uguali: \verb|+1|
 		      \end{itemize}
 	\end{itemize}
 	Il programma deve chiedere in input all'utente un numero e un colore ed estrarre una pallina casualmente, per poi stampare in ouput il punteggio ottenuto. Si usi una classe \verb|ball| e una classe \verb|game| per gestire le partite.
-  \vskip3mm 
-  Il programma deve partire chiedendo all'utente il numero $ n $ di round che vuole giocare. Dopodiché, verranno chieste $ n $ previsione all'utente; per ognuna deve essere stampato il punteggio e alla fine degli $ n $ round deve essere visualizzato il punteggio totale
+	\vskip3mm
+	Il programma deve partire chiedendo all'utente il numero $ n $ di round che vuole giocare. Dopodiché, verranno chieste $ n $ previsione all'utente; per ognuna deve essere stampato il punteggio e alla fine degli $ n $ round deve essere visualizzato il punteggio totale
 \end{esercizio}
 
 
