@@ -9,6 +9,7 @@
 
 # Ignore tikz folder externalization folder
 tikz/
+target/
 
 .DS_Store
 

@@ -1383,6 +1383,373 @@ Si parla di ricorsione ogni qualvolta che una funzione chiama se stessa. Questo 
 		\ttfamily   +1, *2
 	\end{center}
 \end{esercizio}
+\section{Java}
+Java è molto simile dal punto di vista della sintassi al c++. Non sarà molto complicato il passaggio
+\subsection{Aspetti simili a c++}
+La sinttassi di Java è molto simile a quella di c++, ecco gli aspetti che rimangono invariati o quasi:
+\subsubsection{Dichiarazione delle variabili:}
+\begin{center}
+	\begin{tabularx}{\linewidth}{lX}
+		\toprule
+		Sinstassi                          & Differenze rispetto al \verb|c++|                                                                              \\
+		\midrule
+		\verb|int x = 15|                  & invariato                                                                                                      \\
+
+		\verb|long x = 15|                 & invariato                                                                                                      \\
+
+		\verb|float x = 15.0f|             & nota il \verb|15.0f|, dove \verb|f| sta per float                                                              \\
+
+		\verb|double x = 15.0|             & float ma con precision maggiore, 64 bit                                                                        \\
+
+		\verb|boolean x = true|            & \verb|boolean| anzichè \verb|bool|                                                                             \\
+
+		\verb|String s = "stringa"|        & dato \verb|String| sarebbe una classe ma è trattato come tipo primitivo, dato che è usato molto frequentemente \\
+
+		\verb|String v[] = new String[15]| & vettore di stringhe di dimensione 15                                                                           \\
+
+		\verb|int v[] = new int[15]|       & vettore di interi di dimensione 15                                                                             \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+\subsubsection{ Commenti:}
+\begin{itemize}
+	\item Commento riga singola: \verb|// commento|
+	\item Commento righe multiple: \verb|/* commento */|
+\end{itemize}
+\subsubsection{ Cicli:}
+\begin{itemize}
+	\item Ciclo for:
+	      \begin{lstlisting}[language = c, frame = none, numbers = none]
+          for(int i = 0; i<15; i++){
+            // qualcosa
+          }
+        \end{lstlisting}
+	\item Ciclo while:
+	      \begin{lstlisting}[language = c, frame = none, numbers = none]
+          while(i < 15){
+            // qualcosa
+          }
+        \end{lstlisting}
+\end{itemize}
+\subsubsection{Operatori}
+\begin{center}
+	\begin{tabular}{l  l}
+		\toprule
+		\sfblue{Operatore}                     & \sfblue{Descrizione} \\
+		\midrule
+		{ \ttfamily + \quad - \quad * \quad /} & operatori matematici \\
+		{ \ttfamily \&\& }                     & and logico           \\
+		{\ttfamily $ || $}                     & or logico            \\
+		{\ttfamily $ ! $ }                     & not logico           \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+\subsubsection{If e switch}
+
+\begin{minipage}[t]{0.48\linewidth}
+	\begin{lstlisting}[language = c, frame = none]
+  if(a<b) {
+    //codice
+  }
+  else(if a>b) {
+    //codice
+  }
+  else {
+    //codice
+  }
+        \end{lstlisting}
+\end{minipage}
+%
+\begin{minipage}[t]{0.48\linewidth}
+	\begin{lstlisting}[language = c, frame = none]
+switch(espressione) {
+  case x:
+    // codice
+    break;
+  case y:
+    // codice
+    break;
+  default:
+    // codice
+}
+        \end{lstlisting}
+\end{minipage}
+\subsubsection{Funzioni}
+\begin{lstlisting}[language = c, frame = none]
+  void nome_funzione1 (int arg_1, String arg_2){
+    //corpo funzione
+  }
+
+  int nome_funzione2 (int arg_1, String arg_2){
+    //corpo funzione
+    return 5;
+  }
+        \end{lstlisting}
+
+Una funzione è quindi definita indicando nel seguente ordine, esattamente come in c++:
+\begin{enumerate}
+	\item \underline{Tipo di ritorno} (o \verb|void| se non ritorna nulla)
+	\item \underline{Nome} della funzione
+	\item \underline{Parametri}, racchiusi fra parentesi tonde e separati da virgole
+	\item \underline{Corpo} della funzione fra graffe
+\end{enumerate}
+\subsection{Differenze}
+\subsubsection{Stampa su terminale}
+Una delle feature usata moltissimo, ma completamente diversa dal c++ è la stampa su terminale:
+\begin{lstlisting}[frame = none]
+  System.out.println("Stampa questa cosa");
+  //stampa andando a capo prima di stampare
+
+  System.out.print("Stampa questa cosa");
+  //stampa SENZA andando a capo
+\end{lstlisting}
+
+\vskip3mm
+nota che le stringhe si possono concatenare con l'operatore +:
+
+\vskip3mm
+\begin{lstlisting}[frame = none]
+  String a = "Hello";
+  String b = "world";
+
+  System.out.println(a + b);
+  //stampa "Hello world"
+
+  String c = a + b;
+  //Inizializza c a "Hello world"
+  
+\end{lstlisting}
+\subsubsection{Linguaggio interpretato vs compilato}
+A differenza di c++, java è un linguaggia \underline{interpretato}
+\begin{itemize}
+	\item \textit{Linguaggio compilato}: il codice è "dato in pasto" a un compilatore, il quale lo converte in linguaggio macchina (di fatto in una sequenza di, 0 ed 1)
+	\item \textit{Linguaggio interpretato}: il codice è "dato in pasto" ad un compilatore, il quale lo converte però in \underline{bytecode}, ossia un linguaggio di basso livello (molto difficile da leggere e scrivere), il quale è in grado di essere letto da un \textit{interprete}
+\end{itemize}
+
+\begin{center}
+	\begin{tabular}{c c}
+		\begin{forest}
+			for tree={draw, grow = -90}
+			[codice c++ [compilatore c++ , draw = none [assembly [assemblatore, draw = none [linguaggio macchina [computer, circle]]]]]]
+		\end{forest}
+		 &
+		\begin{forest}
+			for tree={draw, grow = -90}
+			[codice java [compilatore java , draw = none [java bytecode [java interpreter [computer, circle]]]]]
+		\end{forest}
+	\end{tabular}
+\end{center}
+\subsubsection{Memoria e puntatori}
+Java è un linguaggio ad alto livello che gestisce la memoria in maniera diversa rispetto al c++:
+\begin{itemize}
+	\item c++: il compito di allocare e deallocare la memoria non più utilizzata è del programmatore
+	\item java: la memoria viene deallocata in maniera automatica tramite un meccanismo chiamato \underline{garbage collection}
+\end{itemize}
+
+Visto che in java la memoria è gestita in in maniera automatica, il programmatore non ne ha accesso diretto tramite puntatori: al contratio, i puntatori \underline{non esistono}
+
+\subsubsection{Object orientation}
+Sebbene c++ sia un linguagio che permette di utilizzare classi ed oggetti, in java l'object orientation è forzata: ogni parte del programma deve essere contenuta all'interno di una classe
+
+\subsection{Esempio programma}
+\begin{lstlisting}[language = c++, frame = none]
+class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!"); 
+    }
+}
+\end{lstlisting}
+
+Cose da notare:
+\begin{itemize}
+	\item La funzione main è contenuta all'interno di una classe "HelloWorld", il cui nome è arbitrario
+	\item La funzione main è marcata come \verb|static|, ciò vuol dire che la funzione esiste anche se non esiste un oggetto di tipo "HelloWorld", affroteremo meglio il modificatore \verb|static| più avanti, per ora possiamo ignorarlo
+	\item La funzione main è marcata come \verb|public|, ciò vuol dire che la funzione è accessibile ovunque. Afffronteremo meglio questo modificatore più avanti, per ora possiamo ignorarlo
+	\item La funzione main prende in ingresso un vettore di stringhe. Nel caso si avviasse l'applicazione da terminale e possibile passare al main dei parametri nel seguente modo:
+	      \begin{lstlisting}[language = bash, frame = none]
+  cd cartella_applicazione 
+  ./nome_applicazione parametro_1 parametro_2 ... \end{lstlisting}
+	      in questo caso il vettore di stringhe \verb|args| conterrà \verb|parametro_1| e \verb|parametro_2|. Penso non lo userete mai ma è buono saperlo
+\end{itemize}
+\subsection{Funzioni utili}
+In java sono definite alcune funzioni utilissime. Qui una lista (non esaustiva) delle più comuni:
+\subsubsection{Stringhe}
+
+Supponiamo di avere \verb|String s = "stringa stringa";|
+\vskip3mm
+\begin{tabularx}{\linewidth}{lX}
+	\toprule
+	\sfblue{Funzione}                & \sfblue{Descrizione}                                                                  \\
+	\midrule
+	\verb|s.lenght()|                & Ritorna il numero di caratteri conenuti nella stringa (7 nel caso d'esempio)          \\
+	\verb|s.charAt(int index)|       & Ritorna il carattere in posizione \verb|index|                                        \\
+	\verb|s.indexOf(char carattere)| & Ritorna l'indice della prima occorrenza di \verb|carattere| in \verb|s|               \\
+	\verb|s.indexOf(String stringa)| & Ritorna l'indice della prima occorrenza della sottostringa \verb|stringa| in \verb|s| \\
+	\bottomrule
+\end{tabularx}
+
+\vskip3mm
+\begin{lstlisting}[language = c++, frame = none]
+    String s = "stringa stringa";
+    s.lenght(); // 15
+    s.charAt(2); // 'r'
+    s.indexOf('r'); // 2
+    s.indexOf("ga"); // 5 \end{lstlisting}
+\subsubsection{Vettori}
+Supponiamo di avere \verb|int v[] = new int[15];|
+\begin{center}
+	\begin{tabularx}{\linewidth}{lX}
+		\toprule
+		\sfblue{Funzione} & \sfblue{Descrizione}                               \\
+		\midrule
+		\verb| v.lenght|  & ritorna il numero di elemnti contenuti nel vettore \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+\subsection{Parti utili della libreria standard}
+La libreria standard di java offre moltissime classi utili. Vediamo qui le più comuni
+
+\subsubsection{Math}
+\begin{center}
+	\begin{tabularx}{\linewidth}{lX}
+		\toprule
+		\sfblue{Funzione}                 & \sfblue{Descrizione}                                  \\
+		\midrule
+		\verb|Math.exp(float n)|          & Ritorna $ e^n $                                       \\
+		\verb|Math.log(float n)|          & Ritorna $ ln\left(n\right) $                          \\
+		\verb|Math.abs(float x)|          & Ritorna $ \left|x\right| $ (valore assoluto di $ x $) \\
+		\midrule
+		\verb|Math.sin(float x)|          & Ritorna $ \sin \left(x\right) $                       \\
+		\verb|Math.cos(float x)|          & Ritorna $ \cos \left(x\right) $                       \\
+		\verb|Math.tan(float x)|          & Ritorna $ \tan  \left(x\right) $                      \\
+		\verb|Math.asin(float x)|         & Ritorna $ \arcsin \left(x\right) $                    \\
+		\verb|Math.acos(float x)|         & Ritorna $ \arccos \left(x\right) $                    \\
+		\verb|Math.atan(float x)|         & Ritorna $ \arctan  \left(x\right) $                   \\
+		\midrule
+		\verb|Math.max(float a, float b)| & Ritorna l'elemento maggiore fra $ a $ e $ b $         \\
+		\verb|Math.min(float a, float b)| & Ritorna l'elemento maggiore fra $ a $ e $ b $         \\
+		\midrule
+		\verb|Math.floor(float x)|        & Arrotonda per difetto $ x $                           \\
+		\verb|Math.ceil(float x)|         & Arrotonda per eccesso $ x $                           \\
+		\verb|Math.round(float x)|        & Arrotonda $ x $                                       \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+\subsubsection{ArrayList}
+Utile per avere un vettore di lunghezza variabile. Si inizializza nel seguente modo:
+\begin{center}
+	\verb|ArrayList< tipo > nomeArray = new ArrayList< tipo >(dimensione)|
+\end{center}
+Nota che:
+\begin{itemize}
+	\item \verb|dimensione| si può omettere, ottenendo un vettore con dimensiane nulla
+	\item \verb|tipo| deve essere una classe. Se voglio un arrayList di tipi primitivi devo utilizzare le classi wrapper (\verb|Integer, Boolean, Double| ...)
+\end{itemize}
+\begin{center}
+	\begin{tabular}{ll}
+		\toprule
+		\sfblue{Metodo}                & \sfblue{Descrizione}                        \\
+		\midrule
+		\verb|v.get( index )|          & ritnorna l'elemento all'indice \verb|index| \\
+		\verb|v.set( index , element)| & setta l'elemento a indice \verb|index|      \\
+		\verb|v.add( element )|        & inserisce \verb|element| in fondo           \\
+		\verb|v.remove ( index )|      & rimuove l'elemento a indice \verb|index|    \\
+		\verb|v.size()|                & ritorna il numero di elementi conetnuti     \\
+		\verb|v.clear()|               & rimuove tutti gli elementi                  \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\subsubsection{Scanner}
+La classe scanner ci permette di leggere input utente da terminale (e anche da file, ma non ci servirà). Uno scanner si inizializza così:
+\begin{center}
+	\verb|Scanner nomeScanner = new Scanner(System.in);|
+\end{center}
+
+Per leggere l'input da terminale ci sono i seguenti comandi:
+
+\begin{center}
+	\begin{tabular}{ll}
+		\toprule
+		\sfblue{Metodo} & \sfblue{Descrizione}          \\
+		\midrule
+		nextBoolean( )  & Legge un boolean da terminale \\
+		nextByte()      & Legge un byte    da terminale \\
+		nextDouble()    & Legge un double  da terminale \\
+		nextFloat ()    & Legge un float   da terminale \\
+		nextInt()       & Legge un int     da terminale \\
+		nextLine()      & Legge una String da terminale \\
+		nextLong( )     & Legge un long    da terminale \\
+		nextShort()     & Legge uno short  da terminale \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+Il metodo più comune è \verb|nextLine()|, dato che ci restituisce l'intera riga come stringa, anche se contiene numeri
+
+\subsubsection{Random}
+Random fornisce un modo comodo per generare numeri casuali. Inizializza con
+\begin{center}
+	\verb|Random nome = new Random()|
+\end{center}
+\begin{center}
+	\begin{tabular}{ll}
+		\toprule
+		\sfblue{Metodo}  & \sfblue{Descrizione}                                                \\
+		\midrule
+		nextInt( range ) & genera un numero casuale nel range $ \left[0, \text{range}\right) $ \\
+		nextFloat()      & genera un float in range $ \left[0.0 , 1.0\right] $                 \\
+		nextDouble()     & genera un double in range $ \left[0.0 , 1.0\right] $                \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\subsubsection{LinkedList}
+Lista linkata. Utilizzabile in modo molto simile al \verb|ArrayList|. L'accesso agli elementi è molto più lento, rimozioni inserimenti sono molto più veloci
+
+\subsubsection{Altre strutture dati utili}
+\begin{itemize}
+	\item \verb|HashSet|: insieme matematico, possibile vedere se un elemento è contenuto in esso in maniera efficiente
+	\item \verb|Map|: utile poter collegare ad ogni valore un altro valore detto chaive. Si può risalire al valore tramite la chiave in maniera efficiente
+	\item \verb|Stack|
+	\item \verb|Queue|
+	\item \verb|PriorityQueue|: struttura nella quale è possibile accedere all'elemento maggiore in maniera efficiente
+	\item \verb|SortedSet|: struttra nella quale i dati mantengono sempre un ordinameto crescente. Non ammette duplicati
+\end{itemize}
+% \addtocontents{exe}{\protect{\large \vskip3mm \textit{Esercizi su classi}\vskip3mm}}
+
+\subsection{Esercizi}
+Collezione di esercizi, divisi per categoria
+\begin{esercizio}{Hello World \href{run:./files/java/esercizi/hello_world/}{(hello\_world)}}
+	Scrivere un programma in Java che prenda in input una stringa \verb|s| e un numero \verb|n| e stampi \verb|s| \verb|n| volte, accompagnata dal numero di riga. Ad esempio, dati in input \verb|userin| e \verb|4|, l'otput sarà:
+	\begin{center}
+		\ttfamily
+		1. userin\\
+		2. userin\\
+		3. userin\\
+		4. userin
+	\end{center}
+\end{esercizio}
+\begin{esercizio}{Hello classe \href{run:./files/java/esercizi/estrazione/}{(estrazione)}}
+	Crea un programma per giocare a una sorta di roulette modificata. Le regole sono le seguenti:
+	\begin{itemize}
+		\item Vengono estratte delle palline che hanno un colore (\verb|rosso|,  \verb|giallo| o \verb|verde|) e un numero da 1 a 9 estremi compresi
+		\item Il giocatore deve indicare un numero e un colore
+		\item Il punteggio viene assegnato così:
+		      \begin{itemize}
+			      \item Colore giusto: \verb|+1|
+			      \item Un punteggio che varia da 0 a 3 in base alla distanza del numero previsto da quello estratto, ad esempio, detto $ n_e $ il numero \textit{estratto} e  $ n_p $ il numero \textit{previsto}
+			            \[
+				            1 - \frac{\left|n_e - n_p\right|}{8}
+			            \]
+			      \item Se colore e numero sono uguali: \verb|+1|
+		      \end{itemize}
+	\end{itemize}
+	Il programma deve chiedere in input all'utente un numero e un colore ed estrarre una pallina casualmente, per poi stampare in ouput il punteggio ottenuto. Si usi una classe \verb|ball| e una classe \verb|game| per gestire le partite.
+  \vskip3mm 
+  Il programma deve partire chiedendo all'utente il numero $ n $ di round che vuole giocare. Dopodiché, verranno chieste $ n $ previsione all'utente; per ognuna deve essere stampato il punteggio e alla fine degli $ n $ round deve essere visualizzato il punteggio totale
+\end{esercizio}
 
 
 
