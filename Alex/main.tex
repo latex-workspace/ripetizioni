@@ -1,11 +1,5 @@
 %&../../.preamble
-\endofdump
-
-\usetikzlibrary{external}
-\tikzset{external/system call={pdflatex --shell-escape --fmt=../../.preamble --halt-on-error -jobname "\image" "\endofdump\texsource"}}
-\tikzexternalize[prefix=tikz/]
-
-
+\externalize{../../.preamble}
 
 
 \title{Ripetizioni Alex}
@@ -1751,6 +1745,13 @@ Collezione di esercizi, divisi per categoria
 	Il programma deve partire chiedendo all'utente il numero $ n $ di round che vuole giocare. Dopodiché, verranno chieste $ n $ previsione all'utente; per ognuna deve essere stampato il punteggio e alla fine degli $ n $ round deve essere visualizzato il punteggio totale
 \end{esercizio}
 
+\begin{esercizio}{Geometria 1 \href{run:./files/java/esercizi/geometry1/}{(geometry1)}}
+	Creare una classe per ciascuno dei seguenti oggetti geometrici: \texttt{Punto}, \texttt{Rettangolo}, \texttt{Cerchio}. Creare una classe \texttt{PianoCartesiano} che possa contenere le tre classi elencate precedentemente. Una volta inserita una classe nel piano cartesiano verrà ritornato un \verb|id|, tramite il quale possiamo accedervi (l'istanza dell'oggetto aggiunto rimane scollegata da quella inserità nel piano cartesiano). Creare un metodo \verb|closer| che prenda un \verb|id| esistente e ritorni l'id della forma geometrica più vicina (usare il centro delle figure per confrontare la distanza)
+\end{esercizio}
+
+\begin{esercizio}{Geometria 1 \href{run:./files/java/esercizi/geometry1/}{(geometry1)}}
+	Creare una classe per ciascuno dei seguenti oggetti geometrici: \texttt{Punto}, \texttt{Rettangolo}, \texttt{Cerchio}. Creare una classe \texttt{PianoCartesiano} che possa contenere le tre classi elencate precedentemente. Una volta inserita una classe nel piano cartesiano verrà ritornato un \verb|id|, tramite il quale possiamo accedervi (l'istanza dell'oggetto aggiunto rimane scollegata da quella inserità nel piano cartesiano). Creare un metodo \verb|closer| che prenda un \verb|id| esistente e ritorni l'id della forma geometrica più vicina (usare il centro delle figure per confrontare la distanza)
+\end{esercizio}
 
 
 \end{document}

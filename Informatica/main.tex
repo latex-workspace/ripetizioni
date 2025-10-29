@@ -1,8 +1,10 @@
 %&../../.preamble
-\endofdump
+\externalize{../../.preamble}
+
 \usepackage{layouts}
 \usepackage{tabularx}
-\usepackage{makecell}\usetikzlibrary{patterns}
+\usepackage{makecell}
+\usetikzlibrary{patterns}
 \usepackage{contour}
 
 \usepackage{pgf-umlcd}
@@ -497,7 +499,7 @@ Abbiamo visto che prima del metodi si può usare la parola \verb|public|. Questo
 
 Nota:
 \begin{itemize}
-	\item Capiremo meglio cosa voglia dire \verb|protected| nella sezione \ref{inheritance}
+	\item Capiremo meglio cosa voglia dire \verb|protected| nella sezione
 	\item Di default, metodi e variabili hanno visibilità \verb|"package"|, tuttavia non esiste una keyword per indicare questo tipo di visibilità. E' presente di default se non si indica nulla
 \end{itemize}
 

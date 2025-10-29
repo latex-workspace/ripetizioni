@@ -1,11 +1,8 @@
 %&../../.preamble
-\endofdump
-\usetikzlibrary{external}
+\externalize{../../.preamble}
+
 \usetikzlibrary{patterns}
 \usetikzlibrary{decorations}
-
-\tikzset{external/system call={pdflatex --shell-escape --fmt=../../.preamble --halt-on-error -jobname "\image" "\endofdump\texsource"}}
-\tikzexternalize[prefix=tikz/]
 \usepackage{multirow}
 \usetikzlibrary{angles, quotes, calc}
 

@@ -1,10 +1,7 @@
 %&../../.preamble
-\endofdump
+\externalize{../../.preamble}
 
-\usetikzlibrary{external}
 \usepackage{contour}
-\tikzset{external/system call={pdflatex --shell-escape --fmt=../../.preamble --halt-on-error -jobname "\image" "\endofdump\texsource"}}
-\tikzexternalize[prefix=tikz/]
 
 \title{Ripetizioni Matteo}
 \author{Marini Mattia}
