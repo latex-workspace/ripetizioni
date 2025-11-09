@@ -6,6 +6,7 @@
 \usepackage{makecell}
 \usetikzlibrary{patterns}
 \usepackage{contour}
+\tcbset{shield externalize}
 
 \usepackage{pgf-umlcd}
 
@@ -337,6 +338,7 @@ Supponiamo di avere \verb|int v[] = new int[15];|
 \begin{esercizio}{Smista stringhe}
 	Creare una funzione che prenda in input un vettore di stringhe e un intero $ n $. Ritornare un vettore contenente solo le stringhe con lunghezza minore o uguale $ n $
 \end{esercizio}
+
 
 \section{Classi e oggetti}
 Immaginiamo di voler rappresentare un dato "custom", che non è presente di default in java. Supponiamo di dover rappresentare un punto su un piano cartesiano. Questo dato deve:
@@ -692,6 +694,7 @@ Lista linkata. Utilizzabile in modo molto simile al \verb|ArrayList|. L'accesso 
 \addtocontents{exe}{\protect{\large \vskip3mm \textit{Esercizi su classi}\vskip3mm}}
 \subsection{Esercizi}
 
+
 \begin{esercizioL}{Esercizio completo classi}
 	Creare due classi: una rappresenterà un oggetti di tipo auto, e l'altra un oggetto di tipo concessionario
 	\begin{itemize}
@@ -721,8 +724,6 @@ Lista linkata. Utilizzabile in modo molto simile al \verb|ArrayList|. L'accesso 
 	\end{itemize}
 
 \end{esercizioL}
-
-
 
 
 \begin{esercizioL}{Frammenti di codice}
@@ -1872,6 +1873,7 @@ Per calcolare invece \verb|dp[i]|, ragiono nel seguente modo:
 	\vskip3mm
 	Il prezzo massimo che posso ottenere suddividendo il cilindro
 	\renewcommand{\cellalign}{l}
+	\tikzexternaldisable
 	\begin{center}
 		\begin{tabularx}{\textwidth}{llX}
 			\toprule
@@ -1879,60 +1881,61 @@ Per calcolare invece \verb|dp[i]|, ragiono nel seguente modo:
 			\midrule
 			\makecell{5                  \\ 1 2 3 4 5} & 5 & Posso tagliare il cilindro in molti modi per ottenere il valore 5:
 			\vskip3mm
-			\begin{center}
-				\begin{tikzpicture}[scale = 0.5]
-					\draw (0,0)rectangle++(5,1);
-					\foreach \x in {0,1,2,3,4,5}{
-							\draw [dashed](0,0)++(\x,0)--(\x,1);
-						}
+			{\begin{center}
+					 \begin{tikzpicture}[scale = 0.5]
+						\draw (0,0)rectangle++(5,1);
+						\foreach \x in {0,1,2,3,4,5}{
+								\draw [dashed](0,0)++(\x,0)--(\x,1);
+							}
 
-					\draw (6,0)rectangle++(5,1);
-					\foreach \x in {0,1,3,5}{
-							\draw [dotted](6,0)++(\x,0)--++(0,1);
-						}
-					\draw [dashed](6,0)++(2,0)--++(0,1);
-					\draw [dashed](6,0)++(4,0)--++(0,1);
-
-
-
-
-					\draw (0,-2)rectangle++(5,1);
-					\foreach \x in {0,1,2,4,5}{
-							\draw [dotted](0,-2)++(\x,0)--++(0,1);
-						}
-					\draw [dashed](0,-2)++(3,0)--++(0,1);
-
-					\draw (6,-2)rectangle++(5,1);
-					\foreach \x in {0,1,2,5}{
-							\draw [dotted](6,-2)++(\x,0)--++(0,1);
-						}
-					\draw [dashed](6,-2)++(3,0)--++(0,1);
-					\draw [dashed](6,-2)++(4,0)--++(0,1);
+						\draw (6,0)rectangle++(5,1);
+						\foreach \x in {0,1,3,5}{
+								\draw [dotted](6,0)++(\x,0)--++(0,1);
+							}
+						\draw [dashed](6,0)++(2,0)--++(0,1);
+						\draw [dashed](6,0)++(4,0)--++(0,1);
 
 
 
 
+						\draw (0,-2)rectangle++(5,1);
+						\foreach \x in {0,1,2,4,5}{
+								\draw [dotted](0,-2)++(\x,0)--++(0,1);
+							}
+						\draw [dashed](0,-2)++(3,0)--++(0,1);
 
-					\draw (0,-4)rectangle++(5,1);
-					\foreach \x in {0,1,2,3,5}{
-							\draw [dotted](0,-4)++(\x,0)--++(0,1);
-						}
+						\draw (6,-2)rectangle++(5,1);
+						\foreach \x in {0,1,2,5}{
+								\draw [dotted](6,-2)++(\x,0)--++(0,1);
+							}
+						\draw [dashed](6,-2)++(3,0)--++(0,1);
+						\draw [dashed](6,-2)++(4,0)--++(0,1);
 
-					\draw [dashed](0,-4)++(4,0)--++(0,1);
-					\draw (6,-4)rectangle++(5,1);
-					\foreach \x in {0,1}{
-							\draw [dotted](6,-4)++(\x,0)--++(0,1);
-						}
-					\draw [dashed](6,-4)++(4,0)--++(0,1);
-					\draw [dashed](6,-4)++(3,0)--++(0,1);
-					\draw [dashed](6,-4)++(2,0)--++(0,1);
 
-				\end{tikzpicture}
-			\end{center}
+
+
+
+						\draw (0,-4)rectangle++(5,1);
+						\foreach \x in {0,1,2,3,5}{
+								\draw [dotted](0,-4)++(\x,0)--++(0,1);
+							}
+
+						\draw [dashed](0,-4)++(4,0)--++(0,1);
+						\draw (6,-4)rectangle++(5,1);
+						\foreach \x in {0,1}{
+								\draw [dotted](6,-4)++(\x,0)--++(0,1);
+							}
+						\draw [dashed](6,-4)++(4,0)--++(0,1);
+						\draw [dashed](6,-4)++(3,0)--++(0,1);
+						\draw [dashed](6,-4)++(2,0)--++(0,1);
+
+					\end{tikzpicture}
+				 \end{center}
+			}
 			\\
 			\midrule
 			\makecell{7                  \\ 1 4 10 8 5 10 13} & 21 & In questo caso ciò che conviene fare è spezzare il cilindro in 2 pezzi di lunghezza 3 e 1 di lunghezza 1:
-
+			{
 			\begin{center}
 				\begin{tikzpicture}[scale = 0.5]
 					\draw (0,0)rectangle++(7,1);
@@ -1953,13 +1956,15 @@ Per calcolare invece \verb|dp[i]|, ragiono nel seguente modo:
 					\draw (d)-|(a);
 					\draw (d)-|(b);
 					\draw (d)-|(c);
-
 				\end{tikzpicture}
 			\end{center}
+			}
 			\\
 			\bottomrule
 		\end{tabularx}
 	\end{center}
+	\tikzexternalenable
+
 	Complessità ottimale: $ O\left(n \cdot v.size\left(\right)\right) $
 \end{esercizio}\label{cuttingrod}
 
@@ -2828,7 +2833,5 @@ Il cast è un meccanismo per cambiare il \underline{tipo statico} di una istanza
 
 \subsection{Late binding}
 Il late binding è il meccanismo per cui, nel momento in cui chiamo un metodo su di una istanza di tipo statico \verb|A| e tipo dinamico \verb|B|, l'override della funzione chiamata è quella definita in \footnote{In realtà, viene chiamato l'override presente nella "versione più recente", ossia quella che si trova più il basso nella gerarchia delle classi}{\verb|B|}
-\begin{tikzpicture}
 
-\end{tikzpicture}
 \end{document}
