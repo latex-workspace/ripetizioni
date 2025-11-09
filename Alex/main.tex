@@ -1753,5 +1753,34 @@ Collezione di esercizi, divisi per categoria
 	Creare una classe per ciascuno dei seguenti oggetti geometrici: \texttt{Punto}, \texttt{Rettangolo}, \texttt{Cerchio}. Creare una classe \texttt{PianoCartesiano} che possa contenere le tre classi elencate precedentemente. Una volta inserita una classe nel piano cartesiano verrà ritornato un \verb|id|, tramite il quale possiamo accedervi (l'istanza dell'oggetto aggiunto rimane scollegata da quella inserità nel piano cartesiano). Creare un metodo \verb|closer| che prenda un \verb|id| esistente e ritorni l'id della forma geometrica più vicina (usare il centro delle figure per confrontare la distanza)
 \end{esercizio}
 
+\begin{esercizio}{Montecarlo \href{run:./files/java/esercizi/montecarlo/}{(montecarlo)}}
+	Il casinò di Montecarlo ha richiesto una nuova slot machine; lo scopo del gioco è quello di simulare la pesca di \textit{cinque carte} da una mazzo standard (con quattro semi, le carte da 2 a 10, l’asso(1) le tre figure (11,12,13) e niente jolly)
+	\vskip3mm
+	Le opportunità di vincita (con quattro delle 5 carte estratte) sono le seguenti:
+	\begin{center}
+		\begin{tabular}{l l}
+			\toprule
+			Combinazione                                                                                    & vincita                                 \\
+			\midrule
+			Poker di figure                                                                                 & 1000 \texteuro                          \\
+			Poker d’assi                                                                                    & 1000 \texteuro                          \\
+			\footnote{Es: 1-5-10-13 $ \rightarrow  $ vincita = 224 €} Colore (5 carte dello stesso seme)    & Somma delle carte uscite $ \times  $ 8  \\
+			\footnote{Es: 3-4-5-6 $ \rightarrow  $ vincita = 180 €} Scala colore(5 carte dello stesso seme) & Somma delle carte uscite $ \times  $ 10 \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+
+
+	La presenza di un’altra carta non intacca la vincita.
+	\vskip3mm
+	Contare quante slotmachine sono presenti nel casino
+	\vskip3mm
+	Si scrivano le classi opportune per implementare il gioco e un classe \verb|Casino| dove create diverse \verb|Slot|.
+	\vskip3mm
+	Fare in modo che la giocata possa essere efffetutata solo dopo aver inseirto un certo importo;
+	\vskip3mm
+	Introdurre successivamente anche i \textit{jolly} tra le carte e fare in modo che la presenza del jolly come carta estratta raddoppi la vincita;
+\end{esercizio}
+
 
 \end{document}
