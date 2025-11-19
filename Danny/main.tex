@@ -1,0 +1,1786 @@
+%&../../.preamble
+\externalize{../../.preamble}
+
+
+\title{Ripetizioni Alex}
+\author{Marini Mattia}
+\date{2025}
+\lstset{
+frame = none
+  }
+
+\begin{document}
+\maketitle
+\license{Ripetizioni Alex}
+\tableofcontents
+
+\listofexercises
+
+\newpage
+
+\section{Database}
+\subsubsection*{Quadro generale e introduzione ai database}
+Nella creazione di app e siti una componente fondamentale sta nel trovare strategie per salvare e accedere a dati in maniera efficace. Solitamente i dati vengono immagazzinati in un \underline{database} e l'accesso viene effettuato tramite un linguaggio di \underline{query}. Il più comune linguaggio di query è l'\underline{SQL} (Structured Query Language).
+\vskip3mm
+\subsubsection*{Database relazionale vs database non relazionale}
+\begin{itemize}
+	\item DB relazionale:
+	      in un database relazionale i dati vengono salvati in strutture tabellari, che presentano relazioni tra di loro. I diagrammi \underline{entity relation} forniscono una vista "ad alto livello" fra queste relazioni.
+	\item DB non relazionale:
+	      in un database NON relazionale i dati sono salvati in strutture dati più flessibili. Ad esempio, i dati possono essere salvati tramite lo standard JSON (di base un dizionario che permette di accedere ai valori specificando una chiave)
+\end{itemize}
+
+
+\begin{center}
+	\begin{tikzpicture}[node distance=7em]
+		\node [ entity ] (sailor) { sailor };
+		\node [ relationship, right of = sailor ] (books) { books };
+		\node [ entity, right of = books ] (boat) { boat };
+
+		\draw (sailor)--(books)node [midway, above]{$0,N$};
+		\draw (books)--(boat) node [midway, above]{$0,1$};
+
+		\node (id)[attribute, above left of=sailor]  {\key{id}} edge (sailor);
+		\node (name)[attribute, above of=sailor]  {name}edge (sailor);
+		\node (surname)[attribute, above right of=sailor]  {surname}edge (sailor);
+
+		\node (name)[attribute, above of=boat]  {boat\_id}edge (boat);
+		\node (surname)[attribute, above right of=boat]  {color}edge (boat);
+
+		\node (date)[attribute, below of = books]  {date} edge (books);
+		\node (date)[attribute, below of = books]  {date} edge (books);
+	\end{tikzpicture}
+\end{center}
+
+Il seguente schema viene tradotto in tabelle come segue:
+\begin{center}
+	\begin{tabular}{|c | c c|}
+		\multicolumn{3}{c}{sailor} \\
+		\hline
+		id & name    & surname     \\
+		\hline
+		\hline
+		1  & Bob     & Bobson      \\
+		2  & Alice   & Alicson     \\
+		4  & Charlie & Charlson    \\
+		\hline
+	\end{tabular}
+	\begin{center}
+		\begin{tabular}{| c | c |}
+			\multicolumn{2}{c}{boat} \\
+			\hline
+			boat\_id & color         \\
+			\hline
+			\hline
+			1        & red           \\
+			2        & blue          \\
+			3        & green         \\
+			\hline
+		\end{tabular}
+		\begin{center}
+			\begin{tabular}{| c | c | c |}
+				\multicolumn{3}{c}{books}  \\
+				\hline
+				id & date       & boat\_id \\
+				\hline
+				\hline
+				1  & 2025-01-01 & 1        \\
+				2  & 2025-01-02 & 2        \\
+				\hline
+			\end{tabular}
+		\end{center}
+	\end{center}
+\end{center}
+
+In un DB \underline{NON} relazionale i dati hanno una forma che può assomigliare a qualcosa del genere:
+\begin{lstlisting}[language = JSON, frame = none]
+  {
+    1 : {
+      "name" : "Bob",
+      "surname" : "Bobson"
+      "booked_boats": [{1: {"color": "red"}}]
+    }
+    2: {
+      "name" : "Alice",
+      "surname" : "Alicson"
+      "booked_boats": [{2: {"color": "blue"}}]
+    }
+    4: {
+      "name" : "Charlie",
+      "surname" : "Charlson"
+      "booked_boats": []
+    }
+  } 
+\end{lstlisting}
+
+Nota come in questo caso i dati sono "più collegati" tra di loro. Questo può creare problemi nel momento in cui i dati immagazzinati diventano più complessi. Pensa ad esempio cosa succederebbe se volessimo estrarre solo un marinaio (dovremmo estrarre necessariamente anche tutte le sue prenotazioni, il che divento molto inefficiente su larga scala)
+\vskip3mm
+Noi ci concentreremo sulla prima tipologia (DB relazionali)
+
+\subsection{Sql}
+\subsubsection{Sintassi base}
+Vediamo ora come utilizzare sql per estrarre i dati da un database relazionale. Una query generica ha struttura:
+\begin{lstlisting}[language = SQL, style = SQL, frame = none]
+  SELECT <colonna da selezionare> FROM <tabella da cui estrarre i dati> 
+  WHERE <condizione>;
+\end{lstlisting}
+
+\begin{itemize}
+	\item All'interno di {\ttfamily <condizione>} dobbiamo possiamo fare riferimento ai nomi delle colonne
+	\item All'interno di {\ttfamily <tabella da cui estrarre i dati>} possiamo rinominare con alias in modo da accedervi in modo più facile all'interno di {\ttfamily <condizione>}
+	\item All'interno di {\ttfamily <colonna da selezionare>} possiamo:
+	      \begin{itemize}
+		      \item Rinominare la colonna che verra mostrata nell'output tramite l'operatore \verb|as|
+		      \item Utilizzare il carattere \verb|*| per selezionare tutte le colonne
+		      \item Utilizzare l' alias creato in {\ttfamily <tabella da cui estrarre i dati>} qualora vi fossero conflitti di nomi
+	      \end{itemize}
+\end{itemize}
+Un esempio di una query completa:
+\begin{lstlisting}[language = SQL, style = SQL, frame = none]
+SELECT * FROM sailor WHERE id = 1;
+
+SELECT s.id FROM sailor s 
+WHERE s.name = 'Bob' AND s.surname = 'Johnson';
+\end{lstlisting}
+
+\subsubsection{Join}
+L'operazione più importante (e anche più difficile concettualmente) è quella del join fra tabelle. In particolare, quanto in un diagramma ER abbiamo una relazione può essere necessario "collegare" i dati opportunamente. Sempre in riferimento allo schema \ref{sailors scheme}, immaginiamoci di voler fare quanto segue:
+\begin{center}
+	\textit{Estrai i marinai che hanno prenotato una barca rossa}
+\end{center}
+Per fare ciò è necessario effettuare un join. La sintassi è quanto segue
+\begin{lstlisting}[language = SQL, style = SQL, frame = none]
+SELECT <colonna da selezionare> FROM <tabella 1>, <tabella 2>
+WHERE <id tab. 1> = <id tab. 2>;
+\end{lstlisting}
+Dunque per estrarre i marinai che hanno prenotato una barca rossa possiamo fare quanto segue:
+
+\begin{lstlisting}[language = SQL, style = SQL, frame = none]
+SELECT b.sailor_id FROM  books b, boat bo
+WHERE AND b.boat_id = bo.boat_id AND bo.color = 'Red';
+\end{lstlisting}
+
+Nota che il join può essere fatto anche fra più tabelle. Ad esempio, se volessimo estrarre il nome e il cognome dei marinai che hanno prenotato una barca rossa possiamo fare quanto segue:
+\begin{lstlisting}[language = SQL, style = SQL, frame = none]
+SELECT s.name, s.surname FROM sailor s, books b, boat bo
+WHERE s.id = b.sailor_id AND b.boat_id = bo.boat_id AND bo.color = 'Red';
+\end{lstlisting}
+
+Di fatto, il join non fa altro che fare il prodotto cartesiano fra le tabelle e selezionare solo le righe che soddisfano la condizione. Il prodotto cartesiano è l'operazione che crea una nuova tabella nella quale per ogni riga della tabella a sinistra associamo tutte le righe della tabella a destra. Vediamo un esempio:
+\vskip3mm
+\begin{center}
+	\begin{tabular}{|c | c c|}
+		\multicolumn{3}{c}{sailor} \\
+		\hline
+		id & name    & surname     \\
+		\hline
+		\hline
+		1  & Bob     & Bobson      \\
+		2  & Alice   & Alicson     \\
+		4  & Charlie & Charlson    \\
+		\hline
+	\end{tabular}
+	\begin{tabular}{| c | c | c |}
+		\multicolumn{3}{c}{books}  \\
+		\hline
+		id & date       & boat\_id \\
+		\hline
+		\hline
+		1  & 2025-01-01 & 1        \\
+		2  & 2025-01-02 & 2        \\
+		\hline
+	\end{tabular}
+\end{center}
+\vskip3mm
+Facendo il prodotto cartesiano otteniamo:
+\begin{center}
+	\begin{tabular}{| c | c | c | c | c | c |}
+		\multicolumn{6}{c}{\ttfamily SELECT * FROM sailors s, books b} \\
+		\hline
+		id & name    & surname  & id & date       & boat\_id           \\
+		\hline
+		\hline
+		1  & Bob     & Bobson   & 1  & 2025-01-01 & 1                  \\
+		1  & Bob     & Bobson   & 2  & 2025-01-02 & 2                  \\
+		\hline
+		2  & Alice   & Alicson  & 1  & 2025-01-01 & 1                  \\
+		2  & Alice   & Alicson  & 2  & 2025-01-02 & 2                  \\
+		\hline
+		4  & Charlie & Charlson & 1  & 2025-01-01 & 1                  \\
+		4  & Charlie & Charlson & 2  & 2025-01-02 & 2                  \\
+		\hline
+	\end{tabular}
+\end{center}
+Aggiungengo una clausula \verb|WHERE| che contiene una \textit{chiave primaria} possiamo preservare solo le tuple che sono effettivamente legate dalla relazione in questione:
+
+\begin{center}
+	\begin{tabular}{| c | c | c | c | c | c |}
+		\multicolumn{6}{c}{{\ttfamily SELECT * FROM sailors s, books b WHERE s.id = books.id}} \\
+		\hline
+		id & name  & surname & id & date       & boat\_id                                      \\
+		\hline
+		\hline
+		1  & Bob   & Bobson  & 1  & 2025-01-01 & 1                                             \\
+		2  & Alice & Alicson & 2  & 2025-01-02 & 2                                             \\
+		\hline
+	\end{tabular}
+\end{center}
+
+Nota che le 2 seguenti sintassi sono equivalenti:
+
+\begin{lstlisting}[language = SQL, style = SQL, frame = none]
+SELECT * FROM sailor s JOIN books b ON s.id = b.sailor_id;
+SELECT * FROM sailor s, books b WHERE s.id = b.sailor_id;
+\end{lstlisting}
+
+
+\subsubsection{Outer join}
+Nota come negli esempi sopra, effettuando in joint fra le due tabelle, nella tabella risultante non troviamo più una tupla della tabella a sinistra.
+A volte (anche se raramente), capita di voler mantenerla. Per questi casi esiste il cosidetto \underline{outer join}. in particolare:
+\begin{itemize}
+	\item \texttt{LEFT OUTER JOIN}: mantiene le tuple della tabella a sinistra
+	\item \texttt{RIGHT OUTER JOIN}: mantiene le tuple della tabella a destra
+\end{itemize}
+L'utilizzo è il medesimo del join tradizionale ma verranno inseriti valori {\ttfamily NULL} laddove necessario:
+
+\begin{center}
+	\begin{tabular}{| c | c | c | c | c | c |}
+		\multicolumn{6}{c}{{\ttfamily SELECT * FROM sailors s LEFT OUTER JOIN books b on s.id = books.id}} \\
+		\hline
+		id & name    & surname  & id   & date       & boat\_id                                             \\
+		\hline
+		\hline
+		1  & Bob     & Bobson   & 1    & 2025-01-01 & 1                                                    \\
+		2  & Alice   & Alicson  & 2    & 2025-01-02 & 2                                                    \\
+		4  & Charlie & Charlson & NULL & NULL       & NULL                                                 \\
+		\hline
+	\end{tabular}
+\end{center}
+\subsubsection{Select distinct}
+La clausola \texttt{DISTINCT} ci permette di selezionare solo le righe distinte.
+\begin{center}
+	\begin{tabular}{|c | c c|}
+		\multicolumn{3}{c}{sailor} \\
+		\hline
+		id & name    & surname     \\
+		\hline
+		\hline
+		1  & Bob     & Bobson      \\
+		2  & Alice   & Alicson     \\
+		3  & Bob     & Winston     \\
+		4  & Charlie & Charlson    \\
+		\hline
+	\end{tabular}
+\end{center}
+Se volessimo selezionare solo i nomi dei marinai potremmo fare quanto segue:
+\begin{lstlisting}[language = SQL, style = SQL, frame = none] 
+SELECT name FROM sailor;            -- Bob, Alice, Bob, Charlie
+SELECT DISTINCT name FROM sailor;   -- Bob, Alice, Charlie
+\end{lstlisting}
+
+\subsubsection{Operatori di aggregazione}
+\subsubsection*{Select count}\label{select count}
+Per contare le righe di una tabella possiamo utilizzare la funzione \texttt{COUNT}. La sintassi è la seguente:
+\begin{lstlisting}[language = SQL, style = SQL, frame = none]
+SELECT COUNT(<[DISTINCT] * | nome colonna>) FROM <tabella>;
+\end{lstlisting}
+Questo ritornerà il numero di tuple contenute nella tabella risultante. Se utilizziamo il \verb|DISTINCT| verranno conteggiate solo le tuple distinte. Ad esempio, per contare il numero di marinai possiamo fare quanto segue:
+\begin{lstlisting}[language = SQL, style = SQL, frame = none]
+SELECT COUNT(*) FROM sailor;
+\end{lstlisting}
+
+Supponendo di avere la seguente tabella:
+L'uso del \verb|DISTINCT| cambierebbe il valore resttituito:
+\begin{lstlisting}[language = SQL, style = SQL, frame = none]
+SELECT COUNT(name) FROM sailor;          -- 4
+SELECT COUNT(DISTINCT name) FROM sailor; -- 3
+\end{lstlisting}
+
+\subsubsection*{Select sum}
+In modo del tutto analogo a quanto descritto in \ref{select count}, possiamo utilizzare la funzione \texttt{SUM} per sommare i valori di una colonna. La sintassi è la seguente:
+\begin{lstlisting}[language = SQL, style = SQL, frame = none] 
+SELECT SUM([DISTINCT]<colonna>) FROM <tabella>; 
+\end{lstlisting}
+
+\subsubsection*{Select avg}
+In modo del tutto analogo a quanto descritto in \ref{select count}, possiamo utilizzare la funzione \texttt{AVG} per calcolare la media dei valori di una colonna. La sintassi è la seguente:
+\begin{lstlisting}[language = SQL, style = SQL, frame = none]
+SELECT AVG([DISTINCT]<colonna>) FROM <tabella>;
+\end{lstlisting}
+
+\subsubsection*{Select min/max}
+In modo del tutto analogo a quanto descritto in \ref{select count}, possiamo utilizzare le funzioni \texttt{MIN} e \texttt{MAX} per calcolare il minimo e il massimo dei valori di una colonna. La sintassi è la seguente:
+\begin{lstlisting}[language = SQL, style = SQL, frame = none] 
+SELECT MIN([DISTINCT]<colonna>) FROM <tabella>;
+SELECT MAX([DISTINCT]<colonna>) FROM <tabella>;
+\end{lstlisting}
+
+\subsubsection{Operazioni insiemistiche fra più tabelle}
+\subsubsection*{Intersezione}
+Possiamo utilizzare operazioni insiemistiche fra tabelle derivanti da diverse query. Vedi ad esempio:
+\begin{center}
+	\textit{Seleziona i nomi dei marinai che hano prenotato sia una barca rossa e una verde}
+\end{center}
+\begin{lstlisting}[language = SQL, style = SQL, frame = none] 
+SELECT s.name FROM sailor s, books b, boat bo
+WHERE s.id = b.sailor_id AND b.boat_id = bo.boat_id AND bo.color = 'Red' 
+INTERSECT 
+SELECT s.name FROM sailor s, books b, boat bo
+WHERE s.id = b.sailor_id AND b.boat_id = bo.boat_id AND bo.color = 'Green'; 
+\end{lstlisting}
+La clausola \verb|INTERSECT| effettura \underline{l'intersezione insiemistica} fra le due tabelle derivanti dalle due query
+\vskip3mm
+\subsubsection*{Meno insiemistico}
+\begin{center}
+	\textit{Seleziona i nomi dei marinai che hano prenotato una barca rossa ma non una verde}
+\end{center}
+\begin{lstlisting}[language = SQL, style = SQL, frame = none] 
+SELECT s.name FROM sailor s, books b, boat bo
+WHERE s.id = b.sailor_id AND b.boat_id = bo.boat_id AND bo.color = 'Red' 
+EXCEPT 
+SELECT s.name FROM sailor s, books b, boat bo
+WHERE s.id = b.sailor_id AND b.boat_id = bo.boat_id AND bo.color = 'Green';
+\end{lstlisting}
+
+\subsubsection*{Unione insiemistica}
+\begin{center}
+	\textit{Seleziona i nomi dei marinai che hano prenotato una barca rossa o una verde}
+
+\end{center}
+\begin{lstlisting}[language = SQL, style = SQL, frame = none] 
+SELECT s.name FROM sailor s, books b, boat bo
+WHERE s.id = b.sailor_id AND b.boat_id = bo.boat_id AND bo.color = 'Red' 
+UNION
+SELECT s.name FROM sailor s, books b, boat bo
+WHERE s.id = b.sailor_id AND b.boat_id = bo.boat_id AND bo.color = 'Green';
+\end{lstlisting}
+
+\subsubsection{Subquery}
+E' infine possibile utilizzare delle query all'interno di altre query. Questo può essere utile per eseguire operazioni più complesse. La sintassi generale è la seguente:
+\begin{lstlisting}[language = SQL, style = SQL, frame = none] 
+SELECT <colonna> FROM <tabella> 
+WHERE <operatore> (SELECT <colonna> FROM <tabella>); 
+\end{lstlisting}
+\verb|<operatore>| può avere la seguente forma:
+\begin{itemize}
+	\item \verb|<colonna> IN (<subquery>)|: la tupla corrente viene selezionata solo se \verb|<colonna>| è presenta all'interno della tabella ritornata dalla subquery
+	\item \verb|<colonna> NOT IN (<subquery>)|: la tupla corrente viene selezionata solo se \verb|<colonna>| NON è presenta all'interno della tabella ritornata dalla subquery
+	\item \verb|EXISTS (<subquery>)|: la tupla corrente viene selezionata solo se la subquery ritorna almeno una tupla
+	\item {\ttfamily <colonna> < >|<|= > ANY }: la tupla corrente viene selezionata solo se \verb|<colonna>| è {\ttfamily < >|<|= >} di \underline{almeno 1} colonna della tabella ritornata dalla subquery
+	\item {\ttfamily <colonna> < >|<|= > ALL }: la tupla corrente viene selezionata solo se \verb|<colonna>| è {\ttfamily < >|<|= >} di \underline{tutte} le colonna della tabella ritornata dalla subquery
+\end{itemize}
+
+\subsubsection{Group by e having}
+A volte è necessario raggruppare il risultato sulla base di un determinato attributo. Ciò è possibile utilizzando \verb|GROUP BY| e \verb|HAVING|. La sintassi è la seguente:
+\begin{lstlisting}[language = SQL, style = SQL, frame = none] 
+SELECT <colonna>, <funzione aggregazione> FROM <tabella> 
+GROUP BY <colonna> 
+HAVING <condizione>; 
+\end{lstlisting}
+Tramite questo costrutto le tuple verranno raggruppate sulla base della colonna specificata. Per questa ragione è obbligatorio utilizzare un operatore di aggregazione.
+Ad esempio, se avessimo la seguente tabella:
+\vskip3mm
+\begin{minipage}[c]{0.30\textwidth}
+	\begin{center}
+		\begin{tabular}{|c | c |}
+			\multicolumn{2}{c}{boat} \\
+			\hline
+			id & color               \\
+			\hline
+			\hline
+			1  & red                 \\
+			2  & blue                \\
+			3  & green               \\
+			4  & red                 \\
+			5  & red                 \\
+			6  & blue                \\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{minipage}
+%
+\begin{minipage}[c]{0.65\textwidth}
+	\textit{Seleziona il numero di barche per ongi tipo di colore. Non considerari i colori per cui esistono meno di 2 barche}
+\end{minipage}
+\vskip3mm
+Possiamo fare quanto segue:
+\begin{lstlisting}[language = SQL, style = SQL, frame = none] 
+SELECT color, COUNT(*) FROM boat 
+GROUP BY color; 
+HAVING COUNT(*) > 1
+\end{lstlisting}
+\subsubsection{Order by}
+Possiamo ordinare le tuple sulla base dei valori di una colonna utilizzando l'operatore \verb|ORDER BY|. La sintassi è la seguente:
+\begin{lstlisting}[language = SQL, style = SQL, frame = none]
+SELECT <colonna> FROM <tabella>
+ORDER BY <colonna> [ASC|DESC];
+\end{lstlisting}
+Questo ordinerà le tuple secondo i valori della colonna specificata. Se non specificato, l'ordinamento sarà crescente. Possiamo specificare l'ordinamento decrescente utilizzando \verb|DESC|.
+\subsubsection*{Limit}
+Se siamo interessati solo a un numero limitato di tuple possiamo utilizzare l'operatore \verb|LIMIT|. La sintassi è la seguente:
+\begin{lstlisting}[language = SQL, style = SQL, frame = none] 
+SELECT <colonna> FROM <tabella>
+LIMIT <numero>; 
+\end{lstlisting}
+Questo selezionerà solo le prime \verb|<numero>| tuple risultanti dalla query.
+
+\subsection{Esercizi schema sailors}
+\hrule
+\vskip3mm
+Vedi sezione \ref{sailors scheme} per lo schema
+\vskip3mm
+\hrule
+\vskip3mm
+\subsubsection*{Query base}
+\begin{itemize}
+	\item Seleziona gli id dei marinai di cognome "Miller"
+	\item Selezione le barche rosse o blu
+	\item Seleziona le barche che non siano rosse
+	\item Seleziona le barche che non sono ne blu ne rosse
+\end{itemize}
+\subsubsection*{Join}
+\begin{itemize}
+	\item Seleziona gli id dei marinai che hanno prenotato una barca rossa
+	\item Seleziona i nomi dei marinai che hano prenotato una barca rossa
+	\item Seleziona i nomi dei marinai che hanno prenotato almeno una barca
+	\item Elenca tutti i marinai e le barche che hanno prenotato, includendo anche i marinai che non hanno mai prenotato una barca.
+	\item Elenca tutte le barche e i marinai che le hanno prenotate, includendo anche le barche che non sono mai state prenotate.
+\end{itemize}
+\subsection*{Sottoquery}
+\begin{itemize}
+	\item Trova i marinai che hanno prenotato almeno una barca di colore rosso.
+	\item Trova il nome del marinaio che ha prenotato il maggior numero di barche.
+	\item Elenca i marinai che hanno prenotato almeno una barca ma non una di colore rosso.
+\end{itemize}
+
+\subsection*{Aggregazione, GROUP BY e HAVING}
+\begin{itemize}
+	\item Conta quante barche ha prenotato ciascun marinaio.
+	\item Trova il colore della barca con più prenotazioni
+	\item Elenca i marinai che hanno prenotato più di 2 barche.
+	\item Trova il nome del marinaio che ha prenotato il maggior numero di barche.
+\end{itemize}
+
+\subsection*{Operazioni sugli Insiemi (UNION, INTERSECT, EXCEPT)}
+\begin{itemize}
+	\item Trova i marinai che hanno prenotato sia una barca rossa che una barca blu.
+	\item Trova i marinai che hanno prenotato o una barca rossa o una barca blu.
+	\item Trova i marinai che hanno prenotato almeno una barca ma non una di colore rosso.
+\end{itemize}
+
+\subsection{Esercizi schema università}
+\hrule
+\vskip3mm
+Vedi sezione \ref{univesità scheme} per lo schema
+\vskip3mm
+\hrule
+\vskip3mm
+\subsubsection*{Filtraggio e Aggregazione}
+\begin{itemize}
+	\item Conta quanti studenti sono iscritti a ciascun dipartimento.
+	\item Conta la media dei salari degli istruttori per ogni dipartimento.
+	\item Conta il numero totale di crediti acquisiti dagli studenti del dipartimento di "Fisica".
+	\item Conta gli studenti che hanno ottenuto un voto di "A" in almeno un corso.
+	\item Seleziona gli studenti che NON hanno frequentato corsi da più di 3 crediti
+\end{itemize}
+
+\subsection{Query varie}
+\begin{itemize}
+	\item Trova gli studenti che hanno seguito un corso specifico in un determinato semestre e anno.
+	\item Mostra tutti i corsi che non sono stati assegnati a nessun istruttore (prova sia con un join che con le operazioni insiemistiche)
+	\item Elenca gli studenti che non hanno ancora completato alcun corso (ovvero non hanno un voto registrato).
+	\item Trova gli studenti che hanno lo stesso ID dei professori
+	\item Elenca tutti i nomi delle persone presenti nel database (studenti e istruttori)
+\end{itemize}
+\subsubsection*{Query più avanzate}
+\begin{itemize}
+	\item Trova gli studenti con il maggior numero di crediti totali. \\
+	      \textit{(Mostra il nome dello studente e i suoi crediti, ordinati in ordine decrescente. Mostra massimo 5 valori.)}
+
+	\item Trova i corsi con il numero massimo di studenti iscritti. \\
+	      \textit{(Mostra l'ID del corso e il numero di studenti iscritti, ordinati in ordine decrescente. Mosta massimo 5 valori)}
+
+	\item Trova gli istruttori con il salario più alto per ogni dipartimento. \\
+	      \textit{(Mostra il nome dell'istruttore, il dipartimento e il salario.)}
+
+	\item Trova gli edifici che ospitano il maggior numero di aule. \\
+	      \textit{(Mostra il nome dell’edificio e il numero di aule presenti in esso.)}
+
+	\item Trova il numero di aule in cui insegna ogni insegnante \\
+	      \textit{(Mostra il nome dell'istruttore e il numero totale di aule in cui insegna )}
+
+	\item Trova i corsi seguiti solo da studenti di un singolo dipartimento. \\
+	      \textit{(Mostra il nome del corso e il dipartimento a cui appartengono tutti gli studenti iscritti.)}
+
+	\item Trova i professori che insegnano solo un corso.
+	      \textit{(Mostra il nome del professore e il corso)}
+
+	\item Trova il numero medio di crediti dei corsi offerti per ogni dipartimento. \\
+	      \textit{(Mostra il dipartimento e la media dei crediti dei corsi che offre.)}
+
+	\item Trova gli studenti che hanno frequentato più di un corso nello stesso semestre e anno. \\
+	      \textit{(Mostra il nome dello studente, il semestre e l'anno, insieme al numero di corsi seguiti in quel periodo.)}
+
+	\item Trova gli istruttori che insegnano corsi in più di un semestre. \\
+	      \textit{(Mostra il nome dell'istruttore e il numero di semestri diversi in cui ha insegnato.)}
+
+	\item Trova gli studenti che hanno preso corsi solo da istruttori del loro stesso dipartimento. \\
+	      \textit{(Mostra il nome dello studente e il suo dipartimento.)}
+\end{itemize}
+
+
+\subsection{Schemi per esercizi}
+
+Qua sotto trovi gli schemi per poterti esercitare. Ti consiglio di usare il sito di \href{https://www.programiz.com/sql/online-compiler}{\textit{programiz}}. Nota che
+\begin{itemize}
+	\item Il codice qui sotto è fatto per funzionare sul sito di \href{https://www.programiz.com/sql/online-compiler}{\textit{programiz}}. Se usi altri siti potrebbe non inizializzare lo schema correttamente
+	\item \underline{Non è necessario} capire le istruzioni. A noi basta capire come prelevare i dati, non ci interessa saperli inserire
+\end{itemize}
+
+\newpage
+\subsubsection{Schema sailors {\ttfamily sailors.sql}}\label{sailors scheme}
+\vskip3mm
+\hrule
+\vskip3mm
+Clica per aprire file \href{run:./files/sailors.sql}{\texttt{sailors.sql}}
+\vskip3mm
+\hrule
+
+
+\inputsql{files/sailors.sql}
+Lo schema ha il seguente \underline{diagramma ER}
+\begin{center}
+	\begin{tikzpicture}[node distance=7em]
+		\node [ entity ] (sailor) { sailor };
+		\node [ relationship, right of = sailor ] (books) { books };
+		\node [ entity, right of = books ] (boat) { boat };
+
+		\draw (sailor)--(books);
+		\draw (books)--(boat);
+
+		\node (id)[attribute, above left of=sailor]  {\key{id}} edge (sailor);
+		\node (name)[attribute, above of=sailor]  {name}edge (sailor);
+		\node (surname)[attribute, above right of=sailor]  {surname}edge (sailor);
+
+		\node (name)[attribute, above of=boat]  {boat\_id}edge (boat);
+		\node (surname)[attribute, above right of=boat]  {color}edge (boat);
+
+		\node (date)[attribute, below of = books]  {date} edge (books);
+		\node (date)[attribute, below of = books]  {date} edge (books);
+	\end{tikzpicture}
+\end{center}
+
+
+\subsubsection{Schema università {\ttfamily università.sql}}\label{univesità scheme}
+\vskip3mm
+\hrule
+\vskip3mm
+Clica per aprire file \href{run:./files/universita.sql}{\texttt{università.sql}}
+\vskip3mm
+\hrule
+
+
+\inputsql{files/universita.sql}
+
+
+\begin{center}
+	\begin{tikzpicture}[node distance=10em, scale = 0.5, every node/.style={font=\small}]
+		% Entities
+		\node [entity] (student) { student };
+		\node [entity, below of=student] (instructor) { instructor };
+		\node [entity, right of=student] (department) { department };
+		\node [entity, right of=department] (course) { course };
+		\node [entity, below of=course] (classroom) { classroom };
+		\node [entity, above of=course] (time_slot) { time\_slot };
+
+		% Relationships
+		\node [relationship, above right of=student] (takes) { takes };
+		\node [relationship, below right of=instructor] (teaches) { teaches };
+		\node [relationship, below left of=student] (advisor) { advisor };
+
+		% Connections
+		\draw (student)--(advisor);
+		\draw (advisor)--(instructor);
+		\draw (student)--(takes);
+		\draw (takes)--(course);
+		\draw (instructor)--(teaches);
+		\draw (teaches)--(course);
+		\draw (department)--(student);
+		\draw (department)--(instructor);
+		\draw (department)--(course);
+		\draw (course)--(classroom);
+		\draw (course)--(time_slot);
+
+		% % Attributes
+		\draw (student)--++ (180:15em) node [attribute]{\key{ID}};
+		\draw (student)--++ (150:15em) node [attribute]{name} ;
+		\draw (student)--++ (120:15em) node [attribute]{depth\_name};
+		\draw (student)--++ (90:18em) node  [attribute]{tot\_cred};
+
+		\draw (instructor)-- ++(180:12em) node [attribute]{\key{ID}};
+		\draw (instructor)-- ++(210:12em) node [attribute]{name};
+		\draw (instructor)-- ++(240:12em) node [attribute]{depth\_name};
+		\draw (instructor)-- ++(90:12em) node  [attribute]{salary};
+
+		\draw (department)-- ++(90:8em)node[attribute] {\key{dept\_name}};
+		\draw (department)-- ++(270:12em)node[attribute] {building};
+		\draw (department)-- ++(315:12em)node[attribute] {budget};
+
+		\draw (course)-- ++(55:8em)node[attribute]  		{\key{course\_id}};
+		\draw (course)-- ++(15:12em)node[attribute] 		{title};
+		\draw (course)-- ++(-15:12em)node[attribute]		{dept\_name};
+		\draw (course)-- ++(-55:8em)node[attribute] 		{credits};
+
+
+		\draw (classroom) -- ++(-35:10em) node[attribute] {building};
+		\draw (classroom) -- ++(-90:10em) node[attribute] {room\_number};
+		\draw (classroom) -- ++(-145:10em) node[attribute] {capacity};
+
+		\draw (time_slot) -- ++(0:14em) node[attribute] {time\_slot\_id};
+		\draw (time_slot) -- ++(30:10em) node[attribute] {day};
+		\draw (time_slot) -- ++(60:10em) node[attribute] {start\_hr};
+		\draw (time_slot) -- ++(120:10em) node[attribute] {start\_min};
+		\draw (time_slot) -- ++(150:10em) node[attribute] {end\_hr};
+		\draw (time_slot) -- ++(180:12em) node[attribute] {end\_min};
+	\end{tikzpicture}
+\end{center}
+
+\subsubsection{Schema studenti {\ttfamily studenti.sql}}\label{studenti scheme}
+\vskip3mm
+\hrule
+\vskip3mm
+Clica per aprire file \href{run:./files/studenti.sql}{\texttt{studenti.sql}}
+\vskip3mm
+\hrule
+
+
+\inputsql{files/studenti.sql}
+
+\begin{center}
+	\begin{tikzpicture}[node distance=10em, scale = 0.5, every node/.style={font=\small}]
+		\node (studenti)[entity]  {studenti};
+		\node ()[above left of = studenti, attribute]  {\key{id}} edge (studenti);
+		\node ()[above right of = studenti, attribute]  {grade} edge (studenti);
+	\end{tikzpicture}
+\end{center}
+
+\newpage
+\section{Linux e terminale}
+Siamo abituati ad utilizzare un computer attraverso un'interfaccia grafica o \textit{GUI}. Tuttavia è possibile fare tutto ciò che facciamo tramite gui attraverso comandi che possiamo digitare all'interno del \textit{terminale}
+\vskip3mm
+Il vantaggio principale nell'utilizzare la riga di comando è la possibilità di creare dei file contententi codice (chiamati \textit{script}) che ci permettono di automatizzare azioni ripetitive, ad esempio la compilazione di un codice sorgente
+\subsection{Filesystem}
+In ogni sistema operativo il filesystem è la struttura che ci permette di immagazzinare informazioni sul disco. Siamo abituati a navigarlo tramire un explorer (Windows file Explorer, MacOs Finder, ...). La cosa più importante da notare è che:
+\begin{center}
+	Il filesystem è strutturato ad albero. Ogni file o cartella ha un percorso che ci permette di trovarlo. Ad esempio, \verb|/home/user/documents/file.txt| indica il file \verb|file.txt| all'interno della cartella \verb|documents| che si trova nella cartella \verb|user| che si trova nella cartella \verb|home|
+\end{center}
+E' importante imparare a specificare persorci in modo corretto
+
+\begin{itemize}
+	\item In linux e macos i percorsi sono specificati come stringe in cui ogni cartella è separata da uno slash, ad esempio:
+	      \begin{center}
+		      \verb|/home/user/documents/file.txt|
+	      \end{center}
+	\item Se il nome di un file o una cartella contiene uno spazio questo va "escaped" tramite un backslah (\texttt{\textbackslash})
+	      \begin{center}
+		      \verb|/home/user/documents/file\ con\ spazio.txt|
+	      \end{center}
+	      o in alternativa il percorso va racchiuso tra apici o virgolette
+	      \begin{center}
+		      \verb|'/home/user/documents/file con spazio.txt'|
+		      \verb|"/home/user/documents/file con spazio.txt"|
+	      \end{center}
+	\item Esistono percorsi speciali, in particolare:
+	      \begin{itemize}
+		      \item Percorso "\verb|.|": indica la directory corrente
+		      \item Percorso "\verb|..|": indica la directory padre
+		      \item Percorso "\verb|~|": indica la home directory dell'utente corrente
+		      \item Percorso "\verb|/|": indica la directory root
+	      \end{itemize}
+	      ad esempio, immaginiamo di avere aperto una sessione nel terminale nella directory \verb|/home/user/desktop|, allora
+	      \begin{itemize}
+		      \item \verb|./file.txt| indica \verb|/home/user/desktop/file.txt|
+		      \item Percorso "\verb|../documents|":  indica \verb|/home/user/documents|
+		      \item Percorso "\verb|~|": indica \verb|/home/user/mattia| (o qualunque user sia loggato)
+		      \item Percorso "\verb|/|": indica la directory root
+	      \end{itemize}
+\end{itemize}
+\subsection{Comandi principali}
+% \command{cd}{directory}{cambia la directory in quanto specificato}
+% \command{mkdir}{nome directory}{crea la directory specificata}
+% \textit{Stampa una lista dei file e directory nella directory corrente}
+
+\command{ls}{[directory]}{}{stampa una lista delle directory e file nella directory corrente}
+\vskip3mm
+Parametri:
+\begin{itemize}
+	\item \verb|[directory]|: se specificata, stampa informazioni sulla directory specificata, altrimenti ritorna (\textit{"No such file or directory (os error 2)"})
+\end{itemize}
+Opzioni:
+\begin{itemize}
+	\item \verb|-a --all|: stampa anche i file nascosti (ossia i file il cui nome comincia per ".")
+	\item \verb|-l|: stampa più informazioni riguardo i file. In particolare stampa i permessi del file nel seguente formato:
+	      \begin{center}
+		      \verb|rwxrwxrwx|
+	      \end{center}
+	      ogni carattere può essere uno fra \verb|rwx| o \verb|-| nel caso il corrispondente permesso non sia concesso. In particolare:
+	      \begin{itemize}
+		      \item In pratica tre gruppi di \verb|rwx|
+		            \begin{itemize}
+			            \item \verb|r| = può leggere
+			            \item \verb|w| = può scrivere
+			            \item \verb|x| = può eseguire
+		            \end{itemize}
+		      \item I 3 gruppi hanno i seguenti significati
+		            \begin{itemize}
+			            \item Primo gruppo: premessi per il proprietario del file
+			            \item Secondo gruppo: permessi per il gruppo di utenti a cui appartiene il file
+			            \item Terzo gruppo: permessi per tutti gli altri utenti
+		            \end{itemize}
+	      \end{itemize}
+	      ad esempio
+	      \begin{center}
+		      \verb|rwxr-xr-x|
+	      \end{center}
+\end{itemize}
+Esempi:
+\begin{itemize}
+	\item Lista i file nella directory corrente:
+	      \vskip3mm
+	      \verb|ls|
+	\item Lista i file, compresi quelli nascosti nella directory corrente:
+	      \vskip3mm
+	      \verb|ls --all|
+	\item Stampa informazioni su \verb|package.json|, se esiste nella directory corrente:
+	      \vskip3mm
+	      \verb|ls package.json|
+\end{itemize}
+
+\command{mkdir}{<directory\_name>}{}{Crea una directory nuova con il nome specificato}
+\vskip3mm
+Parametri:
+\begin{itemize}
+	\item \verb|<directory_name>|: nome della directory da creare.
+\end{itemize}
+Esempi:
+\begin{itemize}
+	\item Crea una directory chiamata \verb|OSExercises| nella directory corrente:
+	      \vskip3mm
+	      \verb|mkdir OSExercises|
+\end{itemize}
+
+\command{cd}{<directory\_name>}{}{Naviga verso la directory specificata}
+\vskip3mm
+Parametri:
+\begin{itemize}
+	\item \verb|<directory_name>|: nome della directory da raggiungere.
+\end{itemize}
+Esempi:
+\begin{itemize}
+	\item Naviga verso la directory \verb|OS_Ex|:
+	      \vskip3mm
+	      \verb|cd OS_Ex|
+	\item Torna alla directory padre:
+	      \vskip3mm
+	      \verb|cd ..|
+	\item Naviga alla directory home dell'utente corrente:
+	      \vskip3mm
+	      \verb|cd ~| oppure \verb|cd|
+\end{itemize}
+
+\command{pwd}{}{}{Mostra il percorso completo della directory corrente}
+Esempi:
+\begin{itemize}
+	\item Mostra il percorso della directory corrente:
+	      \vskip3mm
+	      \verb|pwd|
+\end{itemize}
+
+\command{echo}{<string>}{}{Stampa una stringa o un messaggio specificato nella terminale}
+\vskip3mm
+Parametri:
+\begin{itemize}
+	\item \verb|<string>|: Il messaggio o stringa da stampare.
+\end{itemize}
+Opzioni:
+\begin{itemize}
+	\item \verb|-e|: interpreta le escape sequences. Normalmente verranno stampate come sono
+	      \begin{itemize}
+		      \item \verb|\n|: nuova linea
+		      \item \verb|\t|: tabulazione
+	      \end{itemize}
+	\item \verb|-n|: non aggiungere una nuova linea alla fine del comando
+\end{itemize}
+Esempi:
+\begin{itemize}
+	\item Stampa il tuo nome:
+	      \vskip3mm
+	      \verb|echo "Il mio nome"|
+	\item Stampa due righe:
+	      \vskip3mm
+	      \verb|echo -e "Il mio nome\nIl mio cognome"|
+\end{itemize}
+
+\command{pico}{<file\_name>}{}{Editor di testo semplice utilizzabile nella terminale}
+\vskip3mm
+Parametri:
+\begin{itemize}
+	\item \verb|<file_name>|: Nome del file da creare o aprire.
+\end{itemize}
+Esempi:
+\begin{itemize}
+	\item Crea o modifica il file \verb|name.txt|:
+	      \vskip3mm
+	      \verb|pico name.txt|
+\end{itemize}
+
+\command{cat}{<file\_name>}{}{Visualizza il contenuto di uno o più file nella terminale}
+\vskip3mm
+Parametri:
+\begin{itemize}
+	\item \verb|<file_name>|: Nome del file o dei file da visualizzare.
+\end{itemize}
+Esempi:
+\begin{itemize}
+	\item Mostra il contenuto del file \verb|name.txt|:
+	      \vskip3mm
+	      \verb|cat name.txt|
+\end{itemize}
+
+\command{man}{<command>}{}{Mostra il manuale di utilizzo per un comando specifico}
+\vskip3mm
+Parametri:
+\begin{itemize}
+	\item \verb|<command>|: Nome del comando per cui si vuole visualizzare il manuale.
+\end{itemize}
+Esempi:
+\begin{itemize}
+	\item Mostra il manuale del comando \verb|cd|:
+	      \vskip3mm
+	      \verb|man cd|
+	\item Mostra il manuale del comando \verb|cat|:
+	      \vskip3mm
+	      \verb|man cat|
+\end{itemize}
+
+\command{chmod}{<mode> <file\_name>}{}{Cambia i permessi di accesso di un file o directory}
+\vskip3mm
+Parametri:
+\begin{itemize}
+	\item \verb|<mode>|: Specifica i nuovi permessi in base 8 (es. \verb|644|) o come modifiche (+w, -r, ecc.).
+	      \vskip3mm
+	      Nota che una stringa di 3 caratteri in base \verb|8| corrisponde ad una stringa di $ 9 $ caratteri in base \verb|2|, ad esempio
+	      \begin{center}
+		      \verb|755| in base 8 $ \rightarrow  $\verb|111 101 101| in base 2 \\
+		      il che corrisponde ai permessi \verb|rwxr-xr-x|
+	      \end{center}
+	\item \verb|<file_name>|: Nome del file o directory di cui si vogliono cambiare i permessi.
+\end{itemize}
+Esempi:
+\begin{itemize}
+	\item Imposta i permessi di lettura e scrittura per il proprietario, solo lettura per gli altri:
+	      \vskip3mm
+	      \verb|chmod 755 executable|
+	\item Permetti a tutti di scrivere sul file:
+	      \vskip3mm
+	      \verb|chmod +w file.txt|
+\end{itemize}
+
+\command{rm}{<file\_name>}{}{Rimuove file o directory}
+\vskip3mm
+Parametri:
+\begin{itemize}
+	\item \verb|<file_name>|: Nome del file o directory da rimuovere.
+\end{itemize}
+Opzioni:
+\begin{itemize}
+	\item \verb|-i|: Chiede conferma prima di rimuovere ogni file.
+	\item \verb|-r|: Rimuove ricorsivamente directory e il loro contenuto.
+\end{itemize}
+Esempi:
+\begin{itemize}
+	\item Rimuove il file \verb|BigBrother|:
+	      \vskip3mm
+	      \verb|rm BigBrother|
+	\item Rimuove tutti i file in una directory:
+	      \vskip3mm
+	      \verb|rm -r OSLab|
+\end{itemize}
+
+\command{cp}{<sourcefile> <destinationfile>}{}{Copia un file o directory in un'altra posizione}
+\vskip3mm
+Parametri:
+\begin{itemize}
+	\item \verb|<sourcefile>|: File o directory da copiare.
+	\item \verb|<destinationfile>|: Destinazione della copia.
+\end{itemize}
+Opzioni:
+\begin{itemize}
+	\item \verb|-r|: Copia ricorsivamente directory e il loro contenuto.
+\end{itemize}
+Esempi:
+\begin{itemize}
+	\item Crea una copia del file \verb|BigBrother| in \verb|/tmp| con un nome diverso:
+	      \vskip3mm
+	      \verb|cp BigBrother /tmp/BigB|
+	\item Copia tutta la directory \verb|OSExercises| in \verb|ExercisesOS|:
+	      \vskip3mm
+	      \verb|cp -r OSExercises ExercisesOS|
+\end{itemize}
+
+\command{mv}{<sourcefile> <destinationfile>}{}{Sposta o rinomina un file o directory}
+\vskip3mm
+Parametri:
+\begin{itemize}
+	\item \verb|<sourcefile>|: File o directory da spostare o rinominare.
+	\item \verb|<destinationfile>|: Nuova posizione o nuovo nome.
+\end{itemize}
+Esempi:
+\begin{itemize}
+	\item Sposta il file \verb|BigBrother| nella directory \verb|OSExercises|:
+	      \vskip3mm
+	      \verb|mv BigBrother OSExercises|
+	\item Rinomina il file \verb|BigBrother| in \verb|BigSister|:
+	      \vskip3mm
+	      \verb|mv BigBrother BigSister|
+\end{itemize}
+
+\command{more}{<file\_name>}{}{Mostra il contenuto di un file una pagina alla volta (dall'inizio)}
+\vskip3mm
+Parametri:
+\begin{itemize}
+	\item \verb|<file_name>|: Nome del file da visualizzare.
+\end{itemize}
+Esempi:
+\begin{itemize}
+	\item Visualizza il contenuto del file \verb|ls_output| una pagina alla volta:
+	      \vskip3mm
+	      \verb|more ls_output|
+\end{itemize}
+
+\command{less}{<file\_name>}{}{Mostra il contenuto di un file una pagina alla volta (dalla fine)}
+\vskip3mm
+Parametri:
+\begin{itemize}
+	\item \verb|<file_name>|: Nome del file da visualizzare.
+\end{itemize}
+Esempi:
+\begin{itemize}
+	\item Visualizza il contenuto del file \verb|ls_output| una pagina alla volta:
+	      \vskip3mm
+	      \verb|less ls_output|
+\end{itemize}
+
+\command{grep}{<string> <file\_name>}{}{Cerca una stringa all'interno di un file}
+\vskip3mm
+Parametri:
+\begin{itemize}
+	\item \verb|<string>|: Stringa da cercare.
+	\item \verb|<file_name>|: Nome del file dove cercare.
+\end{itemize}
+Opzioni:
+\begin{itemize}
+	\item \verb|-v|: Mostra le righe che NON contengono la stringa.
+	\item \verb|-i|: Non distinguere tra maiuscole e minuscole.
+	\item \verb|-E|: Extended grep. Utilizzabile per regex
+	\item \verb|-r|: Recursive. Analizza ricorsivamente ogni file nella directory specificata
+\end{itemize}
+Esempi:
+\begin{itemize}
+	\item Cerca la stringa \verb|"x"| nel file \verb|ls_output|:
+	      \vskip3mm
+	      \verb|grep "x" ls_output|
+	\item Mostra le righe che NON contengono \verb|"x"| nel file \verb|ls_output|:
+	      \vskip3mm
+	      \verb|grep -v "x" ls_output|
+\end{itemize}
+Nota bene: \verb|grep| in realtà è un comando molto avanzato e flessibile che supporta pattern matching e \href{https://en.wikipedia.org/wiki/Regular_expression}{regex} (\href{https://ryanstutorials.net/linuxtutorial/cheatsheetgrep.php}{cheatsheet qui}).
+
+
+\command{cut}{[opzioni] [file]}{}{Ritorna una porzione specificata da una riga}\label{cut command}
+\begin{itemize}
+	\item \verb|-d|: specifica il delimitatore (es. -d ',' per CSV)
+	\item \verb|-f|: indica i campi da estrarre (usato insieme a -d)
+	\item \verb|-c|: estrae specifici caratteri
+\end{itemize}
+Ad esempio \texttt{echo "nome,cognome,email" $ \| $ cut -d ',' -f 2} ritorna \textit{cognome}
+
+\subsection{Shell indirection}\label{shell indirection}
+Spesso può venire utile salvare ciò che il file stampa a terminale in un file. Questo può essere fatto utilizzando l'operatore di \textit{shell indirection}. In particolare l'output di un qualsiasi comando può essere reindirizzato ad un file con questa sintassi:
+\begin{center}
+	\verb|<comando> > <file>|
+\end{center}
+In realtà ci sono molte varianti di questo comando. La sintassi generica è
+\begin{center}
+	\ttfamily [file\_descriptor][>|>>]
+\end{center}
+in particolare
+\begin{itemize}
+	\item \verb|[file_descriptor]| indica lo stream da direzionare:
+	      \begin{itemize}
+		      \item 1:  \verb|stdout|
+		      \item 2:  \verb|stderr|
+		      \item \verb|&|:  entrambi \verb|stdout| e \verb|stderr|
+	      \end{itemize}
+	\item \verb|>| oppure \verb|>>|:
+	      \begin{itemize}
+		      \item \verb|>|: crea un file nuovo e ci scrive dentro. Se il file esiste già lo sovrascrive
+		      \item \verb|>>|: appende l'output del comando in fondo file. Se il file non esiste lo crea
+	      \end{itemize}
+\end{itemize}
+In modo simile può essere anche rendirizzato lo \textit{standard input} con la seguente sintassi
+\begin{center}
+	\verb|<file> < <comando>|
+\end{center}
+Inoltre è anche possibile reindirizzare \verb|stderr| su \verb|stdout| o viceversa, ad esempio:
+\begin{lstlisting}[language = bash]
+echo "Hello from stdout"
+echo "Hello from stderr" >&2       # Reindirizza tutto su stderr
+echo "Hello from stdout" 2>&1      # Reindirizza stderr su stdout
+echo "Hello from stderr" 1>&2      # Reindirizza stdout su stderr
+\end{lstlisting}
+
+
+\subsection{Creazione di script}
+Tutto ciò che abbiamo visto fino ad ora può essere utilizzato all'interno di uno script. In particolare possiamo creare un file \verb|script.sh|.
+La prima linea del file deve contenere il cosidetto \textit{shebang}. In particolare, se utilizziamo \textit{bash}, dobbiamo mettere
+\begin{center}
+	\verb|#!/usr/bin/env bash|
+\end{center}
+Ricordati di rendere eseguibile il file con il comando \verb|chmod +x script.sh|
+\subsubsection*{Argomenti}
+Quando eseguiamo uno script possiamo passare degli argomenti da riga di comando, elencandoli dopo il nome dell'eseguibile separati da spazi: \verb|./script.sh arg1 arg2 ...|
+\vskip3mm
+Per accedere a questi all'interno dello script sono disponibili le \hyperref[variabili di ambiente]{variabili di ambiente} \verb|$1, $2 ...|. La variabile \verb|$0| contiene il percorso dell'eseguibile
+
+
+\subsection{Variabli di ambiente}\label{variabili di ambiente}
+All'interno del terminale possiamo creare delle variabili che contengono informazioni utili. La sintassi è la seguente:
+\begin{center}
+	\verb|[export] <variabile>=<valore>|
+\end{center}
+Se si include la keyword \verb|export| la variabile è accessibile da ogni script runnato nella shell corrente. Ad esempio creando uno script \verb|script.sh|
+\begin{lstlisting}[language = bash, frame = none]
+#!/usr/bin/env bash
+echo $MY_VAR
+\end{lstlisting}
+se da terminale eseguiamo le seguenti righe, avremmo un comportamento di questo tipo:
+\begin{lstlisting}[language = bash]
+MY_VAR=42
+./script.sh             # non stampa nulla
+
+export MY_VAR=42
+./script.sh             # stampa 42
+\end{lstlisting}
+Alcune variabili d'ambiente speciali sono:
+\begin{itemize}
+	\item \verb|$USER|: nome dell'utente corrente
+	\item \verb|$HOME|: directory home dell'utente corrente
+	\item \verb|$PATH|: elenco dei percorsi di ricerca per i comandi
+	\item \verb|$SHELL|: shell predefinita dell'utente
+	\item \verb|$PWD|: directory di lavoro corrente
+	\item \verb|$LANG|: impostazioni della lingua e della localizzazione
+\end{itemize}
+
+\subsection{If statements}
+In Bash, le istruzioni \texttt{if} compatibili con POSIX usano le parentesi quadre \texttt{[ ... ]} per eseguire test. La struttura di base è:
+
+\begin{lstlisting}[language=bash]
+if [ condizione ]; then
+  # comandi
+elif [ altra_condizione ]; then
+  # altri comandi
+else
+  # comandi di fallback
+fi
+\end{lstlisting}
+
+\begin{itemize}
+
+	\item 1. Confronti tra stringhe
+
+	      \begin{lstlisting}[language=bash]
+[ "$str1" = "$str2" ]   # Uguali
+[ "$str1" != "$str2" ]  # Diverse
+[ -n "$str" ]           # Stringa non vuota (lunghezza > 0)
+[ -z "$str" ]           # Stringa vuota (lunghezza == 0)
+\end{lstlisting}
+
+	\item 2. Confronti numerici
+
+	      \begin{lstlisting}[language=bash]
+[ "$a" -eq "$b" ]   # Uguali
+[ "$a" -ne "$b" ]   # Diversi
+[ "$a" -lt "$b" ]   # Minore di
+[ "$a" -le "$b" ]   # Minore o uguale a
+[ "$a" -gt "$b" ]   # Maggiore di
+[ "$a" -ge "$b" ]   # Maggiore o uguale a
+\end{lstlisting}
+
+	\item 3. Test su file
+
+	      \begin{lstlisting}[language=bash]
+[ -f "file" ]   # Esiste un file normale
+[ -d "dir" ]    # Esiste una directory
+[ -e "file" ]   # Esiste un file qualunque
+[ -r "file" ]   # È leggibile
+[ -w "file" ]   # È scrivibile
+[ -x "file" ]   # È eseguibile
+[ -s "file" ]   # Il file non è vuoto
+\end{lstlisting}
+
+	\item 4. Condizioni composte
+
+	      \begin{lstlisting}[language=bash]
+[ "$a" -gt 0 ] && [ "$b" -lt 5 ]  # AND logico
+[ "$a" -eq 0 ] || [ "$b" -eq 1 ]  # OR logico
+! [ "$a" -eq 0 ]                  # NOT logico
+\end{lstlisting}
+
+\end{itemize}
+
+Nota bene! Attenzione agli spazi. Ad esempio, \verb|[ "$a" = "$b" ]| è corretto, ma \verb|["$a"="$b"]| darà errore.
+\vskip3mm
+Nota come è anche possibile sfruttare la eager evaluation per avere degli statement che funzionano come operatore ternario. Ad esempio
+\begin{lstlisting}[language = bash]
+[ -f script.sh ] && echo presente || echo non presente
+\end{lstlisting}
+questo stampa presente se \verb|script.sh| esiste, non presente altrimenti
+\subsection{Subshell}
+E' possibile eseguire un comando all'interno di un altro comando. Questo può essere fatto utilizzando le parentesi quadre \verb|()|. Ad esempio
+\begin{lstlisting}[language = bash]
+pwd; (cd .. && pwd); pwd
+\end{lstlisting}
+E' possibile inoltre catturare l'output di un comando eseguito in una subshell usando il prefisso \verb|$| ad esempio:
+\begin{lstlisting}[language = bash]
+echo $(echo "Hello from subshell")
+\end{lstlisting}
+
+\subsection{Pipes}
+E' spesso utile utilizzare l'output di un comando come input per un altro comando. Questo può essere fatto utilizzando il \textit{pipe} \verb|>|. Ad esempio
+\begin{center}
+	\texttt{ls -l | grep "directory"}
+\end{center}
+\verb|grep| prenderà in input l'output del comando \verb|ls -l|. Il comportamento è molto simile al \hyperref[shell indirection]{ridirezzionamento su file} visto in precedenza, ma qui l'output viene ridirezzionato da un comando all'input di un altro comando, anziche ad un file
+
+\subsection{Cose utili random}
+\subsubsection*{Terminare esecuzione di un programma}
+Spesso ci capita di far partire un programma e di non saperlo fare terminare. In questo caso possiamo premere \verb|Ctrl + C| per terminare il processo corrente.
+\vskip3mm
+Se questo non funziona, a volte è possibile premere \verb|Ctrl + D| due volte
+\subsection{Esercizi}
+\begin{esercizio}{Compilazione base  \href{run:./files/linux/compilazione_base/}{(compilazione\_base)}}
+	Creare uno script che compili e runni uno singolo file sorgente di cpp
+\end{esercizio} \label{compilazione base}
+\begin{esercizio}{Compilazione e redirrect \href{run:./files/linux/compilazione_redirrect/}{(compilazione\_redirrect)}}
+	Creare uno script \verb|compile.sh| che compili uno singolo file sorgente di cpp, come in es. \ref{compilazione base}. Creare un secondo script \verb|run.sh| che prenda in input in nome di un eseguibile e lo runni. Questo script ha due flags opzionali:
+	\begin{itemize}
+		\item \verb|--suppress|: sopprime i messaggi stampati su \verb|stdout| e \verb|stderr|
+		\item \verb|--redirrect|: redirrecta i messaggi stampati su \verb|stdout| e \verb|stderr| su due file nella directory corrente
+	\end{itemize}
+\end{esercizio}
+\begin{esercizio}{Custom cat \href{run:./files/linux/custom_cat_1/}{(custom\_cat\_1)}}
+	Creare un eseguibile in c++ che stampi a video il contenuto del file \verb|input.txt| nella cartella corrente. Creare uno script che faccia le seguenti cose:
+	\begin{itemize}
+		\item Compila il file \verb|main.cpp| in un eseguibile \verb|foo|
+		\item Crea il file \verb|input.txt| con contenuto \textit{"new file"}. Se il file è gia presente il suo contenuto non deve essere toccato
+		\item Runna l'eseguibile
+	\end{itemize}
+\end{esercizio}
+\begin{esercizio}{Riordina workspace \href{run:./files/linux/tidy/}{(tidy)}}
+	Data una directory contenente file con estensioni \verb|.txt| e \verb|.cpp|, creare uno script \verb|tidy.sh| che crei due sotto cartelle \verb|input| e \verb|src| nella directory corrente. Lo script accetta le seguenti opzioni:
+	\begin{itemize}
+		\item \verb|--move| sposta i file
+		\item \verb|--copy| copia i file. Default
+		\item \verb|--cleanup| rimuove le cartelle \verb|input| e \verb|src|
+	\end{itemize}
+	in cui vengono copiati/spostati rispettivamente tutti i file.
+\end{esercizio}
+
+% \begin{esercizio}{Custom ps \href{run:./files/linux/custom_ps/}{(custom\_ps)}}
+% 	Creare uno script interattivo \verb|ps.sh| che stampi i processi correnti uno per riga, numerandoli. Chiedere all'utente di selezionarne uno specificando il numero della riga. Chiedere successivamente l'azione da eseguire ({\ttfamily kill | bg | fg}) e stampare un messaggio che contenga lo status (successo, errore). 
+%   \begin{itemize}
+%     \item Usa \verb|read <var>| per leggere l'input
+%     \item Usa
+%     i
+%   \end{itemize}
+% \end{esercizio}
+
+\subsubsection*{Mockup verifica}
+\begin{esercizio}{Smista eseguibili \href{run:./files/linux/mockup_verifica/es1/v1}{(smista\_eseguibili\_v1 / }\href{run:./files/linux/mockup_verifica/es1/v2}{smista\_eseguibili\_v2)}}
+	Creare uno script \verb|smista.sh| in una cartella in cui sono presenti altre 3 directories: \verb|tmp|, \verb|home| e \verb|root|. Nella cartella \verb|home| e \verb|root| sono presenti dei file. Lo script deve creare un file \verb|output.txt| nella cartella \verb|tmp| in cui vengono vengono inserite informazioni sui file nelle altre cartelle nel seguente formato:
+	\begin{lstlisting}
+  File eseguibili cartella home:
+    lista dei file eseguibili della cartella home
+  File eseguibili cartella root:
+    lista dei file eseguibili della cartella root
+  File non eseguibili
+    lista dei file eseguibili della cartella home
+  File non eseguibili cartella root:
+    lista dei file non eseguibili della cartella root
+  \end{lstlisting}
+	Stampare \textit{un file per riga}
+\end{esercizio}
+
+\begin{esercizio}{Custom mkdir \href{run:./files/linux/mockup_verifica/es3/}{(custom\_mkdir)}}
+	Creare uno script  che prenda due parametri \verb|p1| e \verb|p2| come input. \verb|p1| rappresenta il percorso verso una directory, \verb|p2| un nome sotto forma di stringa.
+	\begin{itemize}
+		\item Testare l’esistenza dei due parametri, altrimenti stampare un appropriato messaggio di errore e terminare la script
+		\item Testatere che il primo parametro rappresenti una directory altrimenti stampare un appropriato messaggio di errore e terminare la script
+		\item Se tutti i test hanno dato esito positivo, creare una nuova directory all’interno della directory specificata dal primo parametro con il nome indicato nel secondo
+	\end{itemize}
+\end{esercizio}
+\begin{esercizio}{Menu \href{run:./files/linux/menu/}{(menu)}}
+	Creare un file di testo chiamato \texttt{menu.txt} contenente almeno quattro righe che elencano pizze tipiche con gli ingredienti, una pizza per riga. Ad esempio:
+	\begin{lstlisting}
+Pizza pomodoro
+Pizza formaggio olive
+Pizza origano
+Pizza prosciutto funghi\end{lstlisting}
+	Scrivere uno script che stampi tutte le pizze nel menu che contengono l'ingrediente specificato.
+	\begin{itemize}
+		\item Creare una versione \verb|v1| che accetti un solo argomento e stampi le pizze che contengono l'ingrediente specificato
+		\item Creare una versione \verb|v2| che accetti un numero arbitrario di argomenti (uno o più) e stampi le pizze che contengono \textit{tutti} gli ingredienti specificati
+	\end{itemize}
+\end{esercizio}
+
+\begin{esercizio}{Inventario \href{run:./files/linux/inventario/}{(inventario)}}
+	Creare uno script \texttt{inventario.sh} che esegua le seguenti operazioni:
+	\begin{itemize}
+		\item Riceve come parametro una directory (es. \texttt{./inventario}).
+		\item Crea un file di output chiamato \texttt{/tmp/inventario.txt}, o \texttt{./inventario.txt}.
+		\item Scrive tre sezioni nel file di output:
+		      \begin{itemize}
+			      \item \texttt{FILE TESTO} – tutti i file \texttt{.txt} presenti nella directory.
+			      \item \texttt{ALTRI} – tutti i file che non rientrano nelle due categorie precedenti.
+			      \item \texttt{FILE AUDIO} – tutti i file \texttt{.mp3} presenti.
+		      \end{itemize}
+		\item Mostra il contenuto del file \texttt{inventario.txt} a schermo.
+		\item Elimina il file temporaneo.
+	\end{itemize}
+	Ricorda bene di
+	\begin{itemize}
+		\item Ignorare eventuali directory presenti
+		\item Controllare che il parametro esista e che sia una directory
+		\item Se una sezione non contiene file, deve scrivere \verb|Nessun file trovato|
+	\end{itemize}
+	Puoi utilizzare il comando \hyperref[cut command]{cut}
+	\vskip3mm
+	Puoi utilizzare il comando \verb|file -b --mime-type| per controllare efficacemente il tipo del file
+\end{esercizio}
+
+\begin{esercizio}{Login \href{run:./files/linux/login/}{(login)}}
+	Si ha un file \texttt{users.txt} che contiene una lista di utenti, uno per riga, nel formato:
+	\begin{center}
+		\ttfamily
+		username-nome-cognome-password
+	\end{center}
+	Lo script prende come argomenti 2 stringe \verb|username| e \verb|password| e cerca un utente nel file che abbia username e password specificati.
+\end{esercizio}
+
+
+\begin{esercizio}{Riordina csv \href{run:./files/linux/csv/}{(csv)}}
+
+	Si ha un file \texttt{dati.txt} che contiene una lista di dati, uno per riga, nel formato:
+	\begin{center}
+		\ttfamily
+		nome;cognome;email;classe
+	\end{center}
+	Si stampino tutte le righe presenti nel file in un nuovo file \verb|out.txt|, modificando il formato come segue:
+	\begin{center}
+		\ttfamily
+		cognome;nome;classe;email
+	\end{center}
+	Nella conversione ignorare le righe che iniziano con il carattere \verb|#| (\textit{hashtag})
+	\begin{minipage}[t]{0.48\linewidth}
+	\end{minipage}
+	%
+	\begin{minipage}[t]{0.48\linewidth}
+	\end{minipage}
+\end{esercizio}
+
+Ad esempio, se il file \verb|dati.txt| contiene:
+\begin{lstlisting}
+#nome;cognome;email;classe
+Luca;Rossi;luca.rossi@example.com;3
+Giulia;Bianchi;giulia.bianchi@example.com;2
+Marco;Verdi;marco.verdi@example.com;4
+Sara;Conti;sara.conti@example.com;1
+Francesco;Esposito;francesco.esposito@example.com;5
+\end{lstlisting}
+
+il file \verb|out.txt| deve contenere:
+\begin{lstlisting}
+Rossi;Luca;3;luca.rossi@example.com
+Bianchi;Giulia;2;giulia.bianchi@example.com
+Verdi;Marco;4;marco.verdi@example.com
+Conti;Sara;1;sara.conti@example.com
+Esposito;Francesco;5;francesco.esposito@example.com
+\end{lstlisting}
+
+\section{Ricorsione}
+Si parla di ricorsione ogni qualvolta che una funzione chiama se stessa. Questo permette di risolvere in maniera molto elegante problemi complessi.
+\subsection{Esercizi}
+
+
+\begin{esercizio}{Fold \href{run:./files/algoritmi/fold/}{(fold)}}
+	Scrivere una procedura ricorsiva \verb|fold| che prenda in input un array e ritorni la somma di ogni suo elemento in modo ricorsivo.
+\end{esercizio}
+
+\begin{esercizio}{Fattoriale \href{run:./files/algoritmi/fattoriale/}{(fattoriale)}}
+	Scrivere un programma che calcoli il fattoriale di un numero in maniera ricorsiva. Scrivine una versione iterativa e compara la velocità di esecuzione
+\end{esercizio}
+
+\begin{esercizio}{Fibonacci \href{run:./files/algoritmi/fibonacci/}{(fibonacci)}}
+	Scrivere un programma che calcoli $ n $-esimo numero nella sequenza di Fibonacci in maniera ricorsiva. Ricorda che il numero $ i $ nella sequenza di fibonacci è dato dalla somma dei due numeri precedenti:
+	\[
+		F(i) = F(i-1) + F(i-2)
+	\]
+	una sequenza valida di fibonacci è: \verb|1 1 2 3 5 8 13 ...|
+	\vskip3mm
+	Scrivi una versione iterativa e compara la velocità di esecuzione. Scrivi una versione ricorsiva che implementi \textit{memoization}
+\end{esercizio}
+
+\begin{esercizio}{Ricerca binaria \href{run:./files/algoritmi/bin_search/}{(bin\_search)}}
+	Vi è dato un vettore ordinato di interi. Scrivere una funzione ricorsiva che prenda in input un intero e ritorni la posizione in cui si trova nel vettore, oppure -1 se non è presente.
+	Eseguire la versione di ricerca lineare in $ O\left(n\right) $ e la versione di ricerca binaria $ O\left(\log \left(n\right)\right) $. Quest'ultima si basa sulla seguente logica:
+	\begin{itemize}
+		\item Controllo posizione centrale del vettore
+		\item Se $ v\left[mid\right] > n $ allora ricerco ricorsivamente nel sottovettore sinistro
+		\item Se $ v\left[mid\right] \le n $ allora ricerco ricorsivamente nel sottovettore destro
+	\end{itemize}
+	Comparare i tempi di esecuzione delle due versioni
+\end{esercizio}
+
+\begin{esercizio}{Ricerca binaria \href{run:./files/algoritmi/insieme_delle_parti/}{(insieme\_delle\_parti)}}
+	Dato un array \verb|v|, scrivere un algoritmo che generi il suo insieme delle parti
+	\[
+		2^{v}
+	\]
+	ossia un insieme contenente ogni possibile sottoinsieme di $ v $. Ad esempio dato $v=[1,2,3]$, avrò:
+	\[
+		2^{v} = \left\{\left[\right], \left[1\right], \left[2\right], \left[3\right], \left[1,2\right], \left[2,3\right],\left[1,3\right], \left[1,2,3\right]\right\}
+	\]
+	Occhio alla complessità!
+\end{esercizio}
+
+\begin{esercizio}{Combinazioni con step \href{run:./files/algoritmi/combinazioni_step/}{(combinazioni\_step)}}
+	Dato un intero \verb|n|, un intero \verb|upper_bound| e un intero \verb|step|, generare tutte le combinazioni di lunghezza \verb|n| in cui i valori possono variare da $ 0 $ a \verb|upper_bound| a intervalli di \verb|step|. Ad esempio, dato \verb|n=2|, \verb|upper_bound=4| e \verb|step=2|, allora il programma deve stampare
+	\begin{center}
+		\ttfamily [0,0] [2,0] [0,2] [2,2] [4,0] [0,4] [4,2] [2,4] [4,4]
+	\end{center}
+\end{esercizio}
+
+\begin{esercizio}{Scala ottimale \href{run:./files/algoritmi/scala_ottimale/}{(scala\_ottimale)}}
+	Dato un numero \verb|n|, trovare il numero minimo di operazioni per arrivare a \verb|n| partendo da 0. Le due operazioni possibili sono:
+	\begin{center}
+		\ttfamily   +1, *2
+	\end{center}
+\end{esercizio}
+\section{Java}
+Java è molto simile dal punto di vista della sintassi al c++. Non sarà molto complicato il passaggio
+\subsection{Aspetti simili a c++}
+La sinttassi di Java è molto simile a quella di c++, ecco gli aspetti che rimangono invariati o quasi:
+\subsubsection{Dichiarazione delle variabili:}
+\begin{center}
+	\begin{tabularx}{\linewidth}{lX}
+		\toprule
+		Sinstassi                          & Differenze rispetto al \verb|c++|                                                                              \\
+		\midrule
+		\verb|int x = 15|                  & invariato                                                                                                      \\
+
+		\verb|long x = 15|                 & invariato                                                                                                      \\
+
+		\verb|float x = 15.0f|             & nota il \verb|15.0f|, dove \verb|f| sta per float                                                              \\
+
+		\verb|double x = 15.0|             & float ma con precision maggiore, 64 bit                                                                        \\
+
+		\verb|boolean x = true|            & \verb|boolean| anzichè \verb|bool|                                                                             \\
+
+		\verb|String s = "stringa"|        & dato \verb|String| sarebbe una classe ma è trattato come tipo primitivo, dato che è usato molto frequentemente \\
+
+		\verb|String v[] = new String[15]| & vettore di stringhe di dimensione 15                                                                           \\
+
+		\verb|int v[] = new int[15]|       & vettore di interi di dimensione 15                                                                             \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+\subsubsection{ Commenti:}
+\begin{itemize}
+	\item Commento riga singola: \verb|// commento|
+	\item Commento righe multiple: \verb|/* commento */|
+\end{itemize}
+\subsubsection{ Cicli:}
+\begin{itemize}
+	\item Ciclo for:
+	      \begin{lstlisting}[language = c, frame = none, numbers = none]
+          for(int i = 0; i<15; i++){
+            // qualcosa
+          }
+        \end{lstlisting}
+	\item Ciclo while:
+	      \begin{lstlisting}[language = c, frame = none, numbers = none]
+          while(i < 15){
+            // qualcosa
+          }
+        \end{lstlisting}
+\end{itemize}
+\subsubsection{Operatori}
+\begin{center}
+	\begin{tabular}{l  l}
+		\toprule
+		\sfblue{Operatore}                     & \sfblue{Descrizione} \\
+		\midrule
+		{ \ttfamily + \quad - \quad * \quad /} & operatori matematici \\
+		{ \ttfamily \&\& }                     & and logico           \\
+		{\ttfamily $ || $}                     & or logico            \\
+		{\ttfamily $ ! $ }                     & not logico           \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+\subsubsection{If e switch}
+
+\begin{minipage}[t]{0.48\linewidth}
+	\begin{lstlisting}[language = c, frame = none]
+  if(a<b) {
+    //codice
+  }
+  else(if a>b) {
+    //codice
+  }
+  else {
+    //codice
+  }
+        \end{lstlisting}
+\end{minipage}
+%
+\begin{minipage}[t]{0.48\linewidth}
+	\begin{lstlisting}[language = c, frame = none]
+switch(espressione) {
+  case x:
+    // codice
+    break;
+  case y:
+    // codice
+    break;
+  default:
+    // codice
+}
+        \end{lstlisting}
+\end{minipage}
+\subsubsection{Funzioni}
+\begin{lstlisting}[language = c, frame = none]
+  void nome_funzione1 (int arg_1, String arg_2){
+    //corpo funzione
+  }
+
+  int nome_funzione2 (int arg_1, String arg_2){
+    //corpo funzione
+    return 5;
+  }
+        \end{lstlisting}
+
+Una funzione è quindi definita indicando nel seguente ordine, esattamente come in c++:
+\begin{enumerate}
+	\item \underline{Tipo di ritorno} (o \verb|void| se non ritorna nulla)
+	\item \underline{Nome} della funzione
+	\item \underline{Parametri}, racchiusi fra parentesi tonde e separati da virgole
+	\item \underline{Corpo} della funzione fra graffe
+\end{enumerate}
+\subsection{Differenze}
+\subsubsection{Stampa su terminale}
+Una delle feature usata moltissimo, ma completamente diversa dal c++ è la stampa su terminale:
+\begin{lstlisting}[frame = none]
+  System.out.println("Stampa questa cosa");
+  //stampa andando a capo prima di stampare
+
+  System.out.print("Stampa questa cosa");
+  //stampa SENZA andando a capo
+\end{lstlisting}
+
+\vskip3mm
+nota che le stringhe si possono concatenare con l'operatore +:
+
+\vskip3mm
+\begin{lstlisting}[frame = none]
+  String a = "Hello";
+  String b = "world";
+
+  System.out.println(a + b);
+  //stampa "Hello world"
+
+  String c = a + b;
+  //Inizializza c a "Hello world"
+  
+\end{lstlisting}
+\subsubsection{Linguaggio interpretato vs compilato}
+A differenza di c++, java è un linguaggia \underline{interpretato}
+\begin{itemize}
+	\item \textit{Linguaggio compilato}: il codice è "dato in pasto" a un compilatore, il quale lo converte in linguaggio macchina (di fatto in una sequenza di, 0 ed 1)
+	\item \textit{Linguaggio interpretato}: il codice è "dato in pasto" ad un compilatore, il quale lo converte però in \underline{bytecode}, ossia un linguaggio di basso livello (molto difficile da leggere e scrivere), il quale è in grado di essere letto da un \textit{interprete}
+\end{itemize}
+
+\begin{center}
+	\begin{tabular}{c c}
+		\begin{forest}
+			for tree={draw, grow = -90}
+			[codice c++ [compilatore c++ , draw = none [assembly [assemblatore, draw = none [linguaggio macchina [computer, circle]]]]]]
+		\end{forest}
+		 &
+		\begin{forest}
+			for tree={draw, grow = -90}
+			[codice java [compilatore java , draw = none [java bytecode [java interpreter [computer, circle]]]]]
+		\end{forest}
+	\end{tabular}
+\end{center}
+\subsubsection{Memoria e puntatori}
+Java è un linguaggio ad alto livello che gestisce la memoria in maniera diversa rispetto al c++:
+\begin{itemize}
+	\item c++: il compito di allocare e deallocare la memoria non più utilizzata è del programmatore
+	\item java: la memoria viene deallocata in maniera automatica tramite un meccanismo chiamato \underline{garbage collection}
+\end{itemize}
+
+Visto che in java la memoria è gestita in in maniera automatica, il programmatore non ne ha accesso diretto tramite puntatori: al contratio, i puntatori \underline{non esistono}
+
+\subsubsection{Object orientation}
+Sebbene c++ sia un linguagio che permette di utilizzare classi ed oggetti, in java l'object orientation è forzata: ogni parte del programma deve essere contenuta all'interno di una classe
+
+\subsection{Esempio programma}
+\begin{lstlisting}[language = c++, frame = none]
+class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!"); 
+    }
+}
+\end{lstlisting}
+
+Cose da notare:
+\begin{itemize}
+	\item La funzione main è contenuta all'interno di una classe "HelloWorld", il cui nome è arbitrario
+	\item La funzione main è marcata come \verb|static|, ciò vuol dire che la funzione esiste anche se non esiste un oggetto di tipo "HelloWorld", affroteremo meglio il modificatore \verb|static| più avanti, per ora possiamo ignorarlo
+	\item La funzione main è marcata come \verb|public|, ciò vuol dire che la funzione è accessibile ovunque. Afffronteremo meglio questo modificatore più avanti, per ora possiamo ignorarlo
+	\item La funzione main prende in ingresso un vettore di stringhe. Nel caso si avviasse l'applicazione da terminale e possibile passare al main dei parametri nel seguente modo:
+	      \begin{lstlisting}[language = bash, frame = none]
+  cd cartella_applicazione 
+  ./nome_applicazione parametro_1 parametro_2 ... \end{lstlisting}
+	      in questo caso il vettore di stringhe \verb|args| conterrà \verb|parametro_1| e \verb|parametro_2|. Penso non lo userete mai ma è buono saperlo
+\end{itemize}
+\subsection{Funzioni utili}
+In java sono definite alcune funzioni utilissime. Qui una lista (non esaustiva) delle più comuni:
+\subsubsection{Stringhe}
+
+Supponiamo di avere \verb|String s = "stringa stringa";|
+\vskip3mm
+\begin{tabularx}{\linewidth}{lX}
+	\toprule
+	\sfblue{Funzione}                & \sfblue{Descrizione}                                                                  \\
+	\midrule
+	\verb|s.lenght()|                & Ritorna il numero di caratteri conenuti nella stringa (7 nel caso d'esempio)          \\
+	\verb|s.charAt(int index)|       & Ritorna il carattere in posizione \verb|index|                                        \\
+	\verb|s.indexOf(char carattere)| & Ritorna l'indice della prima occorrenza di \verb|carattere| in \verb|s|               \\
+	\verb|s.indexOf(String stringa)| & Ritorna l'indice della prima occorrenza della sottostringa \verb|stringa| in \verb|s| \\
+	\bottomrule
+\end{tabularx}
+
+\vskip3mm
+\begin{lstlisting}[language = c++, frame = none]
+    String s = "stringa stringa";
+    s.lenght(); // 15
+    s.charAt(2); // 'r'
+    s.indexOf('r'); // 2
+    s.indexOf("ga"); // 5 \end{lstlisting}
+\subsubsection{Vettori}
+Supponiamo di avere \verb|int v[] = new int[15];|
+\begin{center}
+	\begin{tabularx}{\linewidth}{lX}
+		\toprule
+		\sfblue{Funzione} & \sfblue{Descrizione}                               \\
+		\midrule
+		\verb| v.lenght|  & ritorna il numero di elemnti contenuti nel vettore \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+\subsection{Parti utili della libreria standard}
+La libreria standard di java offre moltissime classi utili. Vediamo qui le più comuni
+
+\subsubsection{Math}
+\begin{center}
+	\begin{tabularx}{\linewidth}{lX}
+		\toprule
+		\sfblue{Funzione}                 & \sfblue{Descrizione}                                  \\
+		\midrule
+		\verb|Math.exp(float n)|          & Ritorna $ e^n $                                       \\
+		\verb|Math.log(float n)|          & Ritorna $ ln\left(n\right) $                          \\
+		\verb|Math.abs(float x)|          & Ritorna $ \left|x\right| $ (valore assoluto di $ x $) \\
+		\midrule
+		\verb|Math.sin(float x)|          & Ritorna $ \sin \left(x\right) $                       \\
+		\verb|Math.cos(float x)|          & Ritorna $ \cos \left(x\right) $                       \\
+		\verb|Math.tan(float x)|          & Ritorna $ \tan  \left(x\right) $                      \\
+		\verb|Math.asin(float x)|         & Ritorna $ \arcsin \left(x\right) $                    \\
+		\verb|Math.acos(float x)|         & Ritorna $ \arccos \left(x\right) $                    \\
+		\verb|Math.atan(float x)|         & Ritorna $ \arctan  \left(x\right) $                   \\
+		\midrule
+		\verb|Math.max(float a, float b)| & Ritorna l'elemento maggiore fra $ a $ e $ b $         \\
+		\verb|Math.min(float a, float b)| & Ritorna l'elemento maggiore fra $ a $ e $ b $         \\
+		\midrule
+		\verb|Math.floor(float x)|        & Arrotonda per difetto $ x $                           \\
+		\verb|Math.ceil(float x)|         & Arrotonda per eccesso $ x $                           \\
+		\verb|Math.round(float x)|        & Arrotonda $ x $                                       \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+\subsubsection{ArrayList}
+Utile per avere un vettore di lunghezza variabile. Si inizializza nel seguente modo:
+\begin{center}
+	\verb|ArrayList< tipo > nomeArray = new ArrayList< tipo >(dimensione)|
+\end{center}
+Nota che:
+\begin{itemize}
+	\item \verb|dimensione| si può omettere, ottenendo un vettore con dimensiane nulla
+	\item \verb|tipo| deve essere una classe. Se voglio un arrayList di tipi primitivi devo utilizzare le classi wrapper (\verb|Integer, Boolean, Double| ...)
+\end{itemize}
+\begin{center}
+	\begin{tabular}{ll}
+		\toprule
+		\sfblue{Metodo}                & \sfblue{Descrizione}                        \\
+		\midrule
+		\verb|v.get( index )|          & ritnorna l'elemento all'indice \verb|index| \\
+		\verb|v.set( index , element)| & setta l'elemento a indice \verb|index|      \\
+		\verb|v.add( element )|        & inserisce \verb|element| in fondo           \\
+		\verb|v.remove ( index )|      & rimuove l'elemento a indice \verb|index|    \\
+		\verb|v.size()|                & ritorna il numero di elementi conetnuti     \\
+		\verb|v.clear()|               & rimuove tutti gli elementi                  \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\subsubsection{Scanner}
+La classe scanner ci permette di leggere input utente da terminale (e anche da file, ma non ci servirà). Uno scanner si inizializza così:
+\begin{center}
+	\verb|Scanner nomeScanner = new Scanner(System.in);|
+\end{center}
+
+Per leggere l'input da terminale ci sono i seguenti comandi:
+
+\begin{center}
+	\begin{tabular}{ll}
+		\toprule
+		\sfblue{Metodo} & \sfblue{Descrizione}          \\
+		\midrule
+		nextBoolean( )  & Legge un boolean da terminale \\
+		nextByte()      & Legge un byte    da terminale \\
+		nextDouble()    & Legge un double  da terminale \\
+		nextFloat ()    & Legge un float   da terminale \\
+		nextInt()       & Legge un int     da terminale \\
+		nextLine()      & Legge una String da terminale \\
+		nextLong( )     & Legge un long    da terminale \\
+		nextShort()     & Legge uno short  da terminale \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+Il metodo più comune è \verb|nextLine()|, dato che ci restituisce l'intera riga come stringa, anche se contiene numeri
+
+\subsubsection{Random}
+Random fornisce un modo comodo per generare numeri casuali. Inizializza con
+\begin{center}
+	\verb|Random nome = new Random()|
+\end{center}
+\begin{center}
+	\begin{tabular}{ll}
+		\toprule
+		\sfblue{Metodo}  & \sfblue{Descrizione}                                                \\
+		\midrule
+		nextInt( range ) & genera un numero casuale nel range $ \left[0, \text{range}\right) $ \\
+		nextFloat()      & genera un float in range $ \left[0.0 , 1.0\right] $                 \\
+		nextDouble()     & genera un double in range $ \left[0.0 , 1.0\right] $                \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\subsubsection{LinkedList}
+Lista linkata. Utilizzabile in modo molto simile al \verb|ArrayList|. L'accesso agli elementi è molto più lento, rimozioni inserimenti sono molto più veloci
+
+\subsubsection{Altre strutture dati utili}
+\begin{itemize}
+	\item \verb|HashSet|: insieme matematico, possibile vedere se un elemento è contenuto in esso in maniera efficiente
+	\item \verb|Map|: utile poter collegare ad ogni valore un altro valore detto chaive. Si può risalire al valore tramite la chiave in maniera efficiente
+	\item \verb|Stack|
+	\item \verb|Queue|
+	\item \verb|PriorityQueue|: struttura nella quale è possibile accedere all'elemento maggiore in maniera efficiente
+	\item \verb|SortedSet|: struttra nella quale i dati mantengono sempre un ordinameto crescente. Non ammette duplicati
+\end{itemize}
+% \addtocontents{exe}{\protect{\large \vskip3mm \textit{Esercizi su classi}\vskip3mm}}
+
+\subsection{Esercizi}
+Collezione di esercizi, divisi per categoria
+\begin{esercizio}{Hello World \href{run:./files/java/esercizi/hello_world/}{(hello\_world)}}
+	Scrivere un programma in Java che prenda in input una stringa \verb|s| e un numero \verb|n| e stampi \verb|s| \verb|n| volte, accompagnata dal numero di riga. Ad esempio, dati in input \verb|userin| e \verb|4|, l'otput sarà:
+	\begin{center}
+		\ttfamily
+		1. userin\\
+		2. userin\\
+		3. userin\\
+		4. userin
+	\end{center}
+\end{esercizio}
+\begin{esercizio}{Hello classe \href{run:./files/java/esercizi/estrazione/}{(estrazione)}}
+	Crea un programma per giocare a una sorta di roulette modificata. Le regole sono le seguenti:
+	\begin{itemize}
+		\item Vengono estratte delle palline che hanno un colore (\verb|rosso|,  \verb|giallo| o \verb|verde|) e un numero da 1 a 9 estremi compresi
+		\item Il giocatore deve indicare un numero e un colore
+		\item Il punteggio viene assegnato così:
+		      \begin{itemize}
+			      \item Colore giusto: \verb|+1|
+			      \item Un punteggio che varia da 0 a 4 in base alla distanza del numero previsto da quello estratto, ad esempio, detto $ n_e $ il numero \textit{estratto} e  $ n_p $ il numero \textit{previsto}
+			            \[
+				            \left(1 - \frac{\left|n_e - n_p\right|}{8}\right) \cdot 4
+			            \]
+			      \item Se colore e numero sono uguali: \verb|+1|
+		      \end{itemize}
+	\end{itemize}
+	Il programma deve chiedere in input all'utente un numero e un colore ed estrarre una pallina casualmente, per poi stampare in ouput il punteggio ottenuto. Si usi una classe \verb|ball| e una classe \verb|game| per gestire le partite.
+	\vskip3mm
+	Il programma deve partire chiedendo all'utente il numero $ n $ di round che vuole giocare. Dopodiché, verranno chieste $ n $ previsione all'utente; per ognuna deve essere stampato il punteggio e alla fine degli $ n $ round deve essere visualizzato il punteggio totale
+\end{esercizio}
+
+\begin{esercizio}{Geometria 1 \href{run:./files/java/esercizi/geometry1/}{(geometry1)}}
+	Creare una classe per ciascuno dei seguenti oggetti geometrici: \texttt{Punto}, \texttt{Rettangolo}, \texttt{Cerchio}. Creare una classe \texttt{PianoCartesiano} che possa contenere le tre classi elencate precedentemente. Una volta inserita una classe nel piano cartesiano verrà ritornato un \verb|id|, tramite il quale possiamo accedervi (l'istanza dell'oggetto aggiunto rimane scollegata da quella inserità nel piano cartesiano). Creare un metodo \verb|closer| che prenda un \verb|id| esistente e ritorni l'id della forma geometrica più vicina (usare il centro delle figure per confrontare la distanza)
+\end{esercizio}
+
+\begin{esercizio}{Geometria 1 \href{run:./files/java/esercizi/geometry1/}{(geometry1)}}
+	Creare una classe per ciascuno dei seguenti oggetti geometrici: \texttt{Punto}, \texttt{Rettangolo}, \texttt{Cerchio}. Creare una classe \texttt{PianoCartesiano} che possa contenere le tre classi elencate precedentemente. Una volta inserita una classe nel piano cartesiano verrà ritornato un \verb|id|, tramite il quale possiamo accedervi (l'istanza dell'oggetto aggiunto rimane scollegata da quella inserità nel piano cartesiano). Creare un metodo \verb|closer| che prenda un \verb|id| esistente e ritorni l'id della forma geometrica più vicina (usare il centro delle figure per confrontare la distanza)
+\end{esercizio}
+
+\begin{esercizio}{Montecarlo \href{run:./files/java/esercizi/montecarlo/}{(montecarlo)}}
+	Il casinò di Montecarlo ha richiesto una nuova slot machine; lo scopo del gioco è quello di simulare la pesca di \textit{cinque carte} da una mazzo standard (con quattro semi, le carte da 2 a 10, l’asso(1) le tre figure (11,12,13) e niente jolly)
+	\vskip3mm
+	Le opportunità di vincita (con quattro delle 5 carte estratte) sono le seguenti:
+	\begin{center}
+		\begin{tabular}{l l}
+			\toprule
+			Combinazione                                                                                    & vincita                                 \\
+			\midrule
+			Poker di figure                                                                                 & 1000 \texteuro                          \\
+			Poker d’assi                                                                                    & 1000 \texteuro                          \\
+			\footnote{Es: 1-5-10-13 $ \rightarrow  $ vincita = 224 €} Colore (5 carte dello stesso seme)    & Somma delle carte uscite $ \times  $ 8  \\
+			\footnote{Es: 3-4-5-6 $ \rightarrow  $ vincita = 180 €} Scala colore(5 carte dello stesso seme) & Somma delle carte uscite $ \times  $ 10 \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+
+
+	La presenza di un’altra carta non intacca la vincita.
+	\vskip3mm
+	Contare quante slotmachine sono presenti nel casino
+	\vskip3mm
+	Si scrivano le classi opportune per implementare il gioco e un classe \verb|Casino| dove create diverse \verb|Slot|.
+	\vskip3mm
+	Fare in modo che la giocata possa essere efffetutata solo dopo aver inseirto un certo importo;
+	\vskip3mm
+	Introdurre successivamente anche i \textit{jolly} tra le carte e fare in modo che la presenza del jolly come carta estratta raddoppi la vincita;
+\end{esercizio}
+
+
+\end{document}
