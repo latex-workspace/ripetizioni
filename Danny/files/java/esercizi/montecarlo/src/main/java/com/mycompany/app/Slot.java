@@ -1,24 +1,93 @@
 package com.mycompany.app;
 
+import java.util.ArrayList;
 import java.util.Random;
 
-enum Vincita {
-  POKER_FIGURE, POKER_ASSI, COLORE, SCALA_COLORE;
+enum TipoVincita {
+  POKER_FIGURE, POKER_ASSI, COLORE, SCALA_COLORE, NONE;
+}
 
-  public int getValore(Mazzo m) {
-    switch (this) {
-      case POKER_FIGURE:
-        return 1000;
-      case POKER_ASSI:
-        return 2000;
-      case COLORE:
-        return 200;
-      case SCALA_COLORE:
-        return 3000;
-      default:
-        return 0;
+class Vincita {
+  int valore;
+  TipoVincita tipo;
+
+  public Vincita(Mazzo m) {
+
+    if (m.getNumeroCarte() < 4) {
+      this.valore = 0;
+      this.tipo = TipoVincita.NONE;
+      return;
     }
+
+    // Colore e scala colore
+    ArrayList<Mazzo> semi = new ArrayList<Mazzo>(4);
+
+    for (int i = 0; i < m.getNumeroCarte(); i++)
+      semi.get(m.getCarta(i).getSeme().ordinal()).aggiungiCarta(m.getCarta(i));
+
+    // Scala colore
+    for (Mazzo s : semi) {
+      s.sort();
+      if (s.getNumeroCarte() != 0) {
+        int currValore = s.getCarta(0).getValore();
+        int count = 1;
+        for (int i = 1; i < s.getNumeroCarte(); i++) {
+          if (s.getCarta(i).getValore() == currValore + 1) {
+            currValore++;
+            count++;
+          } else
+            break;
+
+        }
+        if (count >= 5) {
+          int sum = 0;
+          for (int j = 0; j < count; j++)
+            sum += s.getCarta(j).getValore();
+
+          this.tipo = TipoVincita.SCALA_COLORE;
+          this.valore = sum * 10;
+          return;
+        }
+      }
+    }
+
+    // Colore
+    for (Mazzo s : semi) {
+      if (s.getNumeroCarte() >= 5) {
+        int sum = 0;
+        for (Carta c : s.getCarte())
+          sum += c.getValore();
+
+        this.tipo = TipoVincita.COLORE;
+        this.valore = sum * 8;
+        return;
+      }
+    }
+
+    Mazzo assi = new Mazzo(TipoMazzo.VUOTO);
+    Mazzo figure = new Mazzo(TipoMazzo.VUOTO);
+    for (Carta c : m.getCarte()) {
+      if (c.getValore() == 1)
+        assi.aggiungiCarta(c);
+      if (c.getValore() >= 11) {
+        figure.aggiungiCarta(c);
+      }
+    }
+
+    if (assi.getNumeroCarte() == 4) {
+      this.tipo = TipoVincita.POKER_ASSI;
+      this.valore = 2000;
+      return;
+    } else if (figure.getNumeroCarte() == 4) {
+      this.tipo = TipoVincita.POKER_FIGURE;
+      this.valore = 1000;
+      return;
+    }
+
+    this.tipo = TipoVincita.NONE;
+    this.valore = 0;
   }
+
 }
 
 public class Slot {
@@ -73,7 +142,8 @@ public class Slot {
     return estratte;
   }
 
-  public Vincita getVincita() {
-  }
+  // public Vincita getVincita(Mazzo mazzo) {
+  //
+  // }
 
 }

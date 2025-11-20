@@ -75,6 +75,10 @@ public class Mazzo {
     return carte;
   }
 
+  public Carta getCarta(int index) {
+    return carte.get(index);
+  }
+
   @Override
   public String toString() {
     return carte + " ";
