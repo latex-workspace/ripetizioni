@@ -36,6 +36,10 @@ public class Carta {
     return valore;
   }
 
+  public boolean isJolly() {
+    return is_jolly;
+  }
+
   @Override
   public String toString() {
     if (is_jolly)

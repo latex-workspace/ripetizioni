@@ -19,8 +19,18 @@ class Vincita {
       return;
     }
 
+    boolean hasJolly = false;
+    for (Carta c : m.getCarte()) {
+      if (c.isJolly()) {
+        hasJolly = true;
+        break;
+      }
+    }
+
     // Colore e scala colore
     ArrayList<Mazzo> semi = new ArrayList<Mazzo>(4);
+    for (int i = 0; i < 4; i++)
+      semi.add(new Mazzo(TipoMazzo.VUOTO));
 
     for (int i = 0; i < m.getNumeroCarte(); i++)
       semi.get(m.getCarta(i).getSeme().ordinal()).aggiungiCarta(m.getCarta(i));
@@ -45,7 +55,7 @@ class Vincita {
             sum += s.getCarta(j).getValore();
 
           this.tipo = TipoVincita.SCALA_COLORE;
-          this.valore = sum * 10;
+          this.valore = sum * 10 * (hasJolly ? 2 : 1);
           return;
         }
       }
@@ -59,7 +69,7 @@ class Vincita {
           sum += c.getValore();
 
         this.tipo = TipoVincita.COLORE;
-        this.valore = sum * 8;
+        this.valore = sum * 8 * (hasJolly ? 2 : 1);
         return;
       }
     }
@@ -76,11 +86,11 @@ class Vincita {
 
     if (assi.getNumeroCarte() == 4) {
       this.tipo = TipoVincita.POKER_ASSI;
-      this.valore = 2000;
+      this.valore = 200 * (hasJolly ? 2 : 1);
       return;
     } else if (figure.getNumeroCarte() == 4) {
       this.tipo = TipoVincita.POKER_FIGURE;
-      this.valore = 1000;
+      this.valore = 100 * (hasJolly ? 2 : 1);
       return;
     }
 
@@ -88,14 +98,23 @@ class Vincita {
     this.valore = 0;
   }
 
+  @Override
+  public String toString() {
+    return "Vincita{" +
+        "valore=" + valore +
+        ", tipo=" + tipo +
+        '}';
+  }
 }
 
 public class Slot {
   private String nome;
+  private int id;
   private TipoMazzo tipoMazzo;
   private Mazzo mazzo;
 
   public Slot(String nome, TipoMazzo tipoMazzo) {
+    this.id = -1;
     this.nome = nome;
     this.tipoMazzo = tipoMazzo;
     mazzo = new Mazzo(tipoMazzo);
@@ -142,8 +161,65 @@ public class Slot {
     return estratte;
   }
 
+  public Vincita play(int importo) {
+    System.out.println("Slot \"" + nome + "\": hai inserito " + importo + " $");
+    Mazzo mano = estraiCarte(5);
+    for (Carta c : mano.getCarte())
+      System.out.println(" - " + c);
+
+    Vincita vincita = new Vincita(mano);
+    if (vincita.tipo == TipoVincita.NONE)
+      System.out.println(ANSIColors.RED + "Non hai vinto nulla, ritenta!" + ANSIColors.RESET);
+    else {
+      System.out
+          .println(ANSIColors.GREEN + "Hai vinto: " + vincita.valore + " $ con un " + vincita.tipo + ANSIColors.RESET);
+    }
+    return vincita;
+  }
+
+  public int getId() {
+    return this.id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return this.nome;
+  }
+
+  public String setName(String nome) {
+    return this.nome = nome;
+  }
+
+  @Override
+  public String toString() {
+    return "Slot{" +
+        "nome='" + nome + '\'' +
+        ", id=" + id +
+        ", tipoMazzo=" + tipoMazzo +
+        ", mazzo=" + mazzo.getNumeroCarte() + " carte" +
+        '}';
+  }
+
   // public Vincita getVincita(Mazzo mazzo) {
   //
   // }
 
+}
+
+class ANSIColors {
+  // Reset
+  public static final String RESET = "\u001B[0m";
+
+  // Regular Colors
+  public static final String BLACK = "\u001B[30m";
+  public static final String RED = "\u001B[31m";
+  public static final String GREEN = "\u001B[32m";
+  public static final String YELLOW = "\u001B[33m";
+  public static final String BLUE = "\u001B[34m";
+  public static final String PURPLE = "\u001B[35m";
+  public static final String CYAN = "\u001B[36m";
+  public static final String WHITE = "\u001B[37m";
 }
