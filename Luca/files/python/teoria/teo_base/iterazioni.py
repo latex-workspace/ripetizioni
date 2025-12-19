@@ -56,3 +56,4 @@ for i in range(len(lista) - 1, -1, -1):
 print()
 for i in range(0, len(lista), 2):
     print(f"lista[{i}]:", lista[i])
+

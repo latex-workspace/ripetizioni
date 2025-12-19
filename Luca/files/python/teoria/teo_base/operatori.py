@@ -18,3 +18,4 @@ print("s1 + s2 =", s1 + s2)  # Concatenazione
 print("s1 * 3 =", s1 * 3)  # Ripetizione
 print("'ing' in s1 =", "ing" in s1)  # Controllo sottostringa
 print("len(s1) =", len(s1))  # Lunghezza
+
