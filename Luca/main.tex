@@ -1,0 +1,619 @@
+%&../../.preamble
+\externalize{../../.preamble}
+
+\title{Ripetizioni Luca}
+\author{Marini Mattia}
+\date{Dicembre 2025}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+\section{Introduzione a python}
+Python è un linguaggio di programmazione di alto livello con innumerevoli applicazioni. La sintassi "leggera" e il grande livello di astrazione che permette di ottenere lo rendono un buon linguaggio per imparare a programmare.
+\vskip3mm
+Fra le applicazioni più comuni di Python troviamo:
+\begin{itemize}
+	\item \textit{Uso in data science:}
+	      Python è molto usato nell'analisi dei dati, machine learning e intelligenza artificiale grazie a librerie come \texttt{NumPy}, \texttt{pandas}, \texttt{scikit-learn} e \texttt{TensorFlow}.
+	\item \textit{Sviluppo web:}
+	      Con framework come \texttt{Django} e \texttt{Flask} è possibile creare applicazioni web scalabili, API e backend in modo rapido e flessibile.
+	\item \textit{Automazione e scripting:}
+	      Python è spesso utilizzato per scrivere script che automatizzano attività ripetitive, gestione di file, scraping di dati e operazioni di sistema.
+	\item \textit{Sviluppo di software desktop:}
+	      Con librerie come \texttt{Tkinter}, \texttt{PyQt} e \texttt{wxPython} è possibile creare applicazioni desktop con interfaccia grafica.
+	\item \textit{Calcolo scientifico e ingegneristico:}
+	      Python viene utilizzato in ambiti tecnico-scientifici per simulazioni, calcoli numerici e visualizzazione di dati grazie a librerie come \texttt{SciPy} e \texttt{matplotlib}.
+	\item \textit{Programmazione di rete:}
+	      Python è usato per sviluppare server, client e tool per la gestione di protocolli di rete grazie a librerie come \texttt{socket} e \texttt{asyncio}.
+	\item \textit{Didattica e formazione:}
+	      Grazie alla sua sintassi semplice, Python è un linguaggio molto usato per l'insegnamento della programmazione a vari livelli.
+\end{itemize}
+Dal punto di vista formale possiamo dire che python è un linguaggio
+Dal punto di vista formale possiamo dire che Python è un linguaggio:
+\begin{itemize}
+	\item \textit{Ad alto livello:}
+	      Offre un alto grado di astrazione dalle architetture hardware, permettendo di concentrarsi sulla logica del programma piuttosto che sulla gestione delle risorse di basso livello.
+	\item \textit{Interpretato:}
+	      Il codice Python viene eseguito da un interprete, istruzione per istruzione, senza la necessità di una compilazione preventiva.
+	\item \textit{Dinamicamente tipizzato:}
+	      Non è necessario specificare il tipo delle variabili alla dichiarazione; il tipo viene determinato a runtime in base al valore assegnato.
+	\item \textit{Multi-paradigma:}
+	      Supporta diversi paradigmi di programmazione, tra cui quella orientata agli oggetti, imperativa, funzionale e, in misura minore, procedurale.
+	\item \textit{Portabile:}
+	      Il codice Python, salvo dipendenze specifiche di sistema, può essere eseguito senza modifiche su diverse piattaforme (Windows, MacOS, Linux, ecc.).
+	\item \textit{A gestione automatica della memoria:}
+	      L'allocazione e la deallocazione della memoria sono gestite automaticamente tramite garbage collector.
+	\item \textit{Estensibile:}
+	      Permette di integrare facilmente codice scritto in altri linguaggi, come C o C++, per migliorarne le prestazioni o integrare funzionalità di basso livello.
+	\item \textit{Open source:}
+	      L’implementazione standard (CPython) è open source e dispone di un vasto ecosistema di librerie gratuite.
+\end{itemize}
+
+\section{La sintassi di base di Python}
+
+Python è noto per la sua sintassi semplice e leggibile, che favorisce la scrittura di codice chiaro e immediatamente comprensibile. In questa sezione illustreremo alcuni concetti fondamentali della sintassi di base, organizzati per argomento.
+
+\subsection{Commenti}
+Per aggiungere commenti, ossia stringhe di testo spesso utili a spiegare il funzionamento del codice o hints per il programmatore, si può utilizzare il carattere \verb|#|. Queste parti del codice verranno ignorate dall'interprete, non cambiando dunque il comportamento dell'applicazione, ma rendendo la lettura del codice più facile
+
+\begin{lstlisting}[language = python, frame = none]
+# Questo è un commento
+x = 1  # Questo è un commento alla fine della riga
+\end{lstlisting}
+
+\subsection{Variabili}
+
+L’assegnazione di valori a variabili avviene con l’operatore \texttt{=}. La stampa su schermo si effettua con la funzione \texttt{print()}.
+
+\begin{lstlisting}[language = python, frame = none]
+x = 42
+nome = "Alice"
+
+# Riassegno x e nome
+x = 12
+nome = "nuovo nome"
+\end{lstlisting}
+Come si può notare non è necessario indicare un tipo di una variabile e non vi è differenza fra la sintassi di dichiarazione e di assegnamento
+\vskip3mm
+Per stampare a schermo si usa la funzione \texttt{print()}. La funzione può contenere una serie di parametri separati da virgola e li stamperà concatenati:
+
+\begin{lstlisting}[language = python, frame = none]
+x = 42
+nome = "Alice"
+print("Ciao", nome, x) #Stampa "Ciao Alice 42"
+\end{lstlisting}
+
+Nota che essendo un linguaggio con \textit{dynamic typing}, allora è del tutto consensito "fregarsene" del tipo delle variabili. Prendiamo come esempio questo codice, disponibile in \protect{\texttt{\href{run:./files/python/teoria/teo_base/}{/files/python/teoria/teo\_base/var.py}}}:
+\begin{lstlisting}[language = python, frame = none]
+x = 42
+nome = "Alice"
+print("x:", x)
+print("nome:", nome)
+print('tipo di "x":', type(x))
+print('tipo di "nome":', type(nome))
+
+# Cambio il tipo dei parametri assegnando un'altro valore
+print()
+x = "Ora sono una stringa"
+nome = 42
+print("x:", x)
+print("nome:", nome)
+print('tipo di "x":', type(x))
+print('tipo di "nome":', type(nome))
+\end{lstlisting}
+Questo perchè il tipo di una variabile viene determinato in fase di esecuzione del programma, in base al valore che le viene assegnato.
+
+\subsection{Operatori}
+In base al tipo di variabile, possiamo applicare gli operatori. L'effetto sarà diverso a seconda del tipo di dato coinvolto.
+\begin{center}
+	\begin{table}[H]
+		\begin{center}
+			\begin{tabular}{l l}
+				\toprule
+				\sfblue{Operatore} & \sfblue{Descrizione}                       \\
+				\midrule
+				\verb|+|           & Addizione                                  \\
+				\verb|-|           & Sottrazione                                \\
+				\verb|*|           & Moltiplicazione                            \\
+				\verb|/|           & Divisione (risultato con virgola)          \\
+				\verb|//|          & Divisione intera (arrotondata per difetto) \\
+				\verb|%|           & Modulo (resto della divisione intera)      \\
+				\verb|**|          & Potenza                                    \\
+				\bottomrule
+			\end{tabular}
+		\end{center}
+		\caption{Operazioni fra numeri}
+	\end{table}
+\end{center}
+
+\begin{center}
+	\begin{table}[H]
+		\begin{center}
+			\begin{tabular}{l l}
+				\toprule
+				\sfblue{Operatore} & \sfblue{Descrizione}                    \\
+				\midrule
+				\verb|+|           & Concatenazione di stringhe              \\
+				\verb|*|           & Ripetizione della stringa               \\
+				\verb|in|          & Verifica se una sottostringa è presente \\
+				\verb|len()|       & Restituisce la lunghezza della stringa  \\
+				\bottomrule
+			\end{tabular}
+		\end{center}
+		\caption{Operazioni fra stringhe}
+	\end{table}
+\end{center}
+
+E' disponibile un esempio di codice in \texttt{\href{run:./files/python/teoria/teo_base/}{/files/python/teoria/teo\_base/operatori.py}}
+
+\subsection{Indentazione}
+In Python, l’indentazione non è solo stilistica, ma è fondamentale per definire i blocchi di codice. È consigliato usare 4 spazi per ogni livello di indentazione.
+
+\begin{lstlisting}[language = python, frame = none]
+if x > 0:
+    print("Numero positivo")
+    print("Ancora dentro il blocco if")
+print("Fuori dal blocco if")
+\end{lstlisting}
+
+\subsection{Istruzioni condizionali \texttt{(if, elif, else a)}} \label{sec:condizioni}
+Le istruzioni condizionali consentono di eseguire blocchi di codice al verificarsi di una certa condizione.
+
+\begin{lstlisting}[language = python, frame = none]
+if x > 0:
+  print("Positivo")
+elif x == 0:
+  print("Zero")
+else:
+  print("Negativo")
+\end{lstlisting}
+
+Dunque, generaicamente possiamo dire che la sintassi è la seguente:
+\begin{lstlisting}[language = python, frame = none]
+if <condizione booleana>:
+  <blocco indentato>
+elif <condizione booleana>:
+  <blocco indentato>
+else:
+  <blocco indentato>
+\end{lstlisting}
+
+Per esprimere una condizione booleana possiamo fare uso dei seguenti operatori:
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{l l}
+			\toprule
+			\sfblue{Operatore} & \sfblue{Descrizione} \\
+			\midrule
+			\verb|==|          & Uguaglianza          \\
+			\verb|!=|          & Diversità            \\
+			\verb|>|           & Maggiore             \\
+			\verb|<|           & Minore               \\
+			\verb|>=|          & Maggiore o uguale    \\
+			\verb|<=|          & Minore o uguale      \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	\caption{Operatori di confronto}
+\end{table}
+In più, due o più clausule logiche possono essere combinate usando gli operatori logici:
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{l l}
+			\toprule
+			\sfblue{Operatore} & \sfblue{Descrizione}                                             \\
+			\midrule
+			\verb|and|         & \verb|b1 and b1| è vero se sono vere sia \verb|b1| che \verb|b2| \\
+			\verb|or|          & \verb|b1 or b1| è vero se sono vere o \verb|b1| o \verb|b2|      \\
+			\verb|!|           & \verb|!b1| è vera solo se \verb|b1| \textit{non} è vera          \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	\caption{Operatori di confronto}
+\end{table}
+Un esempio può essere:
+\begin{lstlisting}[language = python, frame = none]
+# Numero fra -7 e 8 oppure che non sia contemporanemente positivo e pari
+if (x > -8 and x <= 8) or !(x > 0 and x % 2 == 0):
+  print("Yeah")
+\end{lstlisting}
+\subsection{Liste, set, dizionari e tuple}
+Per contenere insiemi di elementi (più di un elemento), python fornisce delle strutture dati molto potenti e flessibili: liste, set e dizionari.
+
+\subsubsection{Liste}
+La struttura dati più semplice per contenere insiemi di elementi è la lista (array). Le liste sono definite usando parentesi quadre \texttt{[ ]} e gli elementi sono separati da virgole.
+
+\begin{lstlisting}[language = python, frame = none]
+l = [1,2,3,4] # Lista di 4 elementi
+\end{lstlisting}
+
+In python, le liste possono contenere elementi di tipi diversi:
+\begin{lstlisting}[language = python, frame = none]
+l=[1, "prova", 3.2, True]
+\end{lstlisting}
+
+L'accesso all'i-esimo elemento della lista avviene tramite l'operatore \verb|[]|. Gli indici partono da 0
+\begin{lstlisting}[language = python, frame = none]
+l=[1, "prova", 3.2, True]
+print(l[0]) # 1
+print(l[1]) # prova
+print(l[2]) # 3.2
+print(l[3]) # True
+
+print(l[4]) # Errore -> IndexError: list index out of range
+print(l[-1])# Errore -> IndexError: list index out of range
+\end{lstlisting}
+
+Inoltre, possiamo utilizzare i seguenti operatori e metodi per manipolare le liste:
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{l l}
+			\toprule
+			\sfblue{Operatore/Metodo} & \sfblue{Descrizione}                                          \\
+			\midrule
+			\verb|+|                  & Concatenazione di liste                                       \\
+			\verb|*|                  & Ripetizione della lista                                       \\
+			\verb|in|                 & Verifica la presenza di un elemento                           \\
+			\verb|len()|              & Restituisce la lunghezza della lista                          \\
+			\verb|append(x)|          & Aggiunge l'elemento \texttt{x} in fondo alla lista            \\
+			\verb|extend(L)|          & Aggiunge tutti gli elementi della lista \texttt{L}            \\
+			\verb|insert(i, x)|       & Inserisce l'elemento \texttt{x} in posizione \texttt{i}       \\
+			\verb|remove(x)|          & Rimuove la prima occorrenza di \texttt{x}                     \\
+			\verb|pop([i])|           & Rimuove e restituisce l'elemento in posizione \texttt{i}      \\
+			\verb|index(x)|           & Restituisce la posizione della prima occorrenza di \texttt{x} \\
+			\verb|count(x)|           & Restituisce il numero di occorrenze di \texttt{x}             \\
+			\verb|sort()|             & Ordina la lista                                               \\
+			\verb|reverse()|          & Inverte l'ordine degli elementi nella lista                   \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\subsubsection{Dizionari}
+I dizionari sono strutture dati che associano delle “chiavi” a dei “valori” (mapping). Si definiscono usando parentesi graffe \texttt{\{\}} e coppie chiave:valore separate da virgole.
+
+\begin{lstlisting}[language = python, frame = none]
+d = {"nome": "Alice", "età": 25, "studente": True}
+\end{lstlisting}
+
+In Python, le chiavi devono essere di tipo immutabile (stringhe, numeri, tuple), mentre i valori possono essere di qualsiasi tipo.
+
+L’accesso agli elementi avviene tramite la chiave:
+\begin{lstlisting}[language = python, frame = none]
+d = {"nome": "Alice", "età": 25, "studente": True}
+print(d["nome"]) # Alice
+print(d["età"])  # 25
+
+print(d["peso"]) # Errore -> KeyError: 'peso'
+\end{lstlisting}
+
+Di seguito alcuni operatori e metodi utili per manipolare i dizionari:
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{l l}
+			\toprule
+			\sfblue{Operatore/Metodo} & \sfblue{Descrizione}                                                                         \\
+			\midrule
+			\verb|in|                 & Verifica la presenza di una chiave                                                           \\
+			\verb|len()|              & Restituisce il numero di elementi                                                            \\
+			\verb|d[k]|               & Restituisce il valore associato alla chiave \texttt{k}                                       \\
+			\verb|d[k] = v|           & Modifica o aggiunge la coppia key-value                                                      \\
+			\verb|del d[k]|           & Rimuove la coppia con chiave \texttt{k}                                                      \\
+			\verb|get(k[, def])|      & Restituisce il valore di \texttt{k}; se non esiste, restituisce \texttt{def} o \texttt{None} \\
+			\verb|keys()|             & Restituisce una vista delle chiavi                                                           \\
+			\verb|values()|           & Restituisce una vista dei valori                                                             \\
+			\verb|items()|            & Restituisce una vista delle coppie chiave-valore                                             \\
+			\verb|update(d2)|         & Aggiorna il dizionario con gli elementi di \texttt{d2}                                       \\
+			\verb|clear()|            & Rimuove tutti gli elementi                                                                   \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+\end{table}
+
+
+\subsubsection{Set (insiemi)}
+I set sono raccolte non ordinate di elementi unici. Si definiscono con le parentesi graffe \texttt{\{\}} oppure usando la funzione \texttt{set()}.
+
+\begin{lstlisting}[language = python, frame = none]
+s = {1, 2, 3, 4}      # Set di quattro elementi
+t = set([3, 4, 5, 6]) # Costruzione da una lista
+\end{lstlisting}
+
+I set non possono contenere elementi duplicati, e non sono indicizzati.
+
+Esempi di operazioni comuni su set:
+\begin{lstlisting}[language = python, frame = none]
+s = {1, 2, 3, 4}
+print(2 in s)   # True
+s.add(5)        # Aggiunge 5
+s.remove(3)     # Rimuove 3
+u = s | t       # Unione
+i = s & t       # Intersezione
+d = s - t       # Differenza
+\end{lstlisting}
+
+Operatori e metodi per manipolare i set:
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{l l}
+			\toprule
+			\sfblue{Operatore/Metodo}                    & \sfblue{Descrizione}                                         \\
+			\midrule
+			\verb|in|                                    & Verifica la presenza di un elemento                          \\
+			\verb|len()|                                 & Restituisce la cardinalità del set                           \\
+			\verb|add(x)|                                & Aggiunge l’elemento \texttt{x}                               \\
+			\verb|remove(x)|                             & Rimuove l’elemento \texttt{x} (errore se non presente)       \\
+			\verb|discard(x)|                            & Rimuove l’elemento \texttt{x} (senza errore se non presente) \\
+			\verb|pop()|                                 & Rimuove e restituisce un elemento arbitrario                 \\
+			\verb|clear()|                               & Svuota il set                                                \\
+			\verb|union(s2)| (oppure \texttt{|})         & Unione di set                                                \\
+			\verb|intersection(s2)| (oppure \texttt{\&}) & Intersezione di set                                          \\
+			\verb|difference(s2)| (oppure \texttt{-})    & Differenza tra set                                           \\
+			\verb|issubset(s2)|                          & Verifica se è un sottoinsieme                                \\
+			\verb|issuperset(s2)|                        & Verifica se è un sovrainsieme                                \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\subsubsection{Tuple}
+Le tuple sono sequenze ordinate e immutabili di elementi. Si definiscono utilizzando le parentesi tonde \texttt{( )} o semplicemente separando gli elementi con una virgola. Si possono intendere come liste non modificabili di dimensione fissa
+
+\begin{lstlisting}[language = python, frame = none]
+t = (1, 2, 3)      # Tupla di tre elementi
+t2 = "a", 1, True  # Anche senza parentesi tonde
+\end{lstlisting}
+
+Come le liste, le tuple possono contenere elementi di diversi tipi e si accede agli elementi tramite indici (che partono da zero):
+
+\begin{lstlisting}[language = python, frame = none]
+print(t[0])  # 1
+print(t[1])  # 2
+print(t[-1]) # 3
+\end{lstlisting}
+
+A differenza delle liste, le tuple sono \textit{immutabili}: non è possibile aggiungere, modificare o rimuovere elementi dopo la loro creazione.
+
+Ecco alcuni operatori e metodi utili per lavorare con le tuple:
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{l l}
+			\toprule
+			\sfblue{Operatore/Metodo} & \sfblue{Descrizione}                                    \\
+			\midrule
+			\verb|+|                  & Concatenazione di tuple                                 \\
+			\verb|*|                  & Ripetizione della tupla                                 \\
+			\verb|in|                 & Verifica la presenza di un elemento                     \\
+			\verb|len()|              & Restituisce la lunghezza della tupla                    \\
+			\verb|t[i]|               & Accesso all’elemento in posizione \texttt{i}            \\
+			\verb|index(x)|           & Restituisce la prima posizione dell’elemento \texttt{x} \\
+			\verb|count(x)|           & Restituisce il numero di occorrenze di \texttt{x}       \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+\end{table}
+Il vantaggio principale delle tuple rispetto alle liste è la loro immutabilità, che le rende più sicure per dati che non devono essere modificati e può migliorare le prestazioni in alcune situazioni. Un uso molto comune è quello di utilizzarle come chiavi di dizionari:
+\begin{lstlisting}[language = python, frame = none]
+d = {[1,2]: "v1", [-2, "a"]: "v2"} # Non ammesso!!
+d = {(1,2): "v1", (-2, "a"): "v2"} # Valido
+\end{lstlisting}
+Nota che si possono costruire tuple a partire da array facilmente:
+
+\begin{lstlisting}[language = python, frame = none]
+v1 = [1,2]
+v2 = [-2,"a"]
+v1_t = tuple(v1)
+v2_t = tuple(v2)
+d = {v1_t: "v1", v2_t: "v2"}
+\end{lstlisting}
+
+
+\subsection{Cicli  \texttt{(for, while)}} \label{sec:loops}
+Python fornisce due tipi principali di ciclo: \texttt{for} e \texttt{while}.
+
+\subsubsection{Il ciclo \texttt{for}}
+Il ciclo \texttt{for} itera su una sequenza (es. lista, stringa o range numerico):
+
+\begin{lstlisting}[language = python, frame = none]
+for i in range(5):
+    print(i)  # Stampa i numeri da 0 a 4
+
+frutta = ["mela", "banana", "ciliegia"]
+for elemento in frutta:
+    print(elemento)
+\end{lstlisting}
+
+\subsubsection{Il ciclo \texttt{while}}
+Il ciclo \texttt{while} ripete un blocco di codice finché una condizione è vera:
+
+\begin{lstlisting}[language = python, frame = none]
+n = 3
+while n > 0:
+    print(n)
+    n = n - 1
+print("Fine ciclo")
+\end{lstlisting}
+
+\subsubsection{Iterare strutture dati}
+Alcuni esempi sono disponibili nel file \texttt{\href{run:./files/python/teoria/teo_base/}{/files/python/teoria/teo\_base/iterazioni.py}}
+\vskip3mm
+Python ci permette di iterare su strutture dati in maniera molto efficace tramite il ciclo \verb|for|
+\begin{lstlisting}[language = python, frame = none]
+lista = [1, 2, 3, 4, 5]
+stringa = "Ciao mondo"
+dizionario = {"a": 1, "b": 2, "c": 3}
+insieme = {1, 2, 3, 4, 5}
+tupla = (1, 2, 3, 4, 5)
+
+for x in lista: # 1 2 3 4 5
+    print(x, " ", end="")
+
+print()
+for x in stringa: # C i a o   m o n d o
+    print(x, " ", end="")
+
+print()
+for x in dizionario: # a b c
+    print(x, " ", end="")
+
+print() 
+for x in insieme: # 1 2 3 4 5
+    print(x, " ", end="")
+
+print()
+for x in tupla: # 1 2 3 4 5
+    print(x, " ", end="")
+\end{lstlisting}
+
+L'unica struttura dati che richiede un po' di atttenzione in più è il \textit{dizionario}. Con la sintassi vista sopra, si itera sulle chiavi del dizionario. Per iterare sui valori o sulle coppie chiave-valore, si possono usare i metodi \texttt{values()} e \texttt{items()}:
+\begin{lstlisting}[language = python, frame = none]
+# Chiave valore
+for v in dizionario.values():
+    print("Valore:", v)
+
+# Chiave valore dizionario
+for k, v in dizionario.items():
+    print("Chiave:", k, "Valore:", v)
+\end{lstlisting}
+
+\subsubsection{Range}
+Per iterare tramite indici (quindi nel caso in ci stessimo usando una lista), python fornisce la funzione \texttt{range()} che genera una sequenza di numeri interi. La sintassi è la seguente:
+\begin{center}
+	\verb|range(start_value, end_value, increment)| \\
+	\verb|range(start_value, end_value)|\\
+	\verb|range(end_value)|
+\end{center}
+La sintassi completa è la prima. In questo caso la sequenza generata inizia da \verb|start_value| (incluso) e termina a \verb|end_value| (escluso), incrementando di \verb|increment| ad ogni passo. Ad esempio:
+\begin{center}
+	\verb|range(-3, 5, 2)| itera sui valori -3, -1, 1, 3
+\end{center}
+Tramite la seconda sintassi, si indica solo \verb|start_value| e \verb|end_value|. In questo caso l'incremento di default è 1. Ad esempio:
+\begin{center}
+	\verb|range(-3, 5)| itera sui valori -3, -2, -1, 0, 1, 2, 3, 4
+\end{center}
+Nell'ultimo caso, si indica solo \verb|end_value|. In questo caso il valore iniziale è 0 e l'incremento è 1:
+\begin{center}
+	\verb|range(4)| itera sui valori 0, 1, 2, 3
+\end{center}
+
+% L'incremento di default è 1. Può essere usato anche indicando un solo valore, ossia \verb|end_value|. In questo caso 
+\begin{center}
+\end{center}
+
+
+
+
+\subsection{Definizione di funzioni}
+\label{sec:funzioni}
+
+Le funzioni permettono di organizzare il codice in blocchi riutilizzabili. Si definiscono con la parola chiave \texttt{def}.
+
+\begin{lstlisting}[language = python, frame = none]
+def saluta(nome):
+    print("Ciao,", nome)
+
+saluta("Alice")
+saluta("Bob")
+\end{lstlisting}
+
+Le funzioni possono restituire valori usando la parola chiave \texttt{return}:
+
+\begin{lstlisting}[language = python, frame = none]
+def somma(a, b):
+    return a + b
+
+risultato = somma(2, 5)
+print(risultato)
+\end{lstlisting}
+
+\subsubsection{Parametri posizionali}
+I parametri posizionali sono gli argomenti che vengono assegnati in base all’ordine in cui sono passati alla funzione:
+
+\begin{lstlisting}[language = python, frame = none]
+def moltiplica(x, y):
+    return x * y
+
+print(moltiplica(2, 3)) # x=2, y=3
+\end{lstlisting}
+
+\subsubsection{Parametri con nome (keyword arguments)}
+È possibile specificare quale valore assegnare a ciascun parametro usando la sintassi \texttt{nome\_parametro=valore}. In questo modo l’ordine non è più vincolante:
+
+\begin{lstlisting}[language = python, frame = none]
+def dividi(a, b):
+    return a / b
+
+print(dividi(a=10, b=2))    # a=10, b=2
+print(dividi(b=4, a=20))    # a=20, b=4 (l'ordine non ha importanza)
+\end{lstlisting}
+
+\subsubsection{Valori di default per i parametri}
+È possibile specificare un valore di default per uno o più parametri, che verrà utilizzato se l’argomento corrispondente non viene passato in chiamata:
+
+\begin{lstlisting}[language = python, frame = none]
+def saluta(nome, messaggio="Ciao"):
+    print(messaggio + ", " + nome)
+
+saluta("Alice")                  # Ciao, Alice
+saluta("Bob", messaggio="Salve") # Salve, Bob
+\end{lstlisting}
+
+Se vengono mescolati parametri con e senza valore di default, i parametri con default devono essere dichiarati dopo quelli senza default.
+
+\begin{lstlisting}[language = python, frame = none]
+def f(a, b=1, c=2):
+    print(a, b, c)
+
+f(10)        # a=10, b=1, c=2
+f(10, 20)    # a=10, b=20, c=2
+f(10, 20, 30)# a=10, b=20, c=30
+\end{lstlisting}
+
+\subsection{Annotazioni di tipo}
+
+Python è un linguaggio dinamicamente tipizzato, il che significa che i tipi delle variabili e dei parametri non vengono controllati a tempo di compilazione. Tuttavia, a partire da Python 3, è possibile aggiungere annotazioni di tipo (type hints) per rendere il codice più leggibile e favorire la rilevazione degli errori tramite strumenti come \texttt{mypy}.
+
+\subsubsection*{Annotazioni di tipo per variabili}
+
+Si può indicare il tipo atteso di una variabile con la seguente sintassi:
+\begin{lstlisting}[language = python, frame = none]
+x: int = 5
+nome: str = "Alice"
+prezzi: list[float] = [10.5, 5.2, 7.0]
+\end{lstlisting}
+
+L’annotazione non impone alcun vincolo a runtime, ma può essere usata da editor o strumenti di controllo statico dei tipi.
+
+\subsubsection*{Annotazioni di tipo nelle funzioni}
+
+Si possono annotare i tipi di parametri e del valore restituito da una funzione attraverso una sintassi dedicata:
+
+\begin{lstlisting}[language = python, frame = none]
+def somma(a: int, b: int) -> int:
+    return a + b
+
+def saluta(nome: str) -> None:
+    print(f"Ciao, {nome}")
+\end{lstlisting}
+
+\begin{itemize}
+	\item \texttt{a: int} e \texttt{b: int} specificano che i parametri \texttt{a} e \texttt{b} dovrebbero essere interi.
+	\item \texttt{-> int} indica che la funzione dovrebbe restituire un intero, mentre \texttt{-> None} indica che la funzione non restituisce nulla.
+\end{itemize}
+
+Le annotazioni di tipo supportano che iniziano con la lettera minuscola sono native di python \verb|3.9| e successivi. Se vogliamo utilizzare annotazioni di tipo più complesse (come liste, dizionari, tipi opzionali, ecc.) in versioni precedenti di Python, dobbiamo importare i tipi dal modulo \texttt{typing}:
+\begin{lstlisting}[language = python, frame = none]
+from typing import List, Dict, Optional
+
+def media(valori: List[float]) -> float:
+    return sum(valori) / len(valori)
+
+def ricerca(dati: Dict[str, int], chiave: str) -> Optional[int]:
+    return dati.get(chiave)
+\end{lstlisting}
+
+In sintesi, le annotazioni di tipo sono strumenti facoltativi e non bloccanti che permettono di documentare meglio il codice e di rilevare più facilmente possibili errori grazie ad appositi strumenti di analisi statica.
+
+
+\end{document}
