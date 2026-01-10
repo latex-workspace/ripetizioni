@@ -616,7 +616,8 @@ def ricerca(dati: Dict[str, int], chiave: str) -> Optional[int]:
 
 In sintesi, le annotazioni di tipo sono strumenti facoltativi e non bloccanti che permettono di documentare meglio il codice e di rilevare più facilmente possibili errori grazie ad appositi strumenti di analisi statica.
 
-\section{Esercizi introduttivi}
+\section{Esercizi}
+\subsection{Esercizi introduttivi}
 \begin{esercizio}{Lista e somma dei numeri pari \href{run:./files/python/array_somma_pari/}{(array\_somma\_pari)}}
 	Crea una lista che contenga i numeri da 1 a 10. Scrivi una funzione che restituisca la somma dei numeri pari contenuti nella lista.
 \end{esercizio} \label{array_somma_pari}
@@ -640,5 +641,24 @@ In sintesi, le annotazioni di tipo sono strumenti facoltativi e non bloccanti ch
 \begin{esercizio}{Intersezione di due liste con set \href{run:./files/python/intersezione_liste_set/}{(intersezione\_liste\_set)}}
 	Scrivi una funzione che prenda come input due liste di numeri e restituisca un set con tutti i numeri che sono presenti in entrambe le liste.
 \end{esercizio} \label{intersezione_liste_set}
+
+
+\subsection{Esercizi intermedi}
+\begin{esercizio}{Unione dizionari \href{run:./files/python/unione_dizionari/}{(unione\_dizionari)}}
+	Dati due dizionari \verb|d1| e \verb|d2|, crea una funzione che restituisca un nuovo dizionario che contenga tutte le chiavi di entrambi. Se una chiave è presente in entrambi i dizionari, la somma dei valori va usata come valore finale.
+\end{esercizio} \label{unione_dizionari}
+
+\begin{esercizio}{Sort manuale \href{run:./files/python/unione_dizionari/}{(sort\_manuale)}}
+	Creare una funzione che data in input una lista di interi ritorni una copia ordinata in ordine crescente.
+\end{esercizio} \label{sort_manuale}
+
+\begin{esercizio}{Statistiche su liste \href{run:./files/python/statistiche_liste/}{(statistiche\_liste)}}
+	Crea una funzione che prenda in input una lista contenente interi. Per ciascun intero nel \verb|[min, max]|, calcolarne la frequenza e stamparla graficamente sul terminale come una distribuzione di probabilità (istogramma).
+	\vskip3mm
+	Successivamente, creare una funzione per generare dati secondo una distribuzione normale, che ricordo avere formula:
+	\[
+		f(x) = \frac{1}{\sigma \sqrt{2\pi}} \; e^{-\frac{1}{2} \left( \frac{x - \mu}{\sigma} \right)^2 }
+	\]
+\end{esercizio} \label{statistiche_liste}
 
 \end{document}

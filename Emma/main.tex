@@ -2482,6 +2482,50 @@ In più, il vertice della parabola ha coordinate:
 	\left(\frac{-b}{2a}, \frac{-\Delta }{4a}\right)
 \]
 
+\section{Moto armonico e moto circolare uniforme}
+Innanzitutto, per affrontare questo argomenti è necessario avere una base matematica per quanto riguarda le funzioni goniometriche. In particolare, è necessario sapere lavorare bene con seni e coseni e tangenti.
+\subsection{Funzioni goniometriche}
+Inanzittuto il signifcato geometrico seno, coseno e tangente è il seguente. Data una circonferenza di raggio 1, e dato un punto su di essa che forma un angolo $ \theta $ con l'asse $ x $ , allora abbiamo che:
+\begin{itemize}
+	\item $ \sin \left(\theta \right) $ è la lunghezza della proiezione sull'asse $ y $ del punto
+	\item $ \cos  \left(\theta \right) $ è la lunghezza della proiezione sull'asse $ x $ del punto
+	\item $ \tan \left(\theta \right) $ è la lunghezza della retta che parte dall'origine e tocca la retta tangente alla circonferenza nel punto $ \left(1,0\right) $
+\end{itemize}
+
+\begin{tikzpicture}
+	\begin{axis}[
+			xmin=-1.5, xmax=1.5,
+			ymin=-1.5, ymax=1.5,
+			restrict y to domain = -1:1, domain=-1:1, width=0.7\textwidth, height=0.7\textwidth, grid=major, samples=200,  ylabel=$y$, xlabel=$x$]
+		\draw[thick] (0,0) circle [radius=1];
+		\draw[thick] (0.2,0) arc[start angle=0,end angle=30,radius=0.2];
+		\node [anchor = south] at (0.3,0) {$\theta$};
+		\draw [thick](0,0)--(30:1);
+		\coordinate (cosc) at ($(0,0)!(30:1)!(1,0)$);
+		\coordinate (sinc) at ($(0,0)!(30:1)!(0,1)$);
+		\draw [dotted](0,0)--(1,{tan(30)});
+		\draw [dotted](30:1)--(cosc);
+		\draw [dotted](30:1)--(sinc);
+		\draw (0,0)--(1,0);
+		\draw (0,0)--(0,1);
+
+
+		\begin{scope}[xshift=-0.1cm]
+			\draw [latex-latex, dashed] (0,0) -- ($(0,0)!(30:1)!(0,1)$) node[midway, left] {$\sin(\theta)$};
+		\end{scope}
+		\begin{scope}[xshift=0.1cm]
+			\draw [latex-latex, dashed] (1,0) -- (1,{tan(30)}) node[midway, right] {$\tan (\theta)$};
+		\end{scope}
+		\begin{scope}[yshift=-0.1cm]
+			\draw [latex-latex, dashed] (0,0) -- ($(0,0)!(30:1)!(1,0)$) node[midway, below] {$\cos (\theta)$};
+		\end{scope}
+
+		% \draw [<->, draw=mutedblue](0,0)--(cosc) node[midway, below] {$ \cos\left(\theta\right)$};
+		% \node [whitedot] at (0,0){};
+	\end{axis}
+\end{tikzpicture}
+
+
 
 
 
