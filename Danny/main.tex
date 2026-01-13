@@ -1713,6 +1713,137 @@ Lista linkata. Utilizzabile in modo molto simile al \verb|ArrayList|. L'accesso 
 \end{itemize}
 % \addtocontents{exe}{\protect{\large \vskip3mm \textit{Esercizi su classi}\vskip3mm}}
 
+\subsection{Lettura/scrittura su file}
+\subsection{Try catch ed eccezioni}
+In java e in molto linguaggi di programmazione moderni vengono forniti meccanismi standard per gestire situazioni inaspettate che non possono però essere previste con certezza (es. un file non esiste, l'utente ha inserito un dato non valido etc etc). Per queste situazioni esistono oggetti dette \textit{eccezioni}, fatte per descrivere l'errore che si è verificato.
+\vskip3mm
+L'idea generale è che qualunque pezzo di codice può sollevare o tirare un'eccezione e, nel caso in cui questa non venga gestita (ossia circondata da un blocco try catch nella porzione di programma chiamante), allora l'applicazione termina, stampando una descrizione della eccezione avvenuta
+\vskip3mm
+Il codice che tira eccezioni va circondato da un blocco try catch come segue:
+
+\begin{lstlisting}[language = java, frame = none]
+try {
+    // codice che potrebbe sollevare un'eccezione
+} catch (TipoEccezione1 e1) {
+    // codice per gestire l'eccezione di tipo TipoEccezione1
+} catch (TipoEccezione2 e2) {
+    // codice per gestire l'eccezione di tipo TipoEccezione2
+} finally {
+    // codice che viene eseguito sempre, sia che si sia verificata un'eccezione sia che non si sia verificata
+}
+\end{lstlisting}
+Ad esempio, se avessimo
+
+\begin{lstlisting}[language = java, frame = none]
+try {
+  f1() // solleva eccezione TipoEccezione2
+} catch (TipoEccezione1 e1) {
+  System.out.println("e1");
+} catch (TipoEccezione2 e2) {
+  System.out.println("e2");
+} finally {
+  System.out.println("finally");
+}
+// stampa: 
+// e2
+// finally
+\end{lstlisting}
+Se invece facessimo qualcosa di questo tipo all'interno del main:
+\begin{lstlisting}[language = java, frame = none]
+f1() // solleva eccezione TipoEccezione2
+\end{lstlisting}
+allora il programma si interromperebbe stampando informazioni riguardo l'eccezione sollevata
+
+\subsubsection{Checked vs unchecked}
+Esistono due tipi di eccezioni: \textit{checked} e \textit{unchecked}. Dal punto di vista logico le prime rappresentato tutte le condizioni che non NON abbiamo modo di verificare non accadano, mentre nel secondo, utilizzando determinate accortezze possiamo evitare succedano. Per questa ragione, siamo \textit{obbligati} a gestire le prime, mentre possiamo ignorare le seconde.
+\begin{center}
+	\begin{tabular}{l l}
+		\toprule
+		\sfblue{Checked exceptions} & \sfblue{Unchecked exceptions}  \\
+		\midrule
+		IOException                 & ArithmeticException            \\
+		ClassNotFoundException      & NullPointerException           \\
+		FileNotFoundException       & ArrayIndexOutOfBoundsException \\
+		SQLException                & IllegalArgumentException       \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+L'idea è che le unchecked exceptions possono essere ignorate proprio in virtù del fatto che tramite determinate accortezze possiamo evitare che si verifichino (es. controllare che un indice sia valido prima di accedere ad un array, controllare che un divisore non sia 0 prima di effettuare una divisione etc etc), mentre ciò non è vero per quanto riguarda le checked
+\vskip3mm
+Ciò che cambia nel pratico è che quando utilizziamo una porzione di codice che può sollevare una checked exception, il compilatore ci obbliga a circondarla con un blocco try catch, oppure a dichiarare che la funzione che la contiene può sollevare quell'eccezione (usando la parola chiave \verb|throws|):
+\begin{lstlisting}[language = java, frame = none]
+public f1() throws CheckedException{}
+\end{lstlisting}
+Si noti che in realtà è possibile dichiarare una funzione con la keyword throw anche per le unchecked exceptions, ma non è obbligatorio
+
+\subsection{Scanner}
+Scanner fornisce il modo più semplice (ma più lento) per leggere da file o da \verb|stdin|:
+\begin{lstlisting}[language = java, frame = none]
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+try (Scanner scanner = new Scanner(new File("path/to/file.txt"))) {
+    while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
+        // Process the line
+    }
+} catch (FileNotFoundException e) {
+    e.printStackTrace();
+}
+\end{lstlisting}
+per la scrittura invece il metodo preferito è il seguente:
+\begin{lstlisting}[language = java, frame = none]
+import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+try (PrintWriter writer = new PrintWriter(new FileWriter("esempio.txt", true))) {
+    writer.println("Riga aggiunta!");
+} catch (IOException e) {
+    e.printStackTrace();
+}
+\end{lstlisting}
+
+
+\subsection{File}
+Il package nio.file un modo più rapido e moderno per leggere da file:
+
+\begin{lstlisting}[language = java, frame = none]
+package com.mycompany.app;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.IOException;
+
+String content=new String(Files.readAllBytes(Paths.get("path/to/file.txt")));
+List<String>lines=Files.readAllLines(Paths.get("path/to/file.txt"));
+\end{lstlisting}
+
+per la scrittura invece il metodo preferito è il seguente:
+\begin{lstlisting}[language = java, frame = none]
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.io.IOException;
+
+public class AppendFileNio {
+    public static void main(String[] args) {
+        String nuovaRiga = "Nuova riga aggiunta!";
+        try {
+            Files.write(
+                Paths.get("esempio.txt"),
+                Arrays.asList(nuovaRiga),
+                StandardOpenOption.APPEND
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+\end{lstlisting}
+
 \subsection{Esercizi}
 Collezione di esercizi, divisi per categoria
 \begin{esercizio}{Hello World \href{run:./files/java/esercizi/hello_world/}{(hello\_world)}}
@@ -1782,5 +1913,173 @@ Collezione di esercizi, divisi per categoria
 	Introdurre successivamente anche i \textit{jolly} tra le carte e fare in modo che la presenza del jolly come carta estratta raddoppi la vincita;
 \end{esercizio}
 
+\begin{esercizio}{Esercizio avanzato}
+	Esercizio Avanzato – Sistema di Gestione Prenotazioni per un Centro Sportivo
+	Il Centro Sportivo “ActiveWorld” offre diverse attività (nuoto, palestra, yoga, arrampicata) e vuole un software che gestisca le prenotazioni giornaliere per i vari corsi e spazi.
+	Tutte le informazioni devono essere salvate e gestite tramite file di testo, letti all'avvio dell'applicazione e aggiornati durante l'esecuzione.
+	\vskip3mm
+	File coinvolti
+	L’applicazione utilizza tre file:
+	Utenti registrati
+	(con nome, cognome, data di nascita, telefono, email)
+	\vskip3mm
+	Attività disponibili
+	(es. Nuoto, Palestra, Yoga, Arrampicata)
+	Ogni attività contiene:
+
+	\vskip3mm
+
+
+	nome dell’attività
+
+	\vskip3mm
+
+	capacità massima
+
+
+	fascia oraria (es. 18:00–19:30)
+
+
+	Prenotazioni attive
+	Ogni riga del file contiene:
+
+
+	email dell’utente
+
+
+	nome attività
+
+
+	data della prenotazione (gg/mm/aaaa)
+
+
+
+
+	Funzionalità richieste
+	1. Caricamento dati dai 3 file
+	All’avvio, il programma deve:
+	leggere tutti gli utenti registrati
+
+
+	leggere tutte le attività disponibili
+
+
+	leggere le prenotazioni attive
+
+
+	verificare che ogni prenotazione faccia riferimento a un utente e a un’attività validi
+
+
+	segnalare eventuali incongruenze (es. utente inesistente → prenotazione ignorata)
+
+
+
+	2. Visualizzare le attività disponibili
+	Mostrare:
+	nome attività
+
+
+	fascia oraria
+
+
+	numero prenotazioni attuali
+
+
+	posti disponibili rimanenti
+
+
+
+	3. Visualizzare tutte le prenotazioni
+	Raggruppate per attività, ordinate per data.
+
+	4. Cercare le prenotazioni di un utente
+	Richiedere email e mostrare tutte le sue prenotazioni.
+
+	5. Aggiungere una nuova prenotazione
+	Il programma deve:
+	chiedere: email utente, attività, data
+
+
+	verificare che l’utente esista
+
+
+	verificare che l’attività esista
+
+
+	controllare che la data non sia nel passato
+
+
+	controllare che l’utente non abbia già una prenotazione per la stessa attività nella stessa giornata
+
+
+	controllare che l’attività non sia al completo per quella data
+
+
+	se tutto ok:
+
+
+	aggiungere la prenotazione in memoria
+
+
+	aggiungerla al file in modalità append
+
+
+
+	6. Cancellare una prenotazione
+	Richiedere:
+	email utente
+
+
+	nome attività
+
+
+	data
+
+
+	Controllare che esista, poi:
+	rimuoverla dall’elenco
+
+
+	aggiornare il file riscrivendolo completamente
+
+
+
+	7. Report automatico delle attività quasi piene
+	Il programma deve offrire una funzione "Genera Report" che:
+	mostra tutte le attività che hanno meno del 10% dei posti liberi nella data selezionata
+
+
+	genera anche una versione salvata in un file report.txt con formattazione ordinata
+
+
+
+	8. Funzionalità extra opzionale (per aggiungere complessità):
+	Statistiche settimanali
+	Dato un range di date, il programma deve indicare:
+	quale attività è stata prenotata di più
+
+
+	quale di meno
+
+
+	il numero totale di prenotazioni
+
+
+	percentuale di riempimento media delle attività
+
+
+
+	Requisiti e vincoli tecnici
+	Il formato dei file deve rimanere sempre uniforme.
+
+
+	Se vengono inseriti dati mancanti o non validi, il programma deve richiederli di nuovo.
+
+
+	Ogni modifica deve aggiornare coerentemente i file.
+
+
+	L’applicazione deve funzionare finché il gestore non sceglie di uscire.
+\end{esercizio}
 
 \end{document}
