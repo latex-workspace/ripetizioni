@@ -1913,173 +1913,112 @@ Collezione di esercizi, divisi per categoria
 	Introdurre successivamente anche i \textit{jolly} tra le carte e fare in modo che la presenza del jolly come carta estratta raddoppi la vincita;
 \end{esercizio}
 
-\begin{esercizio}{Esercizio avanzato}
-	Esercizio Avanzato – Sistema di Gestione Prenotazioni per un Centro Sportivo
-	Il Centro Sportivo “ActiveWorld” offre diverse attività (nuoto, palestra, yoga, arrampicata) e vuole un software che gestisca le prenotazioni giornaliere per i vari corsi e spazi.
+
+\tikzexternaldisable
+\begin{esercizioL}{Sistema gestione prenotazioni centro sportivo}
+	Il Centro Sportivo \textit{ActiveWorld} offre diverse attività (\textit{nuoto}, \textit{palestra}, \textit{yoga}, \textit{arrampicata}) e vuole un software che gestisca le prenotazioni giornaliere per i vari corsi e spazi.
 	Tutte le informazioni devono essere salvate e gestite tramite file di testo, letti all'avvio dell'applicazione e aggiornati durante l'esecuzione.
 	\vskip3mm
-	File coinvolti
-	L’applicazione utilizza tre file:
-	Utenti registrati
-	(con nome, cognome, data di nascita, telefono, email)
-	\vskip3mm
-	Attività disponibili
-	(es. Nuoto, Palestra, Yoga, Arrampicata)
-	Ogni attività contiene:
+	\sfblue{File coinvolti:} l'applicazione utilizza tre file:
+	\begin{itemize}
+		\item \textit{Utenti registrati:} ogni utente è caratterizzato da:
+		      \begin{itemize}
+			      \item nome
+			      \item cognome
+			      \item data di nascita
+			      \item telefono
+			      \item email
+		      \end{itemize}
+		\item \textit{Attività disponibili}
+		      \begin{itemize}
+			      \item nome dell'attività
+			      \item capacità massima
+			      \item fascia oraria (es. \verb|18:00--19:30|)
+		      \end{itemize}
+		\item \textit{Prenotazioni attive:} ogni riga del file contiene:
+		      \begin{itemize}
+			      \item email dell'utente
+			      \item nome attività
+			      \item data della prenotazione (\verb|gg/mm/aaaa|)
+		      \end{itemize}
+	\end{itemize}
 
 	\vskip3mm
+	\sfblue{Funzionalità richieste}
+	\begin{enumerate}
+		\item \textit{Caricamento dati dai 3 file:} all'avvio, il programma deve:
+		      \begin{itemize}
+			      \item leggere tutti gli utenti registrati
+			      \item leggere tutte le attività disponibili
+			      \item leggere le prenotazioni attive
+			      \item verificare che ogni prenotazione faccia riferimento a un utente e a un'attività validi
+			      \item segnalare eventuali incongruenze (es. utente inesistente $\rightarrow$ prenotazione ignorata)
+		      \end{itemize}
 
+		\item \textit{Visualizzare le attività disponibili:} mostrare
+		      \begin{itemize}
+			      \item nome attività
+			      \item fascia oraria
+			      \item numero prenotazioni attuali
+			      \item posti disponibili rimanenti
+		      \end{itemize}
 
-	nome dell’attività
+		\item \textit{Visualizzare tutte le prenotazioni:} raggruppate per attività, ordinate per data.
 
+		\item \textit{Cercare le prenotazioni di un utente:} richiedere \textit{email} e mostrare tutte le sue prenotazioni.
+
+		\item \textit{Aggiungere una nuova prenotazione:} il programma deve:
+		      \begin{itemize}
+			      \item chiedere: email utente, attività, data
+			      \item verificare che l'utente esista
+			      \item verificare che l'attività esista
+			      \item controllare che la data non sia nel passato
+			      \item controllare che l'utente non abbia già una prenotazione per la stessa attività nella stessa giornata
+			      \item controllare che l'attività non sia al completo per quella data
+			      \item se tutto ok:
+			            \begin{itemize}
+				            \item aggiungere la prenotazione in memoria
+				            \item aggiungerla al file in modalità \textit{append}
+			            \end{itemize}
+		      \end{itemize}
+
+		\item \textit{Cancellare una prenotazione}\\
+		      Richiedere:
+		      \begin{itemize}
+			      \item email utente
+			      \item nome attività
+			      \item data
+		      \end{itemize}
+		      Controllare che esista, poi:
+		      \begin{itemize}
+			      \item rimuoverla dall'elenco
+			      \item aggiornare il file riscrivendolo completamente
+		      \end{itemize}
+
+		\item \textit{Report automatico delle attività quasi piene:} il programma deve offrire una funzione \textit{Genera Report} che:
+		      \begin{itemize}
+			      \item mostra tutte le attività che hanno meno del 10\% dei posti liberi nella data selezionata
+			      \item genera anche una versione salvata in un file \verb|report.txt| con formattazione ordinata
+		      \end{itemize}
+
+		\item \textit{Statistiche settimanali (opzionale):} dato un range di date, il programma deve indicare:
+		      \begin{itemize}
+			      \item quale attività è stata prenotata di più
+			      \item quale di meno
+			      \item il numero totale di prenotazioni
+			      \item percentuale di riempimento media delle attività
+		      \end{itemize}
+	\end{enumerate}
+
+	\sfblue{Requisiti e vincoli tecnici}
+	\begin{itemize}
+		\item Il formato dei file deve rimanere sempre uniforme.
+		\item Se vengono inseriti dati mancanti o non validi, il programma deve richiederli di nuovo.
+		\item Ogni modifica deve aggiornare coerentemente i file.
+		\item L'applicazione deve funzionare finché il gestore non sceglie di uscire.
+	\end{itemize}
 	\vskip3mm
-
-	capacità massima
-
-
-	fascia oraria (es. 18:00–19:30)
-
-
-	Prenotazioni attive
-	Ogni riga del file contiene:
-
-
-	email dell’utente
-
-
-	nome attività
-
-
-	data della prenotazione (gg/mm/aaaa)
-
-
-
-
-	Funzionalità richieste
-	1. Caricamento dati dai 3 file
-	All’avvio, il programma deve:
-	leggere tutti gli utenti registrati
-
-
-	leggere tutte le attività disponibili
-
-
-	leggere le prenotazioni attive
-
-
-	verificare che ogni prenotazione faccia riferimento a un utente e a un’attività validi
-
-
-	segnalare eventuali incongruenze (es. utente inesistente → prenotazione ignorata)
-
-
-
-	2. Visualizzare le attività disponibili
-	Mostrare:
-	nome attività
-
-
-	fascia oraria
-
-
-	numero prenotazioni attuali
-
-
-	posti disponibili rimanenti
-
-
-
-	3. Visualizzare tutte le prenotazioni
-	Raggruppate per attività, ordinate per data.
-
-	4. Cercare le prenotazioni di un utente
-	Richiedere email e mostrare tutte le sue prenotazioni.
-
-	5. Aggiungere una nuova prenotazione
-	Il programma deve:
-	chiedere: email utente, attività, data
-
-
-	verificare che l’utente esista
-
-
-	verificare che l’attività esista
-
-
-	controllare che la data non sia nel passato
-
-
-	controllare che l’utente non abbia già una prenotazione per la stessa attività nella stessa giornata
-
-
-	controllare che l’attività non sia al completo per quella data
-
-
-	se tutto ok:
-
-
-	aggiungere la prenotazione in memoria
-
-
-	aggiungerla al file in modalità append
-
-
-
-	6. Cancellare una prenotazione
-	Richiedere:
-	email utente
-
-
-	nome attività
-
-
-	data
-
-
-	Controllare che esista, poi:
-	rimuoverla dall’elenco
-
-
-	aggiornare il file riscrivendolo completamente
-
-
-
-	7. Report automatico delle attività quasi piene
-	Il programma deve offrire una funzione "Genera Report" che:
-	mostra tutte le attività che hanno meno del 10% dei posti liberi nella data selezionata
-
-
-	genera anche una versione salvata in un file report.txt con formattazione ordinata
-
-
-
-	8. Funzionalità extra opzionale (per aggiungere complessità):
-	Statistiche settimanali
-	Dato un range di date, il programma deve indicare:
-	quale attività è stata prenotata di più
-
-
-	quale di meno
-
-
-	il numero totale di prenotazioni
-
-
-	percentuale di riempimento media delle attività
-
-
-
-	Requisiti e vincoli tecnici
-	Il formato dei file deve rimanere sempre uniforme.
-
-
-	Se vengono inseriti dati mancanti o non validi, il programma deve richiederli di nuovo.
-
-
-	Ogni modifica deve aggiornare coerentemente i file.
-
-
-	L’applicazione deve funzionare finché il gestore non sceglie di uscire.
-\end{esercizio}
+\end{esercizioL}
+\tikzexternalenable
 
 \end{document}
