@@ -687,9 +687,70 @@ Collezione di esercizi, divisi per categoria
 		\underbracket[0.1ex]{255\; 0\; 0\;}_{\text{pixel 1}} \underbracket[0.1ex]{0\; 255\; 0\;}_{\text{pixel 2}} \underbracket[0.1ex]{0\; 0\; 255}_{\text{pixel 3}}
 	\]
 	hint: si può usare la seguente formula per convertire un pixel in bianco e nero:
-	\begin{lstlisting}[frame = none]
-  double grayscale = 0.299 * r + 0.587 * g + 0.114 * b;
-  \end{lstlisting}
+	\[
+		\text{grayscale} = 0.299  r + 0.587   g + 0.114   b
+	\]
 \end{esercizio}
+
+\tikzexternaldisable
+\begin{esercizioL}{Epstein files}
+	Sei entrato in possesso dei famosi \href{https://en.wikipedia.org/wiki/Epstein_files}{epstein files}, una collezione di documenti testuali che contengono informazioni compromettenti su personaggi famosi. Tuttavia, i file sono stati criptati utilizzando un semplice \textit{cifrario di Cesare} con uno shift di $ k $ posizioni. Il \textit{cifraio di Cesare} cripta solo i caratteri $ \left[a, z\right], \left[A, Z\right] $, spostandoli di $ k $ posizioni. In particolare, il carattere quando viene criptato verrà sostituito da quello $ k $ posizioni dopo, ad esempio, con $ k=3 $
+	\begin{center}
+		\verb|abc| $ \rightarrow $ \verb|def|
+	\end{center}
+	Il tuo programma dovrà definire 3 costanti: lista di stringhe \verb|epstein_files|, una stringa \verb|cript| e una stringa \verb|output|. Le prime due variabili contengono i persorsi rispettivamente dei file Espstein criptati e di un file segreto contenente il valore di $ k $ e un numbero $ n $ di parole proibite. La variabile \verb|output| contiene il path dove deve essere salvato il file decriptato e censurato. L'obiettivo è, per ogni file contenuto in \verb|espstrein_files|:
+	\begin{itemize}
+		\item Decriptarlo secondo la chiave $ k $ definita nella prima riga del file \verb|cript|
+		\item Censurare le parole probite, contenute nelle restanti righe del file \verb|cript|, inserendo al loro posto un numero corrisondente di caratteri \verb|x|
+	\end{itemize}
+	Nota che:
+	\begin{itemize}
+		\item I caratteri nella codifica ASCII sono contigui nel range $ \left[a, z\right] $ e  $ \left[A, Z\right] $. Ciò significa che il loro valore numerico associato è crescente, ad esempio $ a = 97, b = 98, \ldots, z = 122 $ )
+		\item La crittografia è circolare, ossia che un carattere che verrebbe spostato $ x $ posizioni fuori dal proprio range viene messo in posizione $ x $ a partire dall'inizio, ad esempio:
+		      \begin{align*}
+			      k=3 &  & \begin{array}{cc}
+				               xyz \rightarrow abc \\
+				               XYZ \rightarrow ABC
+			               \end{array}
+		      \end{align*}
+		      e viceversa:
+		      \begin{align*}
+			      k=-3 &  &
+			      \begin{array}{c c}
+				      abc \rightarrow xyz \\
+				      ABC \rightarrow XYZ
+			      \end{array}
+		      \end{align*}
+	\end{itemize}
+
+	\sfblue{Esempio:} dati in input:
+	\vskip3mm
+	\begin{minipage}[t]{0.48\textwidth}
+		epstein.txt:
+		\begin{tcolorbox}
+			\verb|123fldrFldrabc-Hsvwhlq|
+		\end{tcolorbox}
+	\end{minipage}
+	%
+	\begin{minipage}[t]{0.48\textwidth}
+		cript.txt
+		\begin{tcolorbox}
+			\verb|3|\\
+			\verb|ciao|\\
+			\verb|Epstein|
+		\end{tcolorbox}
+	\end{minipage}
+	\vskip3mm
+	allora l'output decriptato della stringa \verb|123fldrFldrabc-Hsvwhlq| è
+	\begin{center}
+		\verb|123ciaoCiaoxyz-Epstein|
+	\end{center}
+	che censurato diventa:
+	\begin{center}
+		\verb|123XXXXXXXXxyz-XXXXXXX|
+	\end{center}
+	Viene fornito un esempio di file \href{run:./files/esercizi/epstein/epstein.txt}{epstein.txt} e \href{run:./files/esercizi/epstein/cript.txt}{cript.txt} in \texttt{\href{run:./files/esercizi/epstein/}{files/esercizi/epstein}}, con la corretta versione descriptata e un codice c per generare file criptati.
+\end{esercizioL}
+\tikzexternalenable
 
 \end{document}
