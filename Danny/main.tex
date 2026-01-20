@@ -2020,5 +2020,36 @@ Collezione di esercizi, divisi per categoria
 	\vskip3mm
 \end{esercizioL}
 \tikzexternalenable
+\begin{esercizio}{ASCII art}
+	Creare una applicazione che, dato in input un file \textit{in formato} \verb|.ppm| \verb|p3| crei una ascii art di quanto rappresentato dalla figura. Il main deve definire due parametri:
+	\begin{itemize}
+		\item \verb|inputFile| il file \verb|.ppm| da convertire in ascii art
+		\item \verb|outputFile| il file \verb|.txt| di output contenente la ascii art
+	\end{itemize}
+	Il formato \verb|.ppm p3| rappresenta una immagine tramite una matrice di pixel, ognuno dei quali è rappresentato da tre numeri interi (rosso, verde, blu) che vanno da 0 a 255. Il file inizia con una intestazione composta da:
+	\begin{lstlisting}[frame = none]
+    P3
+    <WIDTH> <HEIGHT>
+    <MAX_COLOR>
+    <R> <G> <B> ... <R> <G> <B>
+  \end{lstlisting}
+	Ad esempio, un file contenente 3 pixel in orizzontale, in ordine, uno rosso, uno verde e uno blu, sareebbe così codificato:
+	\begin{lstlisting}[frame = none]
+    P3
+    3 1
+    255
+    255 0 0 0 255 0 0 0 255
+  \end{lstlisting}
+	dove
+	\[
+		\underbracket[0.1ex]{255\; 0\; 0\;}_{\text{pixel 1}} \underbracket[0.1ex]{0\; 255\; 0\;}_{\text{pixel 2}} \underbracket[0.1ex]{0\; 0\; 255}_{\text{pixel 3}}
+	\]
+	hint: si può usare la seguente formula per convertire un pixel in bianco e nero:
+	\begin{lstlisting}[frame = none]
+  double grayscale = 0.299 * r + 0.587 * g + 0.114 * b;
+  \end{lstlisting}
+\end{esercizio}
+
+
 
 \end{document}

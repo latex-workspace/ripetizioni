@@ -1,0 +1,19 @@
+giulia.bianchi@example.com, Yoga, 15/01/2026
+luca.verdi@example.com, Pilates, 16/01/2026
+elena.neri@example.com, Nuoto, 15/01/2026
+francesco.gallo@example.com, Boxe, 14/01/2026
+chiara.moretti@example.com, Crossfit, 13/01/2026
+alberto.ferri@example.com, Spinning, 15/01/2026
+mario.rossi@example.com, Kickboxing, 13/01/2026
+giulia.bianchi@example.com, Danza, 14/01/2026
+elena.neri@example.com, Calisthenics, 17/01/2026
+francesco.gallo@example.com, Tennis, 16/01/2026
+luca.verdi@example.com, Yoga, 15/01/2026
+mario.rossi@example.com, Nuoto, 15/01/2026
+alberto.ferri@example.com, Crossfit, 13/01/2026
+chiara.moretti@example.com, Pilates, 16/01/2026
+giulia.bianchi@example.com, Spinning, 15/01/2026
+luca.verdi@example.com, Boxe, 14/01/2026
+francesco.gallo@example.com, Calisthenics, 17/01/2026
+elena.neri@example.com, Tennis, 16/01/2026
+chiara.moretti@example.com,Danza,02/01/2027
