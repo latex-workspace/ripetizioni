@@ -1782,5 +1782,39 @@ Collezione di esercizi, divisi per categoria
 	Introdurre successivamente anche i \textit{jolly} tra le carte e fare in modo che la presenza del jolly come carta estratta raddoppi la vincita;
 \end{esercizio}
 
+\section{Algoritmi}
+\subsubsection{Esercizi}
+\begin{esercizio}{Scatole di altezza massima}
+	Vengono dati in input una serie di scatole, ognuna con tre attributi: \verb|height|, \verb|width| e \verb|depth|. Trovare l'altezza massima che si può ottenere impilando queste scatole
+\end{esercizio}
+\begin{esercizio}{Intervalli massimi}
+	Vengono dati $ n $ intervalli \verb|[start, end]|. Trovare il numero massimo di intervali che non si sovrappongono
+\end{esercizio}
+\begin{esercizio}{Coin change}
+	Dati i tagli di moneta ordinari e un importo totale $ c $, calcolare il numero minimo di monete necessarie per raggiungere $ c $.
+\end{esercizio}
+\begin{esercizio}{Task scheduling}
+	Abbiamo un processore che deve eseguire $ n $ task ognuna di lunghezza $ t\left[i\right] $. Trova l'odrine che minimizza il tempo di completamento medio, dove il tempo di completamento di una task è il tempo a cui una task finisce di eseguire. Ad esempio:
+	\begin{center}
+		\begin{tikzpicture}[scale = 0.5]
+			\draw (0,0)rectangle(4,1)rectangle(5,0)rectangle(11,1)rectangle(14,0);
+			\node [anchor=north] at (0,0)  {0};
+			\node [anchor=north] at (4,0)  {4};
+			\node [anchor=north] at (5,0)  {5};
+			\node [anchor=north] at (11, 0)  {11};
+			\node [anchor=north] at (14,0)  {14};
+
+			\node at (2,0.5)  {4};
+			\node at (4.5,0.5)  {1};
+			\node at (8,0.5)  {6};
+			\node at (12.5,0.5)  {3};
+		\end{tikzpicture}
+	\end{center}
+	il tempo di completamento di questa disposizione è
+	\[
+		\frac{4 + 5 + 11 + 14}{4} = \frac{34}{4} = 8.5
+	\]
+\end{esercizio}
+
 
 \end{document}
