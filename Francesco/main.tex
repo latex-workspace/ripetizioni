@@ -1,0 +1,717 @@
+%&../../.preamble
+\externalize{../../.preamble}
+
+
+\title{Ripetizioni Francesco}
+\author{Marini Mattia}
+\date{2025}
+\lstset{
+frame = none
+  }
+
+\begin{document}
+\maketitle
+\license{Ripetizioni Francesco}
+\tableofcontents
+
+\listofexercises
+
+\newpage
+
+
+\section{Java}
+Java è molto simile dal punto di vista della sintassi al c++. Non sarà molto complicato il passaggio
+\subsection{Aspetti simili a c++}
+La sinttassi di Java è molto simile a quella di c++, ecco gli aspetti che rimangono invariati o quasi:
+\subsubsection{Dichiarazione delle variabili:}
+\begin{center}
+	\begin{tabularx}{\linewidth}{lX}
+		\toprule
+		Sinstassi                          & Differenze rispetto al \verb|c++|                                                                              \\
+		\midrule
+		\verb|int x = 15|                  & invariato                                                                                                      \\
+
+		\verb|long x = 15|                 & invariato                                                                                                      \\
+
+		\verb|float x = 15.0f|             & nota il \verb|15.0f|, dove \verb|f| sta per float                                                              \\
+
+		\verb|double x = 15.0|             & float ma con precision maggiore, 64 bit                                                                        \\
+
+		\verb|boolean x = true|            & \verb|boolean| anzichè \verb|bool|                                                                             \\
+
+		\verb|String s = "stringa"|        & dato \verb|String| sarebbe una classe ma è trattato come tipo primitivo, dato che è usato molto frequentemente \\
+
+		\verb|String v[] = new String[15]| & vettore di stringhe di dimensione 15                                                                           \\
+
+		\verb|int v[] = new int[15]|       & vettore di interi di dimensione 15                                                                             \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+\subsubsection{ Commenti:}
+\begin{itemize}
+	\item Commento riga singola: \verb|// commento|
+	\item Commento righe multiple: \verb|/* commento */|
+\end{itemize}
+\subsubsection{ Cicli:}
+\begin{itemize}
+	\item Ciclo for:
+	      \begin{lstlisting}[language = c, frame = none, numbers = none]
+          for(int i = 0; i<15; i++){
+            // qualcosa
+          }
+        \end{lstlisting}
+	\item Ciclo while:
+	      \begin{lstlisting}[language = c, frame = none, numbers = none]
+          while(i < 15){
+            // qualcosa
+          }
+        \end{lstlisting}
+\end{itemize}
+\subsubsection{Operatori}
+\begin{center}
+	\begin{tabular}{l  l}
+		\toprule
+		\sfblue{Operatore}                     & \sfblue{Descrizione} \\
+		\midrule
+		{ \ttfamily + \quad - \quad * \quad /} & operatori matematici \\
+		{ \ttfamily \&\& }                     & and logico           \\
+		{\ttfamily $ || $}                     & or logico            \\
+		{\ttfamily $ ! $ }                     & not logico           \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+\subsubsection{If e switch}
+
+\begin{minipage}[t]{0.48\linewidth}
+	\begin{lstlisting}[language = c, frame = none]
+  if(a<b) {
+    //codice
+  }
+  else(if a>b) {
+    //codice
+  }
+  else {
+    //codice
+  }
+        \end{lstlisting}
+\end{minipage}
+%
+\begin{minipage}[t]{0.48\linewidth}
+	\begin{lstlisting}[language = c, frame = none]
+switch(espressione) {
+  case x:
+    // codice
+    break;
+  case y:
+    // codice
+    break;
+  default:
+    // codice
+}
+        \end{lstlisting}
+\end{minipage}
+\subsubsection{Funzioni}
+\begin{lstlisting}[language = c, frame = none]
+  void nome_funzione1 (int arg_1, String arg_2){
+    //corpo funzione
+  }
+
+  int nome_funzione2 (int arg_1, String arg_2){
+    //corpo funzione
+    return 5;
+  }
+        \end{lstlisting}
+
+Una funzione è quindi definita indicando nel seguente ordine, esattamente come in c++:
+\begin{enumerate}
+	\item \underline{Tipo di ritorno} (o \verb|void| se non ritorna nulla)
+	\item \underline{Nome} della funzione
+	\item \underline{Parametri}, racchiusi fra parentesi tonde e separati da virgole
+	\item \underline{Corpo} della funzione fra graffe
+\end{enumerate}
+\subsection{Differenze}
+\subsubsection{Stampa su terminale}
+Una delle feature usata moltissimo, ma completamente diversa dal c++ è la stampa su terminale:
+\begin{lstlisting}[frame = none]
+  System.out.println("Stampa questa cosa");
+  //stampa andando a capo prima di stampare
+
+  System.out.print("Stampa questa cosa");
+  //stampa SENZA andando a capo
+\end{lstlisting}
+
+\vskip3mm
+nota che le stringhe si possono concatenare con l'operatore +:
+
+\vskip3mm
+\begin{lstlisting}[frame = none]
+  String a = "Hello";
+  String b = "world";
+
+  System.out.println(a + b);
+  //stampa "Hello world"
+
+  String c = a + b;
+  //Inizializza c a "Hello world"
+  
+\end{lstlisting}
+\subsubsection{Linguaggio interpretato vs compilato}
+A differenza di c++, java è un linguaggia \underline{interpretato}
+\begin{itemize}
+	\item \textit{Linguaggio compilato}: il codice è "dato in pasto" a un compilatore, il quale lo converte in linguaggio macchina (di fatto in una sequenza di, 0 ed 1)
+	\item \textit{Linguaggio interpretato}: il codice è "dato in pasto" ad un compilatore, il quale lo converte però in \underline{bytecode}, ossia un linguaggio di basso livello (molto difficile da leggere e scrivere), il quale è in grado di essere letto da un \textit{interprete}
+\end{itemize}
+
+\begin{center}
+	\begin{tabular}{c c}
+		\begin{forest}
+			for tree={draw, grow = -90}
+			[codice c++ [compilatore c++ , draw = none [assembly [assemblatore, draw = none [linguaggio macchina [computer, circle]]]]]]
+		\end{forest}
+		 &
+		\begin{forest}
+			for tree={draw, grow = -90}
+			[codice java [compilatore java , draw = none [java bytecode [java interpreter [computer, circle]]]]]
+		\end{forest}
+	\end{tabular}
+\end{center}
+\subsubsection{Memoria e puntatori}
+Java è un linguaggio ad alto livello che gestisce la memoria in maniera diversa rispetto al c++:
+\begin{itemize}
+	\item c++: il compito di allocare e deallocare la memoria non più utilizzata è del programmatore
+	\item java: la memoria viene deallocata in maniera automatica tramite un meccanismo chiamato \underline{garbage collection}
+\end{itemize}
+
+Visto che in java la memoria è gestita in in maniera automatica, il programmatore non ne ha accesso diretto tramite puntatori: al contratio, i puntatori \underline{non esistono}
+
+\subsubsection{Object orientation}
+Sebbene c++ sia un linguagio che permette di utilizzare classi ed oggetti, in java l'object orientation è forzata: ogni parte del programma deve essere contenuta all'interno di una classe
+
+\subsection{Esempio programma}
+\begin{lstlisting}[language = c++, frame = none]
+class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!"); 
+    }
+}
+\end{lstlisting}
+
+Cose da notare:
+\begin{itemize}
+	\item La funzione main è contenuta all'interno di una classe "HelloWorld", il cui nome è arbitrario
+	\item La funzione main è marcata come \verb|static|, ciò vuol dire che la funzione esiste anche se non esiste un oggetto di tipo "HelloWorld", affroteremo meglio il modificatore \verb|static| più avanti, per ora possiamo ignorarlo
+	\item La funzione main è marcata come \verb|public|, ciò vuol dire che la funzione è accessibile ovunque. Afffronteremo meglio questo modificatore più avanti, per ora possiamo ignorarlo
+	\item La funzione main prende in ingresso un vettore di stringhe. Nel caso si avviasse l'applicazione da terminale e possibile passare al main dei parametri nel seguente modo:
+	      \begin{lstlisting}[language = bash, frame = none]
+  cd cartella_applicazione 
+  ./nome_applicazione parametro_1 parametro_2 ... \end{lstlisting}
+	      in questo caso il vettore di stringhe \verb|args| conterrà \verb|parametro_1| e \verb|parametro_2|. Penso non lo userete mai ma è buono saperlo
+\end{itemize}
+\subsection{Funzioni utili}
+In java sono definite alcune funzioni utilissime. Qui una lista (non esaustiva) delle più comuni:
+\subsubsection{Stringhe}
+
+Supponiamo di avere \verb|String s = "stringa stringa";|
+\vskip3mm
+\begin{tabularx}{\linewidth}{lX}
+	\toprule
+	\sfblue{Funzione}                & \sfblue{Descrizione}                                                                  \\
+	\midrule
+	\verb|s.lenght()|                & Ritorna il numero di caratteri conenuti nella stringa (7 nel caso d'esempio)          \\
+	\verb|s.charAt(int index)|       & Ritorna il carattere in posizione \verb|index|                                        \\
+	\verb|s.indexOf(char carattere)| & Ritorna l'indice della prima occorrenza di \verb|carattere| in \verb|s|               \\
+	\verb|s.indexOf(String stringa)| & Ritorna l'indice della prima occorrenza della sottostringa \verb|stringa| in \verb|s| \\
+	\bottomrule
+\end{tabularx}
+
+\vskip3mm
+\begin{lstlisting}[language = c++, frame = none]
+    String s = "stringa stringa";
+    s.lenght(); // 15
+    s.charAt(2); // 'r'
+    s.indexOf('r'); // 2
+    s.indexOf("ga"); // 5 \end{lstlisting}
+\subsubsection{Vettori}
+Supponiamo di avere \verb|int v[] = new int[15];|
+\begin{center}
+	\begin{tabularx}{\linewidth}{lX}
+		\toprule
+		\sfblue{Funzione} & \sfblue{Descrizione}                               \\
+		\midrule
+		\verb| v.lenght|  & ritorna il numero di elemnti contenuti nel vettore \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+\subsection{Parti utili della libreria standard}
+La libreria standard di java offre moltissime classi utili. Vediamo qui le più comuni
+
+\subsubsection{Math}
+\begin{center}
+	\begin{tabularx}{\linewidth}{lX}
+		\toprule
+		\sfblue{Funzione}                 & \sfblue{Descrizione}                                  \\
+		\midrule
+		\verb|Math.exp(float n)|          & Ritorna $ e^n $                                       \\
+		\verb|Math.log(float n)|          & Ritorna $ ln\left(n\right) $                          \\
+		\verb|Math.abs(float x)|          & Ritorna $ \left|x\right| $ (valore assoluto di $ x $) \\
+		\midrule
+		\verb|Math.sin(float x)|          & Ritorna $ \sin \left(x\right) $                       \\
+		\verb|Math.cos(float x)|          & Ritorna $ \cos \left(x\right) $                       \\
+		\verb|Math.tan(float x)|          & Ritorna $ \tan  \left(x\right) $                      \\
+		\verb|Math.asin(float x)|         & Ritorna $ \arcsin \left(x\right) $                    \\
+		\verb|Math.acos(float x)|         & Ritorna $ \arccos \left(x\right) $                    \\
+		\verb|Math.atan(float x)|         & Ritorna $ \arctan  \left(x\right) $                   \\
+		\midrule
+		\verb|Math.max(float a, float b)| & Ritorna l'elemento maggiore fra $ a $ e $ b $         \\
+		\verb|Math.min(float a, float b)| & Ritorna l'elemento maggiore fra $ a $ e $ b $         \\
+		\midrule
+		\verb|Math.floor(float x)|        & Arrotonda per difetto $ x $                           \\
+		\verb|Math.ceil(float x)|         & Arrotonda per eccesso $ x $                           \\
+		\verb|Math.round(float x)|        & Arrotonda $ x $                                       \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+
+\subsubsection{ArrayList}
+Utile per avere un vettore di lunghezza variabile. Si inizializza nel seguente modo:
+\begin{center}
+	\verb|ArrayList< tipo > nomeArray = new ArrayList< tipo >(dimensione)|
+\end{center}
+Nota che:
+\begin{itemize}
+	\item \verb|dimensione| si può omettere, ottenendo un vettore con dimensiane nulla
+	\item \verb|tipo| deve essere una classe. Se voglio un arrayList di tipi primitivi devo utilizzare le classi wrapper (\verb|Integer, Boolean, Double| ...)
+\end{itemize}
+\begin{center}
+	\begin{tabular}{ll}
+		\toprule
+		\sfblue{Metodo}                & \sfblue{Descrizione}                        \\
+		\midrule
+		\verb|v.get( index )|          & ritnorna l'elemento all'indice \verb|index| \\
+		\verb|v.set( index , element)| & setta l'elemento a indice \verb|index|      \\
+		\verb|v.add( element )|        & inserisce \verb|element| in fondo           \\
+		\verb|v.remove ( index )|      & rimuove l'elemento a indice \verb|index|    \\
+		\verb|v.size()|                & ritorna il numero di elementi conetnuti     \\
+		\verb|v.clear()|               & rimuove tutti gli elementi                  \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+Inoltre, sono disponibili features di java per inizializzare arraylist in maniera conveniente:
+\begin{center}
+	\verb|ArrayList<Integer> lista = new ArrayList<>(Arrays.asList(1,2,3));|
+\end{center}
+
+\subsubsection{Scanner}
+La classe scanner ci permette di leggere input utente da terminale (e anche da file, ma non ci servirà). Uno scanner si inizializza così:
+\begin{center}
+	\verb|Scanner nomeScanner = new Scanner(System.in);|
+\end{center}
+
+Per leggere l'input da terminale ci sono i seguenti comandi:
+
+\begin{center}
+	\begin{tabular}{ll}
+		\toprule
+		\sfblue{Metodo} & \sfblue{Descrizione}          \\
+		\midrule
+		nextBoolean( )  & Legge un boolean da terminale \\
+		nextByte()      & Legge un byte    da terminale \\
+		nextDouble()    & Legge un double  da terminale \\
+		nextFloat ()    & Legge un float   da terminale \\
+		nextInt()       & Legge un int     da terminale \\
+		nextLine()      & Legge una String da terminale \\
+		nextLong( )     & Legge un long    da terminale \\
+		nextShort()     & Legge uno short  da terminale \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+Il metodo più comune è \verb|nextLine()|, dato che ci restituisce l'intera riga come stringa, anche se contiene numeri
+
+\subsubsection{Random}
+Random fornisce un modo comodo per generare numeri casuali. Inizializza con
+\begin{center}
+	\verb|Random nome = new Random()|
+\end{center}
+\begin{center}
+	\begin{tabular}{ll}
+		\toprule
+		\sfblue{Metodo}  & \sfblue{Descrizione}                                                \\
+		\midrule
+		nextInt( range ) & genera un numero casuale nel range $ \left[0, \text{range}\right) $ \\
+		nextFloat()      & genera un float in range $ \left[0.0 , 1.0\right] $                 \\
+		nextDouble()     & genera un double in range $ \left[0.0 , 1.0\right] $                \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\subsubsection{LinkedList}
+Lista linkata. Utilizzabile in modo molto simile al \verb|ArrayList|. L'accesso agli elementi è molto più lento, rimozioni inserimenti sono molto più veloci
+
+\subsubsection{Altre strutture dati utili}
+\begin{itemize}
+	\item \verb|HashSet|: insieme matematico, possibile vedere se un elemento è contenuto in esso in maniera efficiente
+	\item \verb|Map|: utile poter collegare ad ogni valore un altro valore detto chaive. Si può risalire al valore tramite la chiave in maniera efficiente
+	\item \verb|Stack|
+	\item \verb|Queue|
+	\item \verb|PriorityQueue|: struttura nella quale è possibile accedere all'elemento maggiore in maniera efficiente
+	\item \verb|SortedSet|: struttra nella quale i dati mantengono sempre un ordinameto crescente. Non ammette duplicati
+\end{itemize}
+% \addtocontents{exe}{\protect{\large \vskip3mm \textit{Esercizi su classi}\vskip3mm}}
+
+\subsection{Lettura/scrittura su file}
+\subsection{Try catch ed eccezioni}
+In java e in molto linguaggi di programmazione moderni vengono forniti meccanismi standard per gestire situazioni inaspettate che non possono però essere previste con certezza (es. un file non esiste, l'utente ha inserito un dato non valido etc etc). Per queste situazioni esistono oggetti dette \textit{eccezioni}, fatte per descrivere l'errore che si è verificato.
+\vskip3mm
+L'idea generale è che qualunque pezzo di codice può sollevare o tirare un'eccezione e, nel caso in cui questa non venga gestita (ossia circondata da un blocco try catch nella porzione di programma chiamante), allora l'applicazione termina, stampando una descrizione della eccezione avvenuta
+\vskip3mm
+Il codice che tira eccezioni va circondato da un blocco try catch come segue:
+
+\begin{lstlisting}[language = java, frame = none]
+try {
+    // codice che potrebbe sollevare un'eccezione
+} catch (TipoEccezione1 e1) {
+    // codice per gestire l'eccezione di tipo TipoEccezione1
+} catch (TipoEccezione2 e2) {
+    // codice per gestire l'eccezione di tipo TipoEccezione2
+} finally {
+    // codice che viene eseguito sempre, sia che si sia verificata un'eccezione sia che non si sia verificata
+}
+\end{lstlisting}
+Ad esempio, se avessimo
+
+\begin{lstlisting}[language = java, frame = none]
+try {
+  f1() // solleva eccezione TipoEccezione2
+} catch (TipoEccezione1 e1) {
+  System.out.println("e1");
+} catch (TipoEccezione2 e2) {
+  System.out.println("e2");
+} finally {
+  System.out.println("finally");
+}
+// stampa: 
+// e2
+// finally
+\end{lstlisting}
+Se invece facessimo qualcosa di questo tipo all'interno del main:
+\begin{lstlisting}[language = java, frame = none]
+f1() // solleva eccezione TipoEccezione2
+\end{lstlisting}
+allora il programma si interromperebbe stampando informazioni riguardo l'eccezione sollevata
+
+\subsubsection{Checked vs unchecked}
+Esistono due tipi di eccezioni: \textit{checked} e \textit{unchecked}. Dal punto di vista logico le prime rappresentato tutte le condizioni che non NON abbiamo modo di verificare non accadano, mentre nel secondo, utilizzando determinate accortezze possiamo evitare succedano. Per questa ragione, siamo \textit{obbligati} a gestire le prime, mentre possiamo ignorare le seconde.
+\begin{center}
+	\begin{tabular}{l l}
+		\toprule
+		\sfblue{Checked exceptions} & \sfblue{Unchecked exceptions}  \\
+		\midrule
+		IOException                 & ArithmeticException            \\
+		ClassNotFoundException      & NullPointerException           \\
+		FileNotFoundException       & ArrayIndexOutOfBoundsException \\
+		SQLException                & IllegalArgumentException       \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+L'idea è che le unchecked exceptions possono essere ignorate proprio in virtù del fatto che tramite determinate accortezze possiamo evitare che si verifichino (es. controllare che un indice sia valido prima di accedere ad un array, controllare che un divisore non sia 0 prima di effettuare una divisione etc etc), mentre ciò non è vero per quanto riguarda le checked
+\vskip3mm
+Ciò che cambia nel pratico è che quando utilizziamo una porzione di codice che può sollevare una checked exception, il compilatore ci obbliga a circondarla con un blocco try catch, oppure a dichiarare che la funzione che la contiene può sollevare quell'eccezione (usando la parola chiave \verb|throws|):
+\begin{lstlisting}[language = java, frame = none]
+public f1() throws CheckedException{}
+\end{lstlisting}
+Si noti che in realtà è possibile dichiarare una funzione con la keyword throw anche per le unchecked exceptions, ma non è obbligatorio
+
+\subsection{Scanner}
+Scanner fornisce il modo più semplice (ma più lento) per leggere da file o da \verb|stdin|:
+\begin{lstlisting}[language = java, frame = none]
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+try (Scanner scanner = new Scanner(new File("path/to/file.txt"))) {
+    while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
+        // Process the line
+    }
+} catch (FileNotFoundException e) {
+    e.printStackTrace();
+}
+\end{lstlisting}
+per la scrittura invece il metodo preferito è il seguente:
+\begin{lstlisting}[language = java, frame = none]
+import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+try (PrintWriter writer = new PrintWriter(new FileWriter("esempio.txt", true))) {
+    writer.println("Riga aggiunta!");
+} catch (IOException e) {
+    e.printStackTrace();
+}
+\end{lstlisting}
+
+
+\subsection{File}
+Il package nio.file un modo più rapido e moderno per leggere da file:
+
+\begin{lstlisting}[language = java, frame = none]
+package com.mycompany.app;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.IOException;
+
+String content=new String(Files.readAllBytes(Paths.get("path/to/file.txt")));
+List<String>lines=Files.readAllLines(Paths.get("path/to/file.txt"));
+\end{lstlisting}
+
+per la scrittura invece il metodo preferito è il seguente:
+\begin{lstlisting}[language = java, frame = none]
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.io.IOException;
+
+public class AppendFileNio {
+    public static void main(String[] args) {
+        String nuovaRiga = "Nuova riga aggiunta!";
+        try {
+            Files.write(
+                Paths.get("esempio.txt"),
+                Arrays.asList(nuovaRiga),
+                StandardOpenOption.APPEND
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+\end{lstlisting}
+
+
+\subsection{Esercizi}
+Collezione di esercizi, divisi per categoria
+\begin{esercizio}{Hello World \href{run:./files/java/esercizi/hello_world/}{(hello\_world)}}
+	Scrivere un programma in Java che prenda in input una stringa \verb|s| e un numero \verb|n| e stampi \verb|s| \verb|n| volte, accompagnata dal numero di riga. Ad esempio, dati in input \verb|userin| e \verb|4|, l'otput sarà:
+	\begin{center}
+		\ttfamily
+		1. userin\\
+		2. userin\\
+		3. userin\\
+		4. userin
+	\end{center}
+\end{esercizio}
+\begin{esercizio}{Hello classe \href{run:./files/java/esercizi/estrazione/}{(estrazione)}}
+	Crea un programma per giocare a una sorta di roulette modificata. Le regole sono le seguenti:
+	\begin{itemize}
+		\item Vengono estratte delle palline che hanno un colore (\verb|rosso|,  \verb|giallo| o \verb|verde|) e un numero da 1 a 9 estremi compresi
+		\item Il giocatore deve indicare un numero e un colore
+		\item Il punteggio viene assegnato così:
+		      \begin{itemize}
+			      \item Colore giusto: \verb|+1|
+			      \item Un punteggio che varia da 0 a 4 in base alla distanza del numero previsto da quello estratto, ad esempio, detto $ n_e $ il numero \textit{estratto} e  $ n_p $ il numero \textit{previsto}
+			            \[
+				            \left(1 - \frac{\left|n_e - n_p\right|}{8}\right) \cdot 4
+			            \]
+			      \item Se colore e numero sono uguali: \verb|+1|
+		      \end{itemize}
+	\end{itemize}
+	Il programma deve chiedere in input all'utente un numero e un colore ed estrarre una pallina casualmente, per poi stampare in ouput il punteggio ottenuto. Si usi una classe \verb|ball| e una classe \verb|game| per gestire le partite.
+	\vskip3mm
+	Il programma deve partire chiedendo all'utente il numero $ n $ di round che vuole giocare. Dopodiché, verranno chieste $ n $ previsione all'utente; per ognuna deve essere stampato il punteggio e alla fine degli $ n $ round deve essere visualizzato il punteggio totale
+\end{esercizio}
+
+
+\begin{esercizio}{Geometria 1 \href{run:./files/java/esercizi/geometry1/}{(geometry1)}}
+	Creare una classe per ciascuno dei seguenti oggetti geometrici: \texttt{Punto}, \texttt{Rettangolo}, \texttt{Cerchio}. Creare una classe \texttt{PianoCartesiano} che possa contenere le tre classi elencate precedentemente. Una volta inserita una classe nel piano cartesiano verrà ritornato un \verb|id|, tramite il quale possiamo accedervi (l'istanza dell'oggetto aggiunto rimane scollegata da quella inserità nel piano cartesiano). Creare un metodo \verb|closer| che prenda un \verb|id| esistente e ritorni l'id della forma geometrica più vicina (usare il centro delle figure per confrontare la distanza)
+\end{esercizio}
+
+\begin{esercizio}{Geometria 1 \href{run:./files/java/esercizi/geometry1/}{(geometry1)}}
+	Creare una classe per ciascuno dei seguenti oggetti geometrici: \texttt{Punto}, \texttt{Rettangolo}, \texttt{Cerchio}. Creare una classe \texttt{PianoCartesiano} che possa contenere le tre classi elencate precedentemente. Una volta inserita una classe nel piano cartesiano verrà ritornato un \verb|id|, tramite il quale possiamo accedervi (l'istanza dell'oggetto aggiunto rimane scollegata da quella inserità nel piano cartesiano). Creare un metodo \verb|closer| che prenda un \verb|id| esistente e ritorni l'id della forma geometrica più vicina (usare il centro delle figure per confrontare la distanza)
+\end{esercizio}
+
+\begin{esercizio}{Montecarlo \href{run:./files/java/esercizi/montecarlo/}{(montecarlo)}}
+	Il casinò di Montecarlo ha richiesto una nuova slot machine; lo scopo del gioco è quello di simulare la pesca di \textit{cinque carte} da una mazzo standard (con quattro semi, le carte da 2 a 10, l’asso(1) le tre figure (11,12,13) e niente jolly)
+	\vskip3mm
+	Le opportunità di vincita (con quattro delle 5 carte estratte) sono le seguenti:
+	\begin{center}
+		\begin{tabular}{l l}
+			\toprule
+			Combinazione                                                                                                                                & vincita                                 \\
+			\midrule
+			Poker di figure                                                                                                                             & 1000 \texteuro                          \\
+			Poker d’assi                                                                                                                                & 2000 \texteuro                          \\
+			\footnote{5 carte dello stesso seme, ad es: 1-4-5-10-13, \textit{tutti cuori} $ \rightarrow  $ vincita = 264 €} Colore                      & Somma delle carte uscite $ \times  $ 8  \\
+			\footnote{5 carte dello stesso seme in sequenza, ad esempio: 3-4-5-6-7 \textit{tutte picche} $ \rightarrow  $ vincita = 250 €} Scala colore & Somma delle carte uscite $ \times  $ 10 \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+
+
+	La presenza di un’altra carta non intacca la vincita.
+	\vskip3mm
+	Contare quante slotmachine sono presenti nel casino
+	\vskip3mm
+	Si scrivano le classi opportune per implementare il gioco e un classe \verb|Casino| dove create diverse \verb|Slot|.
+	\vskip3mm
+	Fare in modo che la giocata possa essere efffetutata solo dopo aver inseirto un certo importo;
+	\vskip3mm
+	Introdurre successivamente anche i \textit{jolly} tra le carte e fare in modo che la presenza del jolly come carta estratta raddoppi la vincita;
+\end{esercizio}
+
+
+
+\tikzexternaldisable
+\begin{esercizioL}{Sistema gestione prenotazioni centro sportivo}
+	Il Centro Sportivo \textit{ActiveWorld} offre diverse attività (\textit{nuoto}, \textit{palestra}, \textit{yoga}, \textit{arrampicata}) e vuole un software che gestisca le prenotazioni giornaliere per i vari corsi e spazi.
+	Tutte le informazioni devono essere salvate e gestite tramite file di testo, letti all'avvio dell'applicazione e aggiornati durante l'esecuzione.
+	\vskip3mm
+	\sfblue{File coinvolti:} l'applicazione utilizza tre file:
+	\begin{itemize}
+		\item \textit{Utenti registrati:} ogni utente è caratterizzato da:
+		      \begin{itemize}
+			      \item nome
+			      \item cognome
+			      \item data di nascita
+			      \item telefono
+			      \item email
+		      \end{itemize}
+		\item \textit{Attività disponibili}
+		      \begin{itemize}
+			      \item nome dell'attività
+			      \item capacità massima
+			      \item fascia oraria (es. \verb|18:00--19:30|)
+		      \end{itemize}
+		\item \textit{Prenotazioni attive:} ogni riga del file contiene:
+		      \begin{itemize}
+			      \item email dell'utente
+			      \item nome attività
+			      \item data della prenotazione (\verb|gg/mm/aaaa|)
+		      \end{itemize}
+	\end{itemize}
+
+	\vskip3mm
+	\sfblue{Funzionalità richieste}
+	\begin{enumerate}
+		\item \textit{Caricamento dati dai 3 file:} all'avvio, il programma deve:
+		      \begin{itemize}
+			      \item leggere tutti gli utenti registrati
+			      \item leggere tutte le attività disponibili
+			      \item leggere le prenotazioni attive
+			      \item verificare che ogni prenotazione faccia riferimento a un utente e a un'attività validi
+			      \item segnalare eventuali incongruenze (es. utente inesistente $\rightarrow$ prenotazione ignorata)
+		      \end{itemize}
+
+		\item \textit{Visualizzare le attività disponibili:} mostrare
+		      \begin{itemize}
+			      \item nome attività
+			      \item fascia oraria
+			      \item numero prenotazioni attuali
+			      \item posti disponibili rimanenti
+		      \end{itemize}
+
+		\item \textit{Visualizzare tutte le prenotazioni:} raggruppate per attività, ordinate per data.
+
+		\item \textit{Cercare le prenotazioni di un utente:} richiedere \textit{email} e mostrare tutte le sue prenotazioni.
+
+		\item \textit{Aggiungere una nuova prenotazione:} il programma deve:
+		      \begin{itemize}
+			      \item chiedere: email utente, attività, data
+			      \item verificare che l'utente esista
+			      \item verificare che l'attività esista
+			      \item controllare che la data non sia nel passato
+			      \item controllare che l'utente non abbia già una prenotazione per la stessa attività nella stessa giornata
+			      \item controllare che l'attività non sia al completo per quella data
+			      \item se tutto ok:
+			            \begin{itemize}
+				            \item aggiungere la prenotazione in memoria
+				            \item aggiungerla al file in modalità \textit{append}
+			            \end{itemize}
+		      \end{itemize}
+
+		\item \textit{Cancellare una prenotazione}\\
+		      Richiedere:
+		      \begin{itemize}
+			      \item email utente
+			      \item nome attività
+			      \item data
+		      \end{itemize}
+		      Controllare che esista, poi:
+		      \begin{itemize}
+			      \item rimuoverla dall'elenco
+			      \item aggiornare il file riscrivendolo completamente
+		      \end{itemize}
+
+		\item \textit{Report automatico delle attività quasi piene:} il programma deve offrire una funzione \textit{Genera Report} che:
+		      \begin{itemize}
+			      \item mostra tutte le attività che hanno meno del 10\% dei posti liberi nella data selezionata
+			      \item genera anche una versione salvata in un file \verb|report.txt| con formattazione ordinata
+		      \end{itemize}
+
+		\item \textit{Statistiche settimanali (opzionale):} dato un range di date, il programma deve indicare:
+		      \begin{itemize}
+			      \item quale attività è stata prenotata di più
+			      \item quale di meno
+			      \item il numero totale di prenotazioni
+			      \item percentuale di riempimento media delle attività
+		      \end{itemize}
+	\end{enumerate}
+
+	\sfblue{Requisiti e vincoli tecnici}
+	\begin{itemize}
+		\item Il formato dei file deve rimanere sempre uniforme.
+		\item Se vengono inseriti dati mancanti o non validi, il programma deve richiederli di nuovo.
+		\item Ogni modifica deve aggiornare coerentemente i file.
+		\item L'applicazione deve funzionare finché il gestore non sceglie di uscire.
+	\end{itemize}
+	\vskip3mm
+\end{esercizioL}
+\tikzexternalenable
+
+
+\begin{esercizio}{ASCII art}
+	Creare una applicazione che, dato in input un file \textit{in formato} \verb|.ppm| \verb|p3| crei una ascii art di quanto rappresentato dalla figura. Il main deve definire due parametri:
+	\begin{itemize}
+		\item \verb|inputFile| il file \verb|.ppm| da convertire in ascii art
+		\item \verb|outputFile| il file \verb|.txt| di output contenente la ascii art
+	\end{itemize}
+	Il formato \verb|.ppm p3| rappresenta una immagine tramite una matrice di pixel, ognuno dei quali è rappresentato da tre numeri interi (rosso, verde, blu) che vanno da 0 a 255. Il file inizia con una intestazione composta da:
+	\begin{lstlisting}[frame = none]
+    P3
+    <WIDTH> <HEIGHT>
+    <MAX_COLOR>
+    <R> <G> <B> ... <R> <G> <B>
+  \end{lstlisting}
+	Ad esempio, un file contenente 3 pixel in orizzontale, in ordine, uno rosso, uno verde e uno blu, sareebbe così codificato:
+	\begin{lstlisting}[frame = none]
+    P3
+    3 1
+    255
+    255 0 0 0 255 0 0 0 255
+  \end{lstlisting}
+	dove
+	\[
+		\underbracket[0.1ex]{255\; 0\; 0\;}_{\text{pixel 1}} \underbracket[0.1ex]{0\; 255\; 0\;}_{\text{pixel 2}} \underbracket[0.1ex]{0\; 0\; 255}_{\text{pixel 3}}
+	\]
+	hint: si può usare la seguente formula per convertire un pixel in bianco e nero:
+	\begin{lstlisting}[frame = none]
+  double grayscale = 0.299 * r + 0.587 * g + 0.114 * b;
+  \end{lstlisting}
+\end{esercizio}
+
+\begin{esercizio}{Operazioni arraylist}
+	Scrivere un programma che chieda all'utente un numero \verb|n| di interi da terminale. L'applicazione deve innanzitutto chiedere \verb|n| all'utente e successivamente leggere \verb|n| interi in un arraylist. Una volta letti tutti i numeri viene stampato un prompt che chiede quale operazione eseguire. Le opzioni sono le seguenti:
+	\begin{enumerate}
+		\item \textit{Verifica numero}: viene chiesto un numero e l'applicazione deve verificare se il numero è presente nell'arraylist
+		\item \textit{Rimuovi numero}: viene chiesto un numero e l'applicazione deve rimuovere \textit{tutte} le occorrenze di quel numero nell'arraylist
+		\item \textit{Sort}: chiede se vuole ordinare l'arraylist in ordine crescente o decrescente e stampa il risultato ordinato. Usare un algoritmo di sort scritto a mano, non quello implementato nelle classi standard!
+		\item \textit{Check sort}: stampa \verb|true| se il vettore è ordinato, \verb|false| altrimenti
+		\item \textit{Reverse}: inverte l'ordine del vettore e lo stampa
+		\item \textit{Quit}: esce dall'applicazione
+	\end{enumerate}
+\end{esercizio}
+
+
+\end{document}
