@@ -213,16 +213,71 @@ In java sono definite alcune funzioni utilissime. Qui una lista (non esaustiva) 
 
 Supponiamo di avere \verb|String s = "stringa stringa";|
 \vskip3mm
-\begin{tabularx}{\linewidth}{lX}
-	\toprule
-	\sfblue{Funzione}                & \sfblue{Descrizione}                                                                  \\
-	\midrule
-	\verb|s.lenght()|                & Ritorna il numero di caratteri conenuti nella stringa (7 nel caso d'esempio)          \\
-	\verb|s.charAt(int index)|       & Ritorna il carattere in posizione \verb|index|                                        \\
-	\verb|s.indexOf(char carattere)| & Ritorna l'indice della prima occorrenza di \verb|carattere| in \verb|s|               \\
-	\verb|s.indexOf(String stringa)| & Ritorna l'indice della prima occorrenza della sottostringa \verb|stringa| in \verb|s| \\
-	\bottomrule
-\end{tabularx}
+
+\begin{table}[H]
+	\begin{tabularx}{\linewidth}{lX}
+		\toprule
+		\sfblue{Funzione}                     & \sfblue{Descrizione}                                       \\
+		\midrule
+		\verb|s.length()|                     & Ritorna la lunghezza della stringa                         \\
+		\verb|s.charAt(int index)|            & Ritorna il carattere in posizione \verb|index|             \\
+		\verb|s.replace(char c1, char c2)|    & Sostituisce tutte le occorrenze di \verb|c1| con \verb|c2| \\
+		\verb|s.equals(String str)|           & Verifica se due stringhe sono uguali                       \\
+		\verb|s.equalsIgnoreCase(String str)| & Come sopra, ignorando maiuscole/minuscole                  \\
+		\verb|s.compareTo(String str)|        & Confronto lessicografico (ordine alfabetico)               \\
+		\verb|s.toCharArray()|                & Converte in un array di caratteri \verb|char[]|            \\
+		\bottomrule
+	\end{tabularx}
+	\caption{Funzioni basi}
+\end{table}
+
+\begin{table}[H]
+	\begin{tabularx}{\linewidth}{lX}
+		\toprule
+		\sfblue{Funzione}                   & \sfblue{Descrizione}                                                                  \\
+		\midrule
+		\verb|s.indexOf(char carattere)|    & Ritorna l’indice della prima occorrenza di \verb|carattere| in \verb|s|               \\
+		\verb|s.indexOf(String stringa)|    & Ritorna l’indice della prima occorrenza della sottostringa \verb|stringa| in \verb|s| \\
+		\verb|s.lastIndexOf(String str)|    & Ritorna l’indice dell’ultima occorrenza della sottostringa \verb|str| in \verb|s|     \\
+		\verb|s.contains(CharSequence seq)| & Ritorna \verb|true| se la sequenza \verb|seq| è contenuta in \verb|s|                 \\
+		\verb|s.startsWith(String prefix)|  & Verifica se \verb|s| inizia con la stringa indicata                                   \\
+		\verb|s.endsWith(String suffix)|    & Verifica se \verb|s| termina con la stringa indicata                                  \\
+		\bottomrule
+	\end{tabularx}
+	\caption{Funzioni di ricerca in stringhe}
+\end{table}
+
+\begin{table}[H]
+	\begin{tabularx}{\linewidth}{lX}
+		\toprule
+		\sfblue{Funzione}                      & \sfblue{Descrizione}                                                         \\
+		\midrule
+		\verb|s.substring(int beginIndex)|     & Restituisce la sottostringa da \verb|beginIndex| fino alla fine              \\
+		\verb|s.substring(int begin, int end)| & Restituisce la sottostringa da \verb|begin| (incluso) a \verb|end| (escluso) \\
+		\verb|s.split(String regex)|           & Divide la stringa in un array, usando l’espressione regolare come separatore \\
+		\verb|String.join(delim, ...)|         & Unisce più stringhe usando il delimitatore specificato                       \\
+		\verb|s.trim()|                        & Rimuove gli spazi (whitespace) iniziali e finali dalla stringa               \\
+		\verb|s.strip()| (Java 11+)            & Rimuove spazi secondo le regole Unicode                                      \\
+		\bottomrule
+	\end{tabularx}
+	\caption{Funzioni di splitting}
+\end{table}
+
+
+\begin{table}[H]
+	\begin{tabularx}{\linewidth}{lX}
+		\toprule
+		\sfblue{Funzione}      & \sfblue{Descrizione}                    \\
+		\midrule
+		\verb|s.replaceAll(String regex, |                               \\ \verb|String replacement)|   & Sostituisce tutte le occorrenze che corrispondono all’espressione regolare con un’altra stringa \\
+		\verb|s.replaceFirst(String regex, |                             \\ \verb|String replacement)| & Sostituisce solo la prima occorrenza (secondo regex) \\
+		\verb|s.toUpperCase()| & Converte tutti i caratteri in maiuscolo \\
+		\verb|s.toLowerCase()| & Converte tutti i caratteri in minuscolo \\
+		\bottomrule
+	\end{tabularx}
+	\caption{Funzioni di modifica}
+\end{table}
+
 
 \vskip3mm
 \begin{lstlisting}[language = c++, frame = none]
