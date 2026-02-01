@@ -103,7 +103,7 @@ public class Gestore {
     return lista;
   }
 
-  private static boolean checkUser(ArrayList<Utente> utenti, String email) {
+  private boolean checkUser(String email) {
     for (Utente user : utenti) {
       if (user.getEmail().equals(email))
         return true;
@@ -111,7 +111,7 @@ public class Gestore {
     return false;
   }
 
-  private static boolean checkAttivita(ArrayList<Attivita> attivita, String nomeAttivita) {
+  private boolean checkAttivita(String nomeAttivita) {
     for (Attivita a : attivita) {
       if (a.getNome().equals(nomeAttivita))
         return true;
@@ -128,8 +128,8 @@ public class Gestore {
 
     boolean valido = true;
     for (Prenotazione prenotazione : this.prenotazioni) {
-      if (checkUser(this.utenti, prenotazione.getEmail())
-          && checkAttivita(this.attivita, prenotazione.getNomeAttivita()))
+      if (checkUser(prenotazione.getEmail())
+          && checkAttivita(prenotazione.getNomeAttivita()))
         schemaCorretto.add(prenotazione);
       else {
         valido = false;
@@ -182,10 +182,10 @@ public class Gestore {
   }
 
   public boolean aggiungiPrenotazione(Prenotazione p) {
-    if (!checkUser(utenti, p.getEmail()))
+    if (!checkUser(p.getEmail()))
       return false;
 
-    if (!checkAttivita(attivita, p.getNomeAttivita()))
+    if (!checkAttivita(p.getNomeAttivita()))
       return false;
 
     if (p.getDataPrenotazione().isBefore(LocalDate.now()))
@@ -193,7 +193,8 @@ public class Gestore {
 
     ArrayList<Prenotazione> prenotazioniUtente = getPrenotazioniByEmail(p.getEmail());
     for (Prenotazione prenotazione : prenotazioniUtente) {
-      if (prenotazione.getNomeAttivita().equals(p.getNomeAttivita())
+      if (prenotazione.getEmail().equals(p.getEmail())
+          && prenotazione.getNomeAttivita().equals(p.getNomeAttivita())
           && prenotazione.getDataPrenotazione().equals(p.getDataPrenotazione())) {
         return false;
       }

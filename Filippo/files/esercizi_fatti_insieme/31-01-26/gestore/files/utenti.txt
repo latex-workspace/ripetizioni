@@ -1,0 +1,7 @@
+Mario, Rossi, 11/10/2005, 3291234567, mario.rossi@example.com
+Giulia, Bianchi, 25/07/1998, 3209876543, giulia.bianchi@example.com
+Luca, Verdi, 02/03/1992, 3331122334, luca.verdi@example.com
+Elena, Neri, 30/12/1985, 3885566778, elena.neri@example.com
+Francesco, Gallo, 05/01/2000, 3452233445, francesco.gallo@example.com
+Chiara, Moretti, 17/09/1995, 3516677889, chiara.moretti@example.com
+Alberto, Ferri, 21/06/1978, 3341234123, alberto.ferri@example.com

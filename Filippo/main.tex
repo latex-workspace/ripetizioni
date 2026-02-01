@@ -751,6 +751,149 @@ Collezione di esercizi, divisi per categoria
 	\end{center}
 	Viene fornito un esempio di file \href{run:./files/esercizi/epstein/epstein.txt}{epstein.txt} e \href{run:./files/esercizi/epstein/cript.txt}{cript.txt} in \texttt{\href{run:./files/esercizi/epstein/}{files/esercizi/epstein}}, con la corretta versione descriptata e un codice c per generare file criptati.
 \end{esercizioL}
+
+\begin{esercizioL}{Plotting graphs}
+	Scrivere del codice java per gestire un programma che crei il grafico approssimato di 3 tipi di funzioni:
+	\begin{itemize}
+		\item Polinomi
+		\item Circonferenze
+		\item Punti
+	\end{itemize}
+	Per ogni forma vi sarà un tipo di file diverso: \verb|poly.txt|, \verb|circ.txt| e \verb|points.txt|. Il formato dei file è il seguente:
+	\vskip3mm
+	\verb|poly.txt|: un polinomio per riga, con ignognita la lettera $ x $. Gli spazi vanno ignorati e gli esponenti possono apparire in qualsiasi ordine:
+	\begin{lstlisting}[frame = none]
+  2x^2 +x -1
+  2x^2 -2x^3+x -1
+  -1
+  2x
+  \end{lstlisting}
+
+	\verb|points.txt|: un punto definito da 2 coordinate
+	\begin{lstlisting}[frame = none]
+  (1, 2)
+  (-1, 1)
+  \end{lstlisting}
+
+	\verb|circ.txt|: una circonferenza per riga, definita dal centro e dal raggio:
+	\begin{lstlisting}[frame = none]
+  (1, 2) 3
+  (-1, 1) 6
+  \end{lstlisting}
+	I 3 file vanno letti e parsati correttamente. Successivamente si disegnino gli oggetti matematici in un piano cartesiano, salvando tutto in un file \verb|out.svg|. Il formato svg permette di esprimere grafice create con linee, come segue:
+	\begin{lstlisting}[language = java, frame = none]
+<svg width="20" height="10" xmlns="http://www.w3.org/2000/svg">
+  <path d="M10 10 L 100 10 L 100 100 L 10 100 Z"
+    fill="none"
+    stroke="black"
+    stroke-width="3" />
+</svg>
+  \end{lstlisting}
+	In particolare, la sintassi per esprimere una linea spezzata è la seguente:
+	\begin{itemize}
+		\item \verb|M x y|: sposta la penna alla posizione \verb|(x, y)|
+		\item \verb|L x y|: traccia una linea dalla posizione precedente a \verb|(x, y)|
+		\item \verb|Z|: chiude il tracciato
+	\end{itemize}
+	nota che possono essere usati più tracciati, ad esempio:
+	\begin{lstlisting}[language = java, frame = none]
+<svg width="200" height="10" xmlns="http://www.w3.org/2000/svg">
+  <path d="M10 10 L 100 10" fill="none" stroke="red" stroke-width="3" />
+  <path d="M10 10 L 100 10" fill="none" stroke="green" stroke-width="3" />
+</svg>
+  \end{lstlisting}
+
+\end{esercizioL}
 \tikzexternalenable
+
+\begin{esercizio}{Directory tree}
+	Vi viene data una directory e dovete stampare su terminale una albero che rappresenti la directory, ad esempio, avendo le cartelle
+	\begin{itemize}
+		\item \verb|1|: contiene \verb|file1.txt| e \verb|file2.txt|
+		\item \verb|2|: contiene \verb|file3.txt| e \verb|file4.txt|
+		\item \verb|3|: contiene le cartelle \verb|1| e \verb|2|
+	\end{itemize}
+	allora il programma deve stampare
+	\begin{lstlisting}[language = java, frame = none]
+3
+|- 1
+|  |- file1.txt
+|  |- file2.txt
+| 
+|- 2
+   |- file3.txt
+   |- file4.txt
+  \end{lstlisting}
+	Dopo aver stampato l'albero, vanno stampate classifiche per ogni file trovato in ogni possibile sottodirectory, in particolare:
+	\begin{itemize}
+		\item Numero di file totali
+		\item Tutte le diverse estensioni trovate, ciascuna con il relativo conteggio, ordinare in ordine decrescente
+		\item Lunghezza media (in caratteri) di tutti i file trovati
+	\end{itemize}
+	Hint: si possono usare le funzioni seguenti per listare file e directories:
+	\begin{lstlisting}[language = java, frame = none]
+File dir = new File("path/to/your/directory");
+File[] files = dir.listFiles(File::isFile);
+File[] directories = dir.listFiles(File::isDirectory);
+\end{lstlisting}
+	Per concatenare diversi paths in maniera sicura, si può usare la funzione:
+	\begin{lstlisting}[language = java, frame = none]
+Paths.get("component1", "component2", ..., "componentn")
+\end{lstlisting}
+
+
+\end{esercizio}
+
+\section{Consigli vari per la verifica}
+\subsection{Consigli eclipse}
+\begin{center}
+	\begin{tabular}{l l l}
+		\toprule
+		\sfblue{Operazione}            & \sfblue{Menu}                              & \sfblue{Scorciatoia}    \\
+		\midrule
+		Go to definition (declaration) & Navigate $ \rightarrow  $ Open declaration & \verb|f3|               \\
+		Format                         & Source $ \rightarrow  $ Format             & \verb|ctrl + shift + f| \\
+		Rename                         & Refactor $ \rightarrow  $ Rename           & \verb|alt + ctrl + r|   \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\subsection{Esempi regex}
+\begin{itemize}
+	\item Matcha le posizioni in cui splittare una stringa separata da virgole, gestendo spazi aggiuntivi:
+	      \begin{center}
+		      \verb|\s*,\s*|
+	      \end{center}
+
+	      testa su:
+
+	      \begin{lstlisting}[frame = none]
+Francesco   ,   Gallo   , 05/01/2000, 3452233445 , fr.ga@example.com
+Chiara, Moretti, 17/09/1995, 3516677889, chiara.moretti@example.com
+Alberto, Ferri, 21/06/1978, 3341234123, alberto.ferri@example.com 
+          \end{lstlisting}
+	\item Matcha in 3 gruppi diversi coefficiente, $ x $ e esponente di un polinomio, gestendo spazi aggiuntivi:
+	      \begin{center}
+		      \verb|([-\+]?\s*\d*?\s*)(x)((\s*\^\s*\d)?)|
+	      \end{center}
+	      testa su:
+	      \begin{lstlisting}[ frame = none]
+ 2x^ 2 +x -1
+2x ^2 -2x^3+x -1
+  -1 + x
+2 x
+          \end{lstlisting}
+	\item Matcha le mail in formato \verb|nome.cognome@dominio.com| dove dominio può essere \verb|example| o \verb|gmail|:
+	      \begin{center}
+		      \verb|\w+\.\w+@(example|\texttt{|}\verb|gmail)\.com|
+	      \end{center}
+	      testa su:
+
+	      \begin{lstlisting}[frame = none]
+Francesco, Gallo, 05/01/2000, 3452233445 , fra.gallo@example.com
+Chiara, Moretti, 17/09/1995, 3516677889, chiara.moretti@example.com
+Alberto, Ferri, 21/06/1978, 3341234123, alberto.ferri@example.com 
+          \end{lstlisting}
+\end{itemize}
 
 \end{document}
