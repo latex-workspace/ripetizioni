@@ -661,4 +661,30 @@ In sintesi, le annotazioni di tipo sono strumenti facoltativi e non bloccanti ch
 	\]
 \end{esercizio} \label{statistiche_liste}
 
+\subsubsection{Esercizi stringhe e dizionari}
+\begin{esercizio}{Reverse string}
+	Data in input una stringa $ s $, modificarla invertendo l'ordine di ogni suo carattere
+\end{esercizio}
+
+
+\begin{esercizio}{Conta vocali}
+	Data in input una stringa $ s $, ritornare un dizionario contenente il conteggio delle vocali contenute nella stringa
+\end{esercizio}
+
+\begin{esercizio}{Stringa palindroma}
+	Data in input una stringa $ s $, scrivere una funzione che ritorni \verb|true| se la stringa è palindroma, \verb|false| altrimenti
+\end{esercizio}
+
+\begin{esercizio}{Cifraio di Cesare}
+	Data in input una stringa $ s $ e un intero $ k $, scrivere una funzione che cripti una stringa secondo la logica del \textit{cifraio di Cesare}. Nel dettaglio, un cirfraio non fa altro che sostituire ogni carattere della stringa con quello $ k $ posizioni \textit{dopo} di esso. Nel caso in cui $ k $ fosse negativo, va fatta la stessa cosa sostituendo il carattere con quello $ k $ posizioni \textit{prima}. Se il carattere andasse "fuori range" dall'alfabeto, allora si deve ricominciare a contare dal primo, ad esempio:
+	\begin{center}
+		\verb|xyz| $ \xrightarrow{k=3} $ \verb|zab|\\
+		\verb|abc| $ \xrightarrow{k=-3} $ \verb|yza|
+	\end{center}
+\end{esercizio}
+
+\begin{esercizio}{Sottostringa}
+	Data in input una stringa $ s $ e una stringa $ p $, scrivere una funzione che ritorni \verb|true| se la stringa è $ p $ è contenuta in $ s $, \verb|false| altrimenti
+\end{esercizio}
+
 \end{document}
