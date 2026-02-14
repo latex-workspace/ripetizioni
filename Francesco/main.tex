@@ -768,5 +768,178 @@ Collezione di esercizi, divisi per categoria
 	\end{enumerate}
 \end{esercizio}
 
+\newpage
+\subsection{Cheatsheet}
+\footnotesize
+\sfblue{Files-lettura}
+\begin{lstlisting}[language = java, frame = none, basicstyle=\ttfamily\footnotesize]
+// Leggo parola/intero/float uno per volta
+Scanner scanner = new Scanner(new File("path/to/file.txt")));
+
+// Leggo intero contenuto linea per linea in lista di stringhe
+String content=Files.readString(Paths.get("path/to/file.txt"));
+
+// Leggo intero contenuto linea per linea in lista di stringhe
+List<String>lines=Files.readAllLines(Paths.get("path/to/file.txt"));
+\end{lstlisting}
+
+\sfblue{Files-scrittura}
+\begin{lstlisting}[language = java, frame = none, basicstyle=\ttfamily\footnotesize]
+// Scrivo stringa e chiudo file immediatamente
+Files.writeString(Paths.get("file.txt"), "contenuto", <StandardOpenOption>);
+
+StandardOpenOption.TRUNCATE_EXISTING // se file esiste cancella contenuto
+StandardOpenOption.APPEND // se file esite scrive in fondo
+
+// Scrivo lista di stringhe
+String array[] = { "line1", "line2" }; // va convertito con Arrays.asList()
+ArrayList<String> arrayList = new ArrayList<>(Arrays.asList("line1", "line2"));
+
+Files.write(Paths.get("file.txt"), Arrays.asList(array), <StandardOpenOption>);
+Files.write(Paths.get("file.txt"), arrayList, <StandardOpenOption>);
+\end{lstlisting}
+
+\sfblue{Features Eclipse}
+\begin{center}
+	\begin{tabular}{l l l}
+		\toprule
+		\sfblue{Operazione}            & \sfblue{Menu}                                             & \sfblue{Scorciatoia}    \\
+		\midrule
+		Go to definition (declaration) & Navigate $ \rightarrow  $ Open declaration                & \verb|f3|               \\
+		Format                         & Source $ \rightarrow  $ Format                            & \verb|ctrl + shift + f| \\
+		Automatically import libraries & Source $ \rightarrow  $ Organize imports                  & \verb|ctrl + shift + o| \\
+		Rename                         & Refactor $ \rightarrow  $ Rename                          & \verb|alt + ctrl + r|   \\
+		Generate getters/setters       & Source $ \rightarrow  $ Generate getters/setters          & \verb|nessuna|          \\
+		Generate toString              & Source $ \rightarrow  $ Generate toString                 & \verb|nessuna|          \\
+		Generate constructor           & Source $ \rightarrow  $ Generate constructor using fields & \verb|nessuna|          \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+\sfblue{Date}
+\begin{lstlisting}[language = java, frame = none, basicstyle=\ttfamily\footnotesize]
+LocalDate today = LocalDate.now(); // solo data
+LocalDateTime now = LocalDateTime.now(); // data e ora
+
+LocalDate someDay = LocalDate.of(2026, 11, 26);
+LocalDateTime someTime = LocalDateTime.of(2026, 11, 26, 3, 30, 15);
+
+// Conversione da stringa a data; formatter uguale per LocalDateTime e LocalDate
+String date = "26/02/2026 15:30:45";
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"); 
+
+LocalDateTime parsedDateTime = LocalDateTime.parse(date, formatter);
+LocalDate parsedDate = LocalDate.parse(date, formatter);
+\end{lstlisting}
+
+\sfblue{Sort}
+\begin{lstlisting}[language = java, frame = none, basicstyle=\ttfamily\footnotesize]
+ArrayList<SomeClass> list = new ArrayList<>();
+list.sort((o1, o2) -> <criterio ordering>);
+\end{lstlisting}
+l'oggetto \verb|(o1, o2) -> <criterio ordering>| serve per definire un ordinamento fra due istanze di \verb|SomeClass| (\verb|o1|, \verb|o2|). \verb|<criterio ordinamento>| deve essere un intero $ < 0 $ se $ o_1 < o_1 $, $ = 0 $ se $ o_1 = o_2 $ e $ > 0 $ se $ o_1 > o_2 $. Ad es, per ordinare rispetto al campo \verb|x| di una classe: \verb|list.sort((o1, o2) -> o1.x - o2.x)|
+
+\vskip3mm
+\sfblue{Enum con valori associati}
+
+\begin{lstlisting}[language = java, frame = none, basicstyle=\ttfamily\footnotesize]
+enum Direction {
+  UP("Su", 1), DOWN("Giù", 3), LEFT("Sinistra", 2), RIGHT("Destra", 4)
+  private final String ita; private final int val;
+  private Direction(String ita, int val) {
+    this.ita = ita; this.val = val;
+  }
+}
+\end{lstlisting}
+
+\vskip3mm
+\sfblue{Funzioni stringhe}
+\begin{lstlisting}[language = java, frame = none, basicstyle=\ttfamily\footnotesize]
+// sostituzione
+s.replace(char c1, char c2)
+s.replaceFirst(String regex, String replacement)
+s.replaceAll(String regex, String replacement), 
+\end{lstlisting}
+\vskip0mm
+\begin{minipage}[t]{0.5\textwidth}
+	\begin{lstlisting}[language = java, frame = none, basicstyle=\ttfamily\footnotesize]
+// split e unione
+s.trim(),   
+s.substring(int begin, int end) 
+s.split(String regex),   
+String.join(delim, ...) 
+  \end{lstlisting}
+\end{minipage}
+%
+\begin{minipage}[t]{0.5\textwidth}
+	\begin{lstlisting}[language = java, frame = none, basicstyle=\ttfamily\footnotesize]
+// altre
+s.compareTo(String str)
+s.toUpperCase()
+s.toLowerCase()
+s.indexOf(String stringa)
+  \end{lstlisting}
+\end{minipage}
+
+\vskip3mm
+\sfblue{Espressioni regolari}
+\vskip3mm
+\begin{center}
+	\begin{tabularx}{0.49\textwidth}{l X}
+		\toprule
+		\multicolumn{2}{c}{\sfblue{Wildcards}}   \\
+		\midrule
+		{\lstinline!.!}   & Qualsiasi carattere  \\
+		{\lstinline!\\s!} & Whitespace character \\
+		{\lstinline!\\d!} & Digit, cifra         \\
+		{\lstinline!\\w!} & Word character       \\
+		\bottomrule
+	\end{tabularx}
+	\hfill
+	\begin{tabularx}{0.49\textwidth}{l X}
+		\toprule
+		\multicolumn{2}{c}{\sfblue{Quantificatori}}        \\
+		\midrule
+		{\lstinline!+!}     & 1 o più                      \\
+		{\lstinline!*!}     & 0 o più                      \\
+		{\lstinline!?!}     & 0 o 1                        \\
+		{\lstinline!\{n\}!} & esattamente $ n $ occorrenze \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+%
+% \begin{minipage}[t]{0.48\textwidth}
+% \end{minipage}
+% %
+% \begin{minipage}[t]{0.48\textwidth}
+%
+% \end{minipage}
+\begin{center}
+	\begin{tabularx}{\textwidth}{l X}
+		\toprule
+		\sfblue{Regex}                                            & \sfblue{Descrizione}                        \\
+		\midrule
+		{\lstinline!\\w+\\.\\w+@(domain1|domain2|domainx)\\.com!} & matcha "qualcosa.qualcosa@dominio.com"      \\
+		{\lstinline!\\s*,\\s*!}                                   & matcha una virgola con spazi a sx e dx      \\
+		{\lstinline!\\d\{2\}/\\d\{2\}/\\d\{4\}!}                  & matcha una data nel formato "gg/mm/aaaa"    \\
+		{\lstinline!https?://[\\w-]+!}                            & matcha un URL HTTP o HTTPS                  \\
+		{\lstinline!([A-Z][a-z]+)!}                               & matcha parole che iniziano con la maiuscola \\
+		\bottomrule
+	\end{tabularx}
+\end{center}
+\begin{lstlisting}[language = java, frame = none]
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+Pattern pattern = Pattern.compile(<regex>);
+Matcher matcher = pattern.matcher(<text>);
+
+while (matcher.find()) { matcher.group(); }
+\end{lstlisting}
+
+\sfblue{Altro}
+\begin{lstlisting}[language = java, frame = none]
+// Ottenere path directory corrente
+System.out.println(System.getProperty("user.dir"));
+\end{lstlisting}
 
 \end{document}
