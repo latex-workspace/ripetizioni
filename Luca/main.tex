@@ -687,4 +687,73 @@ In sintesi, le annotazioni di tipo sono strumenti facoltativi e non bloccanti ch
 	Data in input una stringa $ s $ e una stringa $ p $, scrivere una funzione che ritorni \verb|true| se la stringa è $ p $ è contenuta in $ s $, \verb|false| altrimenti
 \end{esercizio}
 
+\begin{esercizio}{Anagrammi}
+	Scrivi una funzione che, dato un elenco di stringhe, raggruppi tra loro tutte quelle che sono anagrammi e restituisca un dizionario in cui le chiavi sono tuple contenenti le lettere dei gruppi di anagrammi, e i valori sono liste di parole anagrammabili tra loro. Esempio:
+	\begin{lstlisting}[language = python, frame = none]
+#input
+input = ["rete", "tere", "etre", "cane", "neca", "test"]
+
+#output
+{('e', 'r', 't'): {('rete', 'tere', 'etre')}, ('a', 'c', 'n'): {('cane', 'neca')}, ('e', 's', 't'): {('test',)}}
+\end{lstlisting}
+\end{esercizio}
+
+\begin{esercizio}{Decodifica Codice Segreto}
+	Una stringa rappresenta un codice segreto. Ogni lettera corrisponde ad un'altra secondo una mappatura fornita in un dizionario. Scrivi una funzione che riceva una stringa e il dizionario di codifica e restituisca la decodifica, ignorando caratteri non presenti nella mappa e tenendo conto che la funzione dev’essere "case-insensitive", ma la risposta va tutta in minuscolo.
+	\begin{lstlisting}[language = python, frame = none]
+mappa = {"a": "m", "b": "n", "c": "b", "d": "z"}
+
+decodifica("AbC daBaD!", mappa) # Output: "mnb zmnmz"
+\end{lstlisting}
+\end{esercizio}
+
+\begin{esercizio}{Dizionario doppio}
+	Scrivi una funzione che riceve una lista di coppie e restituisce un dizionario che mappa ciascun primo elemento a un set di tutti i secondi elementi e viceversa (cioè anche un dizionario che mappa ogni secondo elemento a tutti i primi). La funzione deve restituire una tupla: \verb|(diz1, diz2)|
+
+	\begin{lstlisting}[language = python, frame = none]
+mappa_doppia([("a", 1), ("b", 2), ("a", 3), ("c", 1)])
+#Output
+({"a": {1, 3}, "b": {2}, "c": {1}}, {1: {"a", "c"}, 2: {"b"}, 3: {"a"}})
+\end{lstlisting}
+
+\end{esercizio}
+
+\begin{esercizio}{Set di parole senza lettere comuni}
+Scrivi una funzione che, data una lista di parole, restituisca il più grande possibile set di parole tutte tra loro disgiunte (cioè nessuna lettera in comune). Restituisci come set.   
+\end{esercizio}
+1. **Frequenze di Pattern con Overlap**
+   
+   Scrivi una funzione che, data una stringa S e una sottostringa pattern P, restituisca il numero di volte in cui P compare in S, contando anche le sovrapposizioni.  
+   *Esempio:*  
+   ```python
+   conta_occorrenze_overlap("ababa", "aba") # Output: 2  (trova "aba" in posizione 0 e 2)
+   ```
+
+2. **Segmentazione Ottimale Palindroma**
+   
+   Scrivi una funzione che prenda una stringa e la suddivida nel minor numero possibile di sottostringhe (con taglio solo tra caratteri) tali che ogni sottostringa sia un palindromo.  
+   Restituisci la lista delle sottostringhe.  
+   *Esempio:*  
+   ```python
+   segmenta_palindromi("abaccdc") # Output: ["aba", "cc", "d", "c"]
+   ```
+
+3. **Permutazioni con Vincoli Lessicografici**
+   
+   Data una stringa S e un'altra stringa T più corta, scrivi una funzione che restituisca tutte le permutazioni di S nelle quali la sottostringa T compare almeno una volta e almeno una volta non in posizione iniziale. Le permutazioni vanno restituite come set di stringhe.
+
+4. **Rilevamento Blocchi di Caratteri Alternati**
+   
+   Scrivi una funzione che, data una stringa composta solo da due tipi di carattere (es: "a" e "b"), restituisce un elenco di tuple (carattere, lunghezza) che identifica la sequenza dei blocchi consecutivi dei caratteri, partendo dall’inizio.  
+   *Esempio:*  
+   ```python
+   blocchi_alternati("aaabbbaaab") # Output: [('a',3), ('b',3), ('a',3), ('b',1)]
+   ```
+
+5. **Decoding Dettatura Numerica**
+   
+   Una stringa contiene lettere intervallate da numeri: ogni numero N che segue una lettera indica che quella lettera deve essere ripetuta N volte. Scrivi una funzione che espanda la stringa secondo questa logica (attenzione ai casi in cui mancano i numeri: la lettera va assumpta singola).  
+   *Esempio:*  
+   ```python
+   espandi("a2bc3d") # Output: "aabccc d"
 \end{document}

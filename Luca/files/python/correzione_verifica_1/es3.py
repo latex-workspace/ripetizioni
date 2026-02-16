@@ -29,7 +29,7 @@ def create_dict(record: str) -> dict[str, str] | None:
 def parse(raw_data: str) -> list[dict[str, str]]:
     result = []
 
-    raw_data.strip()
+    raw_data = raw_data.strip()
     for record in raw_data.split("|"):
         message = create_dict(record)
         if message is not None:

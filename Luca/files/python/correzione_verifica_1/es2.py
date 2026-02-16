@@ -3,7 +3,7 @@ def filter(
 ) -> list[tuple[str, str, float]]:
     result = []
     for item in lista:
-        if item[1] == category:
+        if item[1].upper() == category.upper():
             result.append(item)
 
     return result
