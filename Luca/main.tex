@@ -718,42 +718,101 @@ mappa_doppia([("a", 1), ("b", 2), ("a", 3), ("c", 1)])
 
 \end{esercizio}
 
-\begin{esercizio}{Set di parole senza lettere comuni}
-Scrivi una funzione che, data una lista di parole, restituisca il più grande possibile set di parole tutte tra loro disgiunte (cioè nessuna lettera in comune). Restituisci come set.   
+\begin{esercizio}{set di parole senza lettere comuni}
+	scrivi una funzione che, data una lista di parole, restituisca il più grande possibile set di parole tutte tra loro disgiunte (cioè nessuna lettera in comune). restituisci come set.
 \end{esercizio}
-1. **Frequenze di Pattern con Overlap**
-   
-   Scrivi una funzione che, data una stringa S e una sottostringa pattern P, restituisca il numero di volte in cui P compare in S, contando anche le sovrapposizioni.  
-   *Esempio:*  
-   ```python
-   conta_occorrenze_overlap("ababa", "aba") # Output: 2  (trova "aba" in posizione 0 e 2)
-   ```
 
-2. **Segmentazione Ottimale Palindroma**
-   
-   Scrivi una funzione che prenda una stringa e la suddivida nel minor numero possibile di sottostringhe (con taglio solo tra caratteri) tali che ogni sottostringa sia un palindromo.  
-   Restituisci la lista delle sottostringhe.  
-   *Esempio:*  
-   ```python
-   segmenta_palindromi("abaccdc") # Output: ["aba", "cc", "d", "c"]
-   ```
+% 1. **Frequenze di Pattern con Overlap**
+%
+%    Scrivi una funzione che, data una stringa S e una sottostringa pattern P, restituisca il numero di volte in cui P compare in S, contando anche le sovrapposizioni.  
+%    *Esempio:*  
+%    ```python
+%    conta_occorrenze_overlap("ababa", "aba") # Output: 2  (trova "aba" in posizione 0 e 2)
+%    ```
+%
+% 2. **Segmentazione Ottimale Palindroma**
+%
+%    Scrivi una funzione che prenda una stringa e la suddivida nel minor numero possibile di sottostringhe (con taglio solo tra caratteri) tali che ogni sottostringa sia un palindromo.  
+%    Restituisci la lista delle sottostringhe.  
+%    *Esempio:*  
+%    ```python
+%    segmenta_palindromi("abaccdc") # Output: ["aba", "cc", "d", "c"]
+%    ```
+%
+% 3. **Permutazioni con Vincoli Lessicografici**
+%
+%    Data una stringa S e un'altra stringa T più corta, scrivi una funzione che restituisca tutte le permutazioni di S nelle quali la sottostringa T compare almeno una volta e almeno una volta non in posizione iniziale. Le permutazioni vanno restituite come set di stringhe.
+%
+% 4. **Rilevamento Blocchi di Caratteri Alternati**
+%
+%    Scrivi una funzione che, data una stringa composta solo da due tipi di carattere (es: "a" e "b"), restituisce un elenco di tuple (carattere, lunghezza) che identifica la sequenza dei blocchi consecutivi dei caratteri, partendo dall’inizio.  
+%    *Esempio:*  
+%    ```python
+%    blocchi_alternati("aaabbbaaab") # Output: [('a',3), ('b',3), ('a',3), ('b',1)]
+%    ```
+%
+% 5. **Decoding Dettatura Numerica**
+%
+%    Una stringa contiene lettere intervallate da numeri: ogni numero N che segue una lettera indica che quella lettera deve essere ripetuta N volte. Scrivi una funzione che espanda la stringa secondo questa logica (attenzione ai casi in cui mancano i numeri: la lettera va assumpta singola).  
+%    *Esempio:*  
+%    ```python
+%    espandi("a2bc3d") # Output: "aabccc d"
+\subsection{Esercizi ricorsione}
+\begin{esercizio}{Calcolo fattoriale}
+	Scrivere una funzione \textit{ricorsiva} che calcoli il fattoriale di un numero $ n $, preso come input. Il fattoriale di un numero è così definito:
+	\[
+		n! = n \cdot \left(n-1\right) \cdot \left(n-2\right) \cdot \ldots \cdot 2 \cdot 1
+	\]
+\end{esercizio}
 
-3. **Permutazioni con Vincoli Lessicografici**
-   
-   Data una stringa S e un'altra stringa T più corta, scrivi una funzione che restituisca tutte le permutazioni di S nelle quali la sottostringa T compare almeno una volta e almeno una volta non in posizione iniziale. Le permutazioni vanno restituite come set di stringhe.
+\begin{esercizio}{Calcolo fibonacci}
+	Scrivere una funzione \textit{ricorsiva} che calcoli il numero in posizione $ n $ nella sequenza di fibonacci. La sequenza di fibonacci è così definita:
+	\[
+		\operatorname{fib}\left(n\right) = \operatorname{fib}\left(n-1\right) + \operatorname{fib}\left(n-2\right)
+	\]
+	con $ \operatorname{fib}\left(0\right) = 1 $ e $ \operatorname{fib}\left(1\right) = 1 $
+\end{esercizio}
 
-4. **Rilevamento Blocchi di Caratteri Alternati**
-   
-   Scrivi una funzione che, data una stringa composta solo da due tipi di carattere (es: "a" e "b"), restituisce un elenco di tuple (carattere, lunghezza) che identifica la sequenza dei blocchi consecutivi dei caratteri, partendo dall’inizio.  
-   *Esempio:*  
-   ```python
-   blocchi_alternati("aaabbbaaab") # Output: [('a',3), ('b',3), ('a',3), ('b',1)]
-   ```
+\begin{esercizio}{Somma numeri naturali}
+	Scrivere una funzione \textit{ricorsiva} che calcoli la somma dei primi $ n $ numeri naturali
+\end{esercizio}
 
-5. **Decoding Dettatura Numerica**
-   
-   Una stringa contiene lettere intervallate da numeri: ogni numero N che segue una lettera indica che quella lettera deve essere ripetuta N volte. Scrivi una funzione che espanda la stringa secondo questa logica (attenzione ai casi in cui mancano i numeri: la lettera va assumpta singola).  
-   *Esempio:*  
-   ```python
-   espandi("a2bc3d") # Output: "aabccc d"
+\begin{esercizio}{Inversione array}
+	Scrivere una funzione \textit{ricorsiva} che inverta un array di interi
+	\[
+		\left[1,2,3,4,5\right] \rightarrow \left[5,4,3,2,1\right]
+	\]
+\end{esercizio}
+
+\begin{esercizio}{File system}
+	Viene dato in input un dizionario che rappresenta un \textit{file system}(insieme di cartelle e files) e il nome di un file. E' necessario cercare all'interno di tutto il file system il nome di un file. Se il file è presente restituire la tupla \verb|(true, file_path)|, se non è presente restituire \verb|(false, numero_file_analizzati)|.
+	\begin{lstlisting}[language = python, frame = none]
+file_system = {
+    "documenti": {
+        "uni": {
+            "appunti.txt": "Ricordarsi di studiare la ricorsione"
+        },
+        "lista_spesa.txt": "Latte\nPane\nUova",
+    },
+    "immagini": {
+      "foto.jpg": "contenuto_binario"
+    },
+    "README.txt": "Ecco un file system",
+}
+  \end{lstlisting}
+	Nota: puoi usare \verb|type(x) == dict| per controllare se \verb|x| è un dizionario
+\end{esercizio}
+
+\begin{esercizio}{Ricerca binaria}
+	L'algoritmo di ricerca binaria serve a ricercare efficientemente un elemento all'interno di un vettore ordinato. L'idea è la seguente:
+	\begin{itemize}
+		\item Controllo l'elemento a metà del vettore.
+		\item Se questo è \textit{maggiore} dell'elemento che sto cercando, allora sicuramente l'elemento di trova nella porzione  \textit{sinistra} dell'array
+		\item Se questo è \textit{minore} dell'elemento che sto cercando, allora sicuramente l'elemento di trova nella porzione  \textit{destra} dell'array
+		\item Ripeto il controllo sulla porzione corretta dell'array, secondo le condizioni appena elencate.
+	\end{itemize}
+	Implementare l'algoritmo \textit{ricorsivamente}
+\end{esercizio}
+
+
 \end{document}
