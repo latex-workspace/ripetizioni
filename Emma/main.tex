@@ -2525,8 +2525,126 @@ Inanzittuto il signifcato geometrico seno, coseno e tangente è il seguente. Dat
 	\end{axis}
 \end{tikzpicture}
 
+\subsection{Lavoro ed energia}
+Intuitivamente, il lavoro è il concetto fisico che descrive "l'impatto" di una forza su di un sistema. In particolare, lega la forza allo spostamento che questa genera.
+\begin{definizione}{Lavoro}
+	Il lavoro $ L $ è dato dalla forza $ F $ moltiplicata per lo spostamento $ s $ che questa forza genera, e per il coseno dell'angolo $ \theta $ che la forza forma con lo spostamento:
+	\[
+		L = F \cdot s \cdot \cos(\theta)
+	\]
+\end{definizione}
+Il coseno dell'angolo è importante in quanto solo la componente della forza che è parallela allo spostamento contribuisce al lavoro. Se la forza è perpendicolare allo spostamento, il lavoro è zero, poiché $ \cos(90^\circ) = 0 $.
+\subsection{Energia}
+In fisica esistono diversi modi per classificare l'energia, ma in generale possiamo dire che l'energia è la capacità di un sistema di compiere lavoro. Esistono diverse forme di energia:
+\begin{itemize}
+	\item Energia meccanica:
+	      \begin{itemize}
+		      \item Energia cinetica: energia data dal moto e dalla massa del sistema
+		      \item Energia potenziale: energia data dalla posizione o stato del sistema
+	      \end{itemize}
+	\item Energia termica: energia data dalla temperatura del sistema
+	\item Energia elettrica: energia data dalla presenza di cariche elettriche e dai campi elettrici
+	\item Energia chimica: energia data dalle reazioni chimiche e dalle interazioni tra le molecole
+	\item Energia nucleare: energia data dalle interazioni tra i nuclei atomici
+	\item Energia radiante: energia data dalle onde elettromagnetiche, come la luce
+	\item Energia sonora: energia data dalle onde sonore e dalle vibrazioni
+\end{itemize}
+Noi, per fortuna, ci concentreremo solo sull'energia meccanica, in particolare su quella cinetica e potenziale. Ciò che importa, tuttavia, è che l'energia non si crea ne si distrugge, ma passa da una forma all'altra.
+\begin{teorema}{Conservazione dell'energia}
+	In un sistema isolato, l'energia totale rimane costante nel tempo. Ciò significa che l'energia può essere trasformata da una forma all'altra, ma la quantità totale di energia nel sistema non cambia.
+\end{teorema}
+\subsubsection{Energia cinetica}
+Come già anticipato, l'energia cinetica è l'energia associata al movimento di un oggetto. Dipende dalla massa dell'oggetto e dalla sua velocità. La formula per calcolare l'energia cinetica è la seguente:
+\begin{definizione}{Energia cinetica}
+	L'energia cinetica $ K $ di un oggetto è data dalla formula:
+	\[
+		K = \frac{1}{2} m v^2
+	\]
+	dove $ m $ è la massa dell'oggetto e $ v $ è la sua velocità.
+\end{definizione}
 
+\subsubsection{Energia potenziale gravitazionale}
+Un corpo che si trova ad una data altezza rispetto a un punto di riferimento (di solito il suolo) possiede energia potenziale gravitazionale. Questa energia dipende dalla massa del corpo, dall'altezza a cui si trova e dall'accelerazione dovuta alla gravità. La formula per calcolare l'energia potenziale gravitazionale è la seguente:
+\begin{definizione}{Energia potenziale gravitazionale}
+	L'energia potenziale gravitazionale $ U $ di un oggetto è data dalla formula:
+	\[
+		U = m g h
+	\]
+	dove $ m $ è la massa dell'oggetto, $ g $ è l'accelerazione dovuta alla gravità (circa $ 9.81 \operatorname{m/s^2} $ sulla Terra) e $ h $ è l'altezza dell'oggetto rispetto al punto di riferimento.
 
+\end{definizione}
+
+\subsubsection{Energia potenziale elastica}
+Un corpo che è stato deformato (ad esempio, compresso o allungato) possiede energia potenziale elastica. Questa energia dipende dalla forza applicata per deformare il corpo e dalla quantità di deformazione. La formula per calcolare l'energia potenziale elastica è la seguente:
+\begin{definizione}{Energia potenziale elastica}
+	L'energia potenziale elastica $ U $ di un oggetto è data dalla formula:
+	\[
+		U = \frac{1}{2} k x^2
+	\]
+	dove $ k $ è la costante elastica del materiale e $ x $ è la quantità di deformazione (ad esempio, l'allungamento o la compressione) dell'oggetto.
+\end{definizione}
+\subsubsection{Conservazione dell'energia meccanica}
+In un sistema isolato, l'energia meccanica totale (la somma dell'energia cinetica e dell'energia potenziale) rimane costante nel tempo. Ciò significa che l'energia può essere trasformata da una forma all'altra, ma la quantità totale di energia meccanica nel sistema non cambia.
+\begin{teorema}{Conservazione dell'energia meccanica}
+	In un sistema isolato, l'energia meccanica totale rimane costante nel tempo
+\end{teorema}
+
+\subsection{Lavoro ed energia}
+Ora che abbiamo visto l'energia, possiamo iniziare a parlare di lavoro come \textit{meccanismo secondo il quale l'energia può entrare o uscire da un sistema}. Visto il legame intimo fra energia e lavoro possiamo anche esprimerlo con formule matematiche. In particolare, il lavoro complessivo delle forze che agiscono su di un sistema è dato dalla variazione dell'energia cinetica. In formule:
+\begin{teorema}{Energia cinetica e lavoro}
+	Il lavoro totale $ L $ compiuto dalle forze che agiscono su un sistema è uguale alla variazione dell'energia cinetica $ \Delta E_c $ del sistema:
+	\[
+		L = \Delta E_c
+	\]
+\end{teorema}
+Una dimostrazione può essere la seguente:
+\begin{align*}
+	L & = F \cdot s \\
+\end{align*}
+per la seconda legge di Newton, $ F = m \cdot a $, quindi
+\[
+	L = m \cdot a \cdot s \\
+\]
+Dopodichè vogliamo rimuovere $ s $ dalla formula appena ottenuta, in quanto non partecipa direttamente nella formula dell'energia cinetica. Dunque ragioniamo così:
+\[
+	\begin{cases}
+		v = v_0 + at \\
+		s =  \frac{1}{2} at^2 + v_0t
+	\end{cases}
+\]
+dalla prima ottengo che
+\[
+	t = \frac{v - v_0}{a}
+\]
+e inserendo nella seconda ottengo:
+\begin{align*}
+	s & = \frac{1}{2} a \left(\frac{v - v_0}{a}\right)^2 + v_0 \cdot \frac{v - v_0}{a}           \\
+	  & = \frac{1}{2} \cdot \frac{\left(v - v_0\right)^2}{a} + \frac{v_0\left(v - v_0\right)}{a}
+\end{align*}
+raccolgendo $ \frac{v - v_0}{a} $ e ottengo
+\begin{align*}
+	s & = \left(\frac{v - v_0}{a}\right) \cdot  \left(\frac{v - v_0}{2} + v_0\right) \\
+	  & = \left(\frac{v - v_0}{a}\right) \cdot  \left(\frac{v + v_0}{2}\right)       \\
+	  & = \frac{\left(v - v_0\right) \cdot \left(v + v_0\right)}{2a}
+\end{align*}
+quest'ultima, per il prodotto notevole di somma per differenza diventa:
+\[
+	s = \frac{v^2  - v_0^2 }{2a}
+\]
+inserendo questa nella prima formula ottengo:
+\[
+	L = m \cdot a \cdot \frac{v^2  - v_0^2 }{2a} = \frac{1}{2} m v^2  - \frac{1}{2} m v_0^2  = \Delta E_c
+\]
+
+\subsubsection{Potenza e watt}
+Spesso è utile capire quanta potenza un apparecchio richiede per operare. Questo concetto è piuttosto simile a quello della velocità, in quanto indica la quantità di lavoro che un apparecchio è in grado di compiere in un certo intervallo di tempo. La potenza è data da:
+\begin{definizione}{Potenza}
+	La potenza $ P $ è data dal lavoro $ L $ compiuto da un sistema diviso per il tempo $ \Delta t $ impiegato a compiere quel lavoro:
+	\[
+		P = \frac{L}{\Delta t}
+	\]
+	l'unità di misura della potenza è il watt $ \left[w\right] $, che è definito come un joule al secondo:
+\end{definizione}
 
 
 

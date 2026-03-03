@@ -783,6 +783,28 @@ mappa_doppia([("a", 1), ("b", 2), ("a", 3), ("c", 1)])
 		\left[1,2,3,4,5\right] \rightarrow \left[5,4,3,2,1\right]
 	\]
 \end{esercizio}
+\begin{esercizio}{Massimo array ricorsivo \href{run:./files/python/esercizi/ricorsione}{(max\_array)}}
+	Scrivere una funzione che calcoli il massimo di un array di interi in maniera ricorsiva
+\end{esercizio}
+
+\begin{esercizio}{Permutazioni \href{run:./files/python/esercizi/ricorsione}{(perm)}}
+	Scrivere una funzione ricorsiva che, dato un array di elementi, restituisca tutte le possibili permutazioni di questi elementi. Ad esempio, dato l'input \verb|[1, 2, 3]|, allora la funzione dovrebbe restituire \verb|[(1, 2, 3), (1, 3, 2), (2, 1, 3), (2, 3, 1), (3, 1, 2), (3, 2, 1)]|.
+\end{esercizio}
+
+\begin{esercizio}{Insieme delle parti \href{run:./files/python/esercizi/ricorsione}{(power\_set)}}
+	Scrivere una funzione ricorsiva che, dato un array di elementi, restituisca l'\textit{insieme delle parti}, ossia l'insieme di \textit{tutti i possibili suoi sottoinsimi}. Ad esempio, dato l'input \verb|[1, 2]|, la funzione dovrebbe restituire \verb|[[], [1], [2], [1, 2]]|.
+\end{esercizio}
+
+
+\begin{esercizio}{Merge sort \href{run:./files/python/esercizi/ricorsione}{(merge\_sort)}}
+	L'algoritmo di merge sort è un algoritmo di ordinamento di vettori che funziona come segue:
+	\begin{itemize}
+		\item Prendo il vettore da ordinare e lo spezzo a metà.
+		\item Chiamo la il merge sort \textit{ricorsivamente} sulle due porzioni, al fine di ordinarle
+		\item Esegue il \textit{merge} delle due porzioni ordinate
+	\end{itemize}
+	Implementare la funzione \verb|merge_sort| per vettori di interi
+\end{esercizio}
 
 \begin{esercizio}{File system}
 	Viene dato in input un dizionario che rappresenta un \textit{file system}(insieme di cartelle e files) e il nome di un file. E' necessario cercare all'interno di tutto il file system il nome di un file. Se il file è presente restituire la tupla \verb|(true, file_path)|, se non è presente restituire \verb|(false, numero_file_analizzati)|.
@@ -814,5 +836,105 @@ file_system = {
 	Implementare l'algoritmo \textit{ricorsivamente}
 \end{esercizio}
 
+\begin{esercizio}{Check palindroma}
+	Scrivi una funzione \textit{ricorsiva} che ritorni \verb|true| se una parola è palindroma, \verb|false| altrimenti
+\end{esercizio}
+
+\begin{esercizio}{Crea albero}
+	Scrivere una funzione ricorsiva che crei un albero $ k $-ario perfetto di altezza $ n $. Un albero ha questa forma:
+	\vskip3mm
+	\begin{minipage}[t]{0.48\textwidth}
+		\begin{center}
+			\begin{forest}
+				for tree={draw, circle, grow = -90}
+				[[[][]][[][]]]
+			\end{forest}
+			\[
+				k = 2, n = 2
+			\]
+		\end{center}
+	\end{minipage}
+	%
+	\begin{minipage}[t]{0.48\textwidth}
+		\begin{center}
+			\begin{forest}
+				for tree={draw, circle, grow = -90}
+				[[[][][]][[][][]][[][][]]]
+			\end{forest}
+			\[
+				k = 3, n = 2
+			\]
+		\end{center}
+	\end{minipage}
+	\vskip3mm
+	Rappresentare l'albero come un dizionario. Ogni nodo va rappresentato con un dizionario con $ k + 1 $ chiavi, sempre presenti: \verb|c1|, $ \ldots  $, \verb|ck| e  \verb|v|, rispettivamente i $ k $ figli e il valore associato ad un nodo
+\end{esercizio}
+
+\begin{esercizio}{Stampa albero}
+	Creare una funzione ricorsiva che, dato un albero rappresentato come nel precedente esercizio, stampi i valori contenuti dei nodi, usando l'indentazione per rappresentarlo meglio graficamente, ad esempio:
+	\begin{center}
+		\begin{forest}
+			for tree={draw, circle, grow = -90}
+			[1[2[5][6][7]][3[8][9][10]][4[11][12][13]]]
+		\end{forest}
+	\end{center}
+	dato in input, deve stampare:
+	\begin{lstlisting}[frame = none]
+1
+|-2
+| |-5
+| |-6
+| |-7
+|-3
+| |-8
+| |-9
+| |-10
+|-4
+  |-11
+  |-12
+  |-13
+  \end{lstlisting}
+\end{esercizio}
+
+
+\begin{esercizio}{Ricerca albero}
+	Creare una funzione ricorsiva che, dato un albero rappresentato come nel precedente esercizio e un valore, restituisca \verb|true| se il valore è presente in almeno un nodo dell'albero, \verb|false| altrimenti
+\end{esercizio}
+
+\begin{esercizio}{Ricerca duplicati albero}
+	Creare una funzione ricorsiva che, dato un albero rappresentato come nel precedente esercizio e un valore, restituisca l'albero in cui ogni valore duplicato viene sostituito da "x". Ritornare il numero di elementi duplicati (la somma totale di occorrenze che sono duplicate), ad esempio:
+	\begin{center}
+		\begin{forest}
+			for tree={draw, circle, grow = -90}
+			[1[2[5][6[2[3][3]]]][3[8][9][10]][4[7][1[4[7[8]][8]]]]]
+		\end{forest}
+	\end{center}
+	l'algoritmo ritorna 13 e modifica l'albero così:
+	\begin{center}
+		\begin{forest}
+			for tree={draw, circle, grow = -90}
+			[x[x[5][6[x[x][x]]]][x[8][9][10]][x[x][x[x[x[x]][x]]]]]
+		\end{forest}
+	\end{center}
+\end{esercizio}
+
+\subsubsection{Matrici}
+\begin{esercizio}{Numero di percorsi}
+	Viene data una matrice $ n \times  m $ contenente 0 e 1. Una pedina viene posizionata nella cella in alto a sinistra e può effettuare 2 mosse: scendere di una casella oppure muoversi a destra, sempre di una casella. La pedina tuttavia non può muoversi sopra gli ostacoli (identificati dagli 1 presenti nella matrice). Scrivere una funzione ricorsiva che restituisca il numero di percorsi distinti possibili per arrivare alla cella in basso a destra.
+\end{esercizio}
+\begin{esercizio}{Stampa matrice a spirale}
+  Scrivere una funzione ricorsiva che stampi una matrice a spirale, come nell'esempio sotto riportato
+	\begin{lstlisting}[frame = none]
+Input: 
+  [ 1   2   3   4   5 ]
+  [ 16  17  18  19  6 ]
+  [ 15  24  25  20  7 ]
+  [ 14  23  22  21  8 ]
+  [ 13  12  11  10  9 ]   
+
+Output:   
+  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+\end{lstlisting}
+\end{esercizio}
 
 \end{document}
