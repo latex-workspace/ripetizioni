@@ -840,6 +840,44 @@ file_system = {
 	Scrivi una funzione \textit{ricorsiva} che ritorni \verb|true| se una parola è palindroma, \verb|false| altrimenti
 \end{esercizio}
 
+\subsection{Alberi}
+Siccome gli alberi non sono un argomento che è necessariamente affrontato a sè, specifichiamo innanzitutto come rappresentarli in python:
+\begin{definizione}{Rappresentazione albero}\label{def:albero}
+	In python, il modo più opportuno per rappresentare un albero è utilizzando un dizionario strutturato come segue:
+	\begin{lstlisting}[language = python, frame = none]
+tree = {
+  "v": <some_value>,
+  "child": [
+    { "v": <child_1_value> }, #child 1
+    { "v": <child_2_value> }  #child 2
+  ]
+}
+  \end{lstlisting}
+	dunque ogni nodo è rappresentato da un dizionario con 2 chiavi obbligatorie: \verb|v| e \verb|child|, rispettivamente il valore del nodo e i propri figli
+\end{definizione}
+Inoltre per visualizzare facilmente gli alberi è possibile generare la \textit{notazione dot}, la quale può essere inserita nel sito \href{https://dreampuf.github.io/GraphvizOnline/?engine=dot}{Graphviz}, per visualizzare schematicamente l'albero rappresentato tramite la notazione in \cref{def:albero}. Operativamente è sufficiente chiamare questa funzione e incollare l'otput sul sito:
+\begin{lstlisting}[language = python, frame = none]
+def get_dot_notation(t: dict) -> str:
+    id = 0
+    nodes = edges = ""
+
+    def get_dot_rec(t: dict) -> int:
+        nonlocal id, nodes, edges
+        my_id = id
+        id += 1
+        nodes += f"{my_id} [label={t['v']}]\n"
+
+        for c in t["childs"]:
+            child_id = get_dot_rec(c)
+            edges += f"{my_id} -> {child_id}\n"
+
+        return my_id
+
+    get_dot_rec(t)
+    return f"digraph T {{\n{nodes}\n{edges}}}"
+  \end{lstlisting}
+In alternativa la funzione è disponibile in \texttt{\href{run:./files/python/altro/}{/files/python/altro/get\_dot\_notation.py}}
+
 \begin{esercizio}{Crea albero}
 	Scrivere una funzione ricorsiva che crei un albero $ k $-ario perfetto di altezza $ n $. Un albero ha questa forma:
 	\vskip3mm
@@ -867,7 +905,7 @@ file_system = {
 		\end{center}
 	\end{minipage}
 	\vskip3mm
-	Rappresentare l'albero come un dizionario. Ogni nodo va rappresentato con un dizionario con $ k + 1 $ chiavi, sempre presenti: \verb|c1|, $ \ldots  $, \verb|ck| e  \verb|v|, rispettivamente i $ k $ figli e il valore associato ad un nodo
+	Rappresentare l'albero come un dizionario, come indicato in \cref{def:albero}
 \end{esercizio}
 
 \begin{esercizio}{Stampa albero}
@@ -909,11 +947,11 @@ file_system = {
 			[1[2[5][6[2[3][3]]]][3[8][9][10]][4[7][1[4[7[8]][8]]]]]
 		\end{forest}
 	\end{center}
-	l'algoritmo ritorna 13 e modifica l'albero così:
+	l'algoritmo ritorna 14 e modifica l'albero così:
 	\begin{center}
 		\begin{forest}
 			for tree={draw, circle, grow = -90}
-			[x[x[5][6[x[x][x]]]][x[8][9][10]][x[x][x[x[x[x]][x]]]]]
+			[x[x[5][6[x[x][x]]]][x[x][9][10]][x[x][x[x[x[x]][x]]]]]
 		\end{forest}
 	\end{center}
 \end{esercizio}
@@ -923,7 +961,7 @@ file_system = {
 	Viene data una matrice $ n \times  m $ contenente 0 e 1. Una pedina viene posizionata nella cella in alto a sinistra e può effettuare 2 mosse: scendere di una casella oppure muoversi a destra, sempre di una casella. La pedina tuttavia non può muoversi sopra gli ostacoli (identificati dagli 1 presenti nella matrice). Scrivere una funzione ricorsiva che restituisca il numero di percorsi distinti possibili per arrivare alla cella in basso a destra.
 \end{esercizio}
 \begin{esercizio}{Stampa matrice a spirale}
-  Scrivere una funzione ricorsiva che stampi una matrice a spirale, come nell'esempio sotto riportato
+	Scrivere una funzione ricorsiva che stampi una matrice a spirale, come nell'esempio sotto riportato
 	\begin{lstlisting}[frame = none]
 Input: 
   [ 1   2   3   4   5 ]
