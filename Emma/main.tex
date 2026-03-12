@@ -2534,7 +2534,7 @@ Intuitivamente, il lavoro è il concetto fisico che descrive "l'impatto" di una 
 	\]
 \end{definizione}
 Il coseno dell'angolo è importante in quanto solo la componente della forza che è parallela allo spostamento contribuisce al lavoro. Se la forza è perpendicolare allo spostamento, il lavoro è zero, poiché $ \cos(90^\circ) = 0 $.
-\subsection{Energia}
+\section{Energia}
 In fisica esistono diversi modi per classificare l'energia, ma in generale possiamo dire che l'energia è la capacità di un sistema di compiere lavoro. Esistono diverse forme di energia:
 \begin{itemize}
 	\item Energia meccanica:
@@ -2645,6 +2645,60 @@ Spesso è utile capire quanta potenza un apparecchio richiede per operare. Quest
 	\]
 	l'unità di misura della potenza è il watt $ \left[w\right] $, che è definito come un joule al secondo:
 \end{definizione}
+\section{Quantità di moto e impulso}
+\begin{definizione}{Quantità di moto}
+	La quantità di moto $ p $ di un oggetto è data dalla sua massa $ m $ moltiplicata per la sua velocità $ v $:
+	\[
+		\vec{p}  = m \cdot \vec{v}
+	\]
+\end{definizione}
+Si noti come la quantità di moto è una quantità vettoriale, in quanto dipende dalla direzione del movimento dell'oggetto. La quantità di moto è importante perché è una grandezza conservata in un sistema isolato, il che significa che la quantità totale di moto in un sistema isolato rimane costante nel tempo, ma questo lo affronteremo più approfonditamente più avanti
+\begin{definizione}{Impulso}
+	L'impulso $ J $ è dato dalla forza media $ \vec{F_{\text{med}}} $ moltiplicata per il tempo $ \Delta t $ durante il quale la forza agisce su un oggetto:
+	\[
+		\vec{J}=\vec{F_{\text{med}}} \cdot \Delta t
+	\]
+	NB: si parla di impulso solo quando la forza agisce per un breve intervallo di tempo, ad esempio nel caso degli urti
+\end{definizione}
+C'è un legame molto stretto fra quantità di moto e impulso, in quanto l'impulso subito da un oggetto è uguale alla variazione della sua quantità di moto:
+\begin{teorema}{Legame tra quantità di moto e impulso}
+	L'impulso $ J $ subito da un oggetto è uguale alla variazione della sua quantità di moto $ \Delta p $:
+	\[
+		\vec{J} = \Delta \vec{p}
+	\]
+\end{teorema}
+
+In più, la quantità di moto totale in un sistema isolato è conservata, il che significa che la quantità totale di moto prima di un evento (ad esempio, un urto) è uguale alla quantità totale di moto dopo l'evento:
+\begin{teorema}{Conservazione quantità di moto}
+	In un sistema isolato (in cui agiscono solo forze interne), la quantità di moto totale rimane costante nel tempod:
+	\[
+		\sum \vec{p}_{\text{i}} = \sum \vec{p}_{\text{f}}
+	\]
+\end{teorema}
+
+\subsection{Urti}
+\begin{definizione}{Urto elastico}
+	Un urto è detto \textit{elastico} se la quantità di moto totale e l'energia cinetica totale del sistema sono entrambe conservate durante l'urto.
+	\begin{align*}
+		\sum \vec{p}_{\text{i}} & = \sum \vec{p}_{\text{f}} &  & K_{\text{i}} = K_{\text{f}}
+	\end{align*}
+\end{definizione}
+Quindi un urto elastico è un urto che non comprta perdita di energia. Contrariamente, se vi è pertita di energia, allora l'urto è detto \textit{anelastico}
+\begin{definizione}{Urto anelastico}
+	Un urto è detto \textit{anelastico} se la quantità di moto totale si conserva, ma l'energia cinetica totale \textit{no}.
+	\begin{align*}
+		\sum \vec{p}_{\text{i}} & = \sum \vec{p}_{\text{f}} &  & K_{\text{i}} = aK_{\text{f}} \quad a \in\left[0,1\right)
+	\end{align*}
+\end{definizione}
+\begin{definizione}{Urto completamente anelastico}
+	Un urto completamente anelastico è un urto in cui i corpi coinvolti si uniscono dopo l'urto, formando un unico corpo che si muove con una velocità comune. In questo tipo di urto, la quantità di moto totale si conserva, ma l'energia cinetica totale non si conserva.
+	\[
+		m_1 v_1 + m_2 v_2 = (m_1 + m_2) v_f
+	\]
+
+
+\end{definizione}
+
 
 
 
