@@ -4,6 +4,7 @@
 \usetikzlibrary{patterns}
 \usetikzlibrary{decorations}
 \usepackage{multirow}
+\usepackage{contour}
 \usetikzlibrary{angles, quotes, calc}
 
 
@@ -2699,6 +2700,254 @@ Quindi un urto elastico è un urto che non comprta perdita di energia. Contraria
 
 \end{definizione}
 
+\section{Coniche}
+Le coniche sono curve che possono essere ottenute intersecando un piano con un cono. Esistono diverse tipologie di coniche, tra cui ellissi, parabole e iperboli. Ognuna di queste curve ha proprietà uniche e può essere descritta da un'equazione specifica. In questa sezione, esploreremo le caratteristiche di ciascuna di queste coniche e come rappresentarle graficamente.
+
+\subsection{Ellisse}
+Iniziamo mostrando un esempio di ellisse. Intuitivamente non è altro che una circonferenza "schiacciaca"
+\begin{figure}[H]
+	\begin{tikzpicture}
+		\begin{axis}[
+				xmin=-6, xmax=6,
+				ymin=-4,ymax=4,
+				restrict y to domain = -4:4, domain=-5:5, width=0.98\textwidth, height=0.5\textwidth, grid=major, samples=200,  ylabel=$f(x)$, xlabel=$x$]
+			\addplot[black, thick] ({5*cos(deg(x))},{3*sin(deg(x))});
+			\draw (-5,0)--(5,0);
+			\draw (0,-3)--(0,3);
+
+			\draw [thick, mutedred](0,0)--(5,0) node [midway, above] {$a$};
+			\draw [thick, mutedblue](0,0)--(0,3) node [midway, right] {$b$};
+			\draw [thick, mutedgreen](0,0)--(-4, 0) node [midway, above] {$c$};
+
+			\node [whitedot, label=$f_1$] at (4,0){};
+			\node [whitedot, label=$f_2$] at (-4,0){};
+			\node [whitedot, label=45:{$C$}] at (0,0){};
+
+			\node [whitedot, label=180:$ v_1 $] at (-5,0){};
+			\node [whitedot, label=-90:$ v_2 $] at (0, -3){};
+			\node [whitedot, label=90:$ v_3 $] at (5,0){};
+			\node [whitedot, label=$ v_4 $] at (0, 3){};
+
+			% \addplot [red,thick,domain=-2:2] ({cosh(x)}, {sinh(x)});
+			% \addplot [red,thick,domain=-2:2] ({-cosh(x)}, {sinh(x)});
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Esempio di ellisse}
+	\label{fig:ellisse}
+\end{figure}
+
+\begin{definizione}{Ellisse}
+	L'ellisse è il luogo dei punti del piano per i quali la somma delle distanze da due punti fissi, detti fuochi, è costante. In particolare, se $ P $ è un punto qualsiasi dell'ellisse e $ f_1 $ e $ f_2 $ sono i due fuochi, allora:
+	\[
+		\overline{f_1P}+\overline{f_2P} = \text{costante}
+	\]
+	in particolare, se $ a $ è la distanza tra il centro dell'ellisse e uno dei vertici, e $ c $ è la distanza tra il centro dell'ellisse e uno dei fuochi, allora vale la relazione:
+	\[
+		\overline{f_1P}+\overline{f_2P} = 2a
+	\]
+\end{definizione}
+Partendo da questa definizione possiamo ricavarne la formula, la quale è molto simile a quella della circonferenza:
+\[
+	\frac{\left(x - x_c\right)^2 }{a^2} + \frac{\left(y - y_c\right)^2 }{b^2} = 1
+\]
+in particolare si noti che se $ a = b $, ossia se i due assi sono uguali, allora l'ellisse diventa una circonferenza.
+
+\subsubsection{Vertici}
+I vertici sono i punti indicati in \cref{fig:ellisse} con $ v_1 $, $ v_2 $, $ v_3 $ e $ v_4 $. Essi sono i punti di intersezione fra gli assi e l'ellise stessa. Date le coordinate del centro $ c = \left(x_c, y_c\right) $, allora è immediato vedere che questi hanno coordinate:
+\begin{align*}
+	v_1  = \left(x_c - a, y_c\right) &  & v_2  = \left(x_c, y_c - b\right) \\
+	v_3  = \left(x_c + a, y_c\right) &  & v_4  = \left(x_c, y_c + b\right)
+\end{align*}
+
+\subsubsection{Fuochi}
+I fuochi sono i punti indicati in \cref{fig:ellisse} con $ f_1 $ e $ f_2 $. Essi sono i punti che definiscono l'ellisse, in quanto la somma delle distanze da questi punti è costante. Questi punti sono simmetrici rispetto al centro dell'ellisse e sono posizionati sull'asse orizzontale se $ a > b $, su quello verticale altrimenti:
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+					xmin=-6, xmax=6,
+					ymin=-6,ymax=6,
+					restrict y to domain = -6:6, domain=-6:6, width=0.98\linewidth, height=0.98\linewidth, grid=major, samples=200,  ylabel=$f(x)$, xlabel=$x$]
+				\addplot[black, thick] ({5*cos(deg(x))},{3*sin(deg(x))});
+				\draw (-5,0)--(5,0);
+				\draw (0,-3)--(0,3);
+
+				\draw [thick, mutedred](0,0)--(5,0) node [midway, above] {$a$};
+				\draw [thick, mutedblue](0,0)--(0,3) node [midway, right] {$b$};
+				\draw [thick, mutedgreen](0,0)--(-4, 0) node [midway, above] {$c$};
+
+				\node [whitedot, label=$f_1$] at (4,0){};
+				\node [whitedot, label=$f_2$] at (-4,0){};
+				\node [whitedot, label=45:{$C$}] at (0,0){};
+
+				\node [whitedot, label=180:$ v_1 $] at (-5,0){};
+				\node [whitedot, label=-90:$ v_2 $] at (0, -3){};
+				\node [whitedot, label=90:$ v_3 $] at (5,0){};
+				\node [whitedot, label=$ v_4 $] at (0, 3){};
+			\end{axis}
+		\end{tikzpicture}
+		\subcaption{Ellisse orizzontale}
+		\label{fig:ellisse orizzontale}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+					xmin=-6, xmax=6,
+					ymin=-6, ymax=6,
+					restrict y to domain=-6:6,
+					domain=-6:6,
+					width=0.98\linewidth,
+					height=0.98\linewidth,
+					grid=major,
+					samples=200,
+					ylabel=$f(x)$,
+					xlabel=$x$
+				]
+				\addplot[black, thick] ({3*cos(deg(x))},{5*sin(deg(x))});
+				\draw (-3,0)--(3,0);
+				\draw (0,-5)--(0,5);
+
+				\draw [thick, mutedred](0,0)--(3,0) node [midway, above] {$a$};
+				\draw [thick, mutedblue](0,0)--(0,5) node [midway, right] {$b$};
+				\draw [thick, mutedgreen](0,0)--(0, -4) node [midway, right] {$c$};
+
+				\node [whitedot, label=right:$f_1$] at (0,4){};
+				\node [whitedot, label=right:$f_2$] at (0,-4){};
+				\node [whitedot, label=45:{$C$}] at (0,0){};
+
+				\node [whitedot, label=-90:$v_1$] at (0,-5){};
+				\node [whitedot, label=180:$v_2$] at (-3,0){};
+				\node [whitedot, label=90:$v_3$] at (0,5){};
+				\node [whitedot, label=0:$v_4$] at (3,0){};
+			\end{axis}
+		\end{tikzpicture}
+		\subcaption{Ellisse verticale}
+		\label{fig:ellisse verticale}
+	\end{subfigure}
+	\caption{Two subfigures side by side}
+	\label{fig:ellisse verticale e orizzontale}
+\end{figure}
+
+
+Date le coordinate del centro $ c = \left(x_c, y_c\right) $, allora si può dimostrare facilmente che
+
+\[
+	\begin{aligned}
+		\text{se } a^2 > b^2 & \to F_{1,2} = (x_C \pm c,\; y_C) \quad \text{dove } c = \sqrt{a^2 - b^2} \\
+		\text{se } b^2 > a^2 & \to F_{1,2} = (x_C,\; y_C \pm c) \quad \text{dove } c = \sqrt{b^2 - a^2}
+	\end{aligned}
+\]
+\subsubsection{Eccentricità}
+L'ultimo concettto importante è quello di \textit{eccentricità}, che è una misura di quanto l'ellisse si discosta da essere una circonferenza. L'eccentricità $ e $ è definita come il rapporto tra la distanza dei fuochi $ c $ e la distanza dei vertici $ a $:
+\[
+	\begin{aligned}
+		e & = \frac{c}{a} \quad \text{se } a^2 > b^2 \\
+		e & = \frac{c}{b} \quad \text{se } b^2 > a^2
+	\end{aligned}
+\]
+è importante notare i due casi limite per i valori dell'eccentricità:
+\begin{itemize}
+	\item Se $ e = 0 $, allora l'ellisse è una circonferenza, in quanto i fuochi coincidono con il centro ($ c=0 $)
+	\item Se $ e = 1 $, allora l'ellisse degenera in un segmento in quanto i fuochi coincidono con i vertici ($ c=a $ o $ c=b $)
+\end{itemize}
+
+\subsection{Iperbole}
+Iniziamo mostrando un esempio di iperbole:
+\begin{figure}[H]
+	\begin{tikzpicture}
+		\begin{axis}[
+				xmin=-6, xmax=6,
+				ymin=-4,ymax=4,
+				restrict y to domain = -4:4, domain=-5:5, width=0.98\textwidth, height=0.5\textwidth, grid=major, samples=200,  ylabel=$f(x)$, xlabel=$x$]
+			% \addplot[black, thick] ({5*cos(deg(x))},{3*sin(deg(x))});
+			% \draw (-5,0)--(5,0);
+			% \draw (0,-3)--(0,3);
+			%
+			\addplot[dashed] expression {x};
+			\addplot[dashed] expression {-x};
+			\addplot [thick] ({cosh(x)}, {sinh(x)});
+			\addplot [thick] ({-cosh(x)}, {sinh(x)});
+
+			\draw [thick, mutedred](0,0)--(1,0) node [midway, above] {$a$};
+			\draw [thick, mutedblue](0,0)--(0,2) node [midway, right] {$b$};
+			\draw [thick, mutedgreen](0,0)--(-2, 0) node [midway, above] {\contour{white}{$c$}};
+			%
+			% \node [whitedot, label=$f_1$] at (4,0){};
+			% \node [whitedot, label=$f_2$] at (-4,0){};
+			% \node [whitedot, label=45:{$C$}] at (0,0){};
+			%
+			% \node [whitedot, label=180:$ v_1 $] at (-5,0){};
+			% \node [whitedot, label=-90:$ v_2 $] at (0, -3){};
+			% \node [whitedot, label=90:$ v_3 $] at (5,0){};
+			% \node [whitedot, label=$ v_4 $] at (0, 3){};
+
+
+			\node [whitedot] at (0,2){};
+			\node [whitedot, label=-90:$ C $] at (0,0){};
+
+			\node [whitedot, label=$ f_1 $] at (2,0){};
+			\node [whitedot, label=$ f_2 $] at (-2,0){};
+
+			\node [whitedot, label=-90:$ v_2 $] at (-1,0){};
+			\node [whitedot, label=-90:\contour{white}{$ v_2 $}] at (1,0){};
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Esempio di iperbole}
+	\label{fig:iperbole}
+\end{figure}
+\begin{definizione}{Iperbole}
+	L'iperbole è il luogo dei punti del piano per i quali la differenza delle distanze da due punti fissi, detti fuochi, è costante. In particolare, se $ P $ è un punto qualsiasi dell'iperbole e $ f_1 $ e $ f_2 $ sono i due fuochi, allora:
+	\[
+		\left|\overline{f_1P} - \overline{f_2P}\right| = \text{costante}
+	\]
+	più precisamente, se $ a $ è la distanza tra il centro dell'iperbole e uno dei vertici, e $ c $ è la distanza tra il centro dell'iperbole e uno dei fuochi, allora vale la relazione:
+	\[
+		\left|\overline{f_1P} - \overline{f_2P}\right| = 2a
+	\]
+\end{definizione}
+Analizzando il caso in cui il semiasse trasverso è orizzontale, si ottiene la seguente formula:
+\[
+	\frac{\left(x - x_c\right)^2 }{a^2} - \frac{\left(y - y_c\right)^2 }{b^2} = 1
+\]
+se invece il semiasse trasverso è verticale, si ottiene la seguente formula:
+\[
+	\frac{\left(y - y_c\right)^2 }{a^2} - \frac{\left(x - x_c\right)^2 }{b^2} = 1
+\]
+
+\subsubsection{Vertici}
+
+I vertici sono i punti indicati in \cref{fig:iperbole} con $ v_1 $ e $ v_2 $. Essi sono i punti di intersezione fra l'iperbole e l'asse trasverso. Date le coordinate del centro $ c = \left(x_c, y_c\right) $, allora è immediato vedere che questi hanno coordinate:
+\begin{align*}
+	v_1  = \left(x_c - a, y_c\right) \quad  v_2  = \left(x_c + a, y_c\right) &  & \text{se il semiasse trasverso è orizzontale} \\
+	v_1  = \left(x_c, y_c - a\right) \quad  v_2  = \left(x_c, y_c + a\right) &  & \text{se il semiasse trasverso è verticale}
+\end{align*}
+
+\subsubsection{Fuochi}
+A differenza dell'ellisse, i fuochi dell'iperbole non sono all'interno della curva, ma si trovano all'esterno. Essi sono i punti che definiscono l'iperbole, in quanto la differenza delle distanze da questi punti è costante. Questi punti sono simmetrici rispetto al centro dell'iperbole e sono posizionati sull'asse orizzontale se il semiasse trasverso è orizzontale, su quello verticale altrimenti. La semidistanza focale è data da:
+\[
+	c = \sqrt{a^2 + b^2}
+\]
+
+\subsubsection{Eccentricità}
+Come nel caso dell'ellisse, anche per l'iperbole è possibile definire l'eccentricità, che è una misura di quanto l'iperbole si discosta da essere una parabola. L'eccentricità $ e $ è definita come il rapporto tra la distanza dei fuochi $ c $ e la distanza dei vertici $ a $:
+\[
+	e = \frac{c}{a}
+\]
+si noti tuttavia che in questo caso $ e $ assume valori maggiori di 1, in quanto $ c > a $ per definizione.
+% In particolare, se $ e $ tende a 1, allora l'iperbole si avvicina sempre di più ad essere una parabola, mentre se $ e $ tende a infinito, allora l'iperbole si avvicina sempre di più ad essere un insieme di due rette parallele.
+
+\subsubsection{Asintoti}
+Il coefficiente angolare degli asintoti è dato da:
+\[
+	m = \pm \frac{b}{a}
+\]
+
+per trovare gli asintoti effettivi è duqnue sufficiente trovare le rette che passano per il centro dell'iperbole e che hanno coefficiente angolare $ m $ e $ -m $:
 
 
 

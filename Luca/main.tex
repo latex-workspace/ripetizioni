@@ -806,24 +806,66 @@ mappa_doppia([("a", 1), ("b", 2), ("a", 3), ("c", 1)])
 	Implementare la funzione \verb|merge_sort| per vettori di interi
 \end{esercizio}
 
-\begin{esercizio}{File system}
-	Viene dato in input un dizionario che rappresenta un \textit{file system}(insieme di cartelle e files) e il nome di un file. E' necessario cercare all'interno di tutto il file system il nome di un file. Se il file è presente restituire la tupla \verb|(true, file_path)|, se non è presente restituire \verb|(false, numero_file_analizzati)|.
-	\begin{lstlisting}[language = python, frame = none]
-file_system = {
-    "documenti": {
-        "uni": {
-            "appunti.txt": "Ricordarsi di studiare la ricorsione"
-        },
-        "lista_spesa.txt": "Latte\nPane\nUova",
-    },
-    "immagini": {
-      "foto.jpg": "contenuto_binario"
-    },
-    "README.txt": "Ecco un file system",
-}
-  \end{lstlisting}
-	Nota: puoi usare \verb|type(x) == dict| per controllare se \verb|x| è un dizionario
+\begin{esercizio}{String to integer \href{run:./files/python/esercizi/ricorsione}{(integer\_to\_string)}}
+	Implementare una funzione ricorsiva che converta una stringa in un intero. Chiaramente l'uso della funzione \verb|str(x)| non è ammesso
 \end{esercizio}
+
+\begin{esercizio}{Integer to string \href{run:./files/python/esercizi/ricorsione}{(integer\_to\_string)}}
+	Implementare una funzione ricorsiva che converta un intero in una stringa. Chiaramente l'uso della funzione \verb|int(s)| non è ammesso
+\end{esercizio}
+
+
+\subsubsection{Liste}
+
+\begin{esercizio}{Flatten \href{run:./files/python/esercizi/ricorsione}{(flatten)}}
+	Scrivere una funzione ricorsiva che "appiattisca" una lista nel seguente modo:
+	\begin{lstlisting}[frame = none]
+		Input:  [1, [2, 3, [4, 5, 6], 7], [[8, 9], [10, 11]]]
+		Output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+  \end{lstlisting}
+	Hint: puoi usare la funzione \verb|instanceof(x)| per verificare se \verb|x| è una lista o meno
+\end{esercizio}
+
+\begin{esercizio}{Is sorted \href{run:./files/python/esercizi/ricorsione}{(is\_sorted)}}
+	Scrivere una funzione ricorsiva che prenda in input 2 parametri, una lista di interi \verb|list| e un booleano \verb|descending|, con valore \verb|False| di default. La funzione deve ritornare true se è ordinata secondo l'ordine specificato dal secondo parametro
+	\begin{lstlisting}[frame = none]
+    Input:  [1,2,3,4] desc=False
+		Output: True
+
+    Input:  [1,2,3,4] desc=False
+		Output: False
+
+    Input:  [4,3,2,1] desc=True
+		Output: True
+
+    Input:  [1,2,-1,3] desc=False
+		Output: False
+  \end{lstlisting}
+
+\end{esercizio}
+
+
+\begin{esercizio}{k-flatten \href{run:./files/python/esercizi/ricorsione}{(flatten)}}
+	Scrivere una funzione ricorsiva che "appiattisca" una lista nel seguente modo, come nell'esercizio di prima; tuttavia in questo caso prendere in input un parametro \verb|k|, che indica che dopo una certa profondità, anziché appiattire la lista, andrà inserito un valore dato dalla somma di tutti i valori della lista, ad esempio
+
+	\begin{lstlisting}[frame = none]
+		Input:  [1, [2, 3, [4, 5, 6], 7], [[8, 9], [10, 11]]], k=2
+		Output: [1, 2, 3, 15, 7, 17, 21]
+  \end{lstlisting}
+\end{esercizio}
+
+\begin{esercizio}{Espressioni aritmetiche \href{run:./files/python/esercizi/ricorsione}{(espressioni\_aritmetiche)}}
+	Scrivere una funzione ricorsiva per valutare funzioni aritmetiche scritte tramite gli operatori \verb|+ * - /|, nel seguente formato.
+	\begin{lstlisting}[frame = none]
+    Input:  [[1, "+", 2] , "*", [3, "+", 4]]
+		Output: 21
+  \end{lstlisting}
+	Nb: le regole di precedenza sono dettate solamente dalla profondità della lista che contiene la singola operazione; più profonda (interna) è, più alta sarà la sua priorità. Di fatto le parentesi che definiscono le liste hann lo stesso ruolo delle parentesi nell'espressione aritmetica che viene rappresentata
+\end{esercizio}
+
+
+
+
 
 \begin{esercizio}{Ricerca binaria}
 	L'algoritmo di ricerca binaria serve a ricercare efficientemente un elemento all'interno di un vettore ordinato. L'idea è la seguente:
@@ -840,7 +882,35 @@ file_system = {
 	Scrivi una funzione \textit{ricorsiva} che ritorni \verb|true| se una parola è palindroma, \verb|false| altrimenti
 \end{esercizio}
 
-\subsection{Alberi}
+\begin{esercizio}{k-palindroma}
+	Scrivi una funzione \textit{ricorsiva} che ritorni il numero di caratteri che è necessario modificare affinchè una parola diventi palindroma e la stringa con le suddette modifiche apportate. La funzione deve inoltre prendere in input un parametro booleano \verb|print| che, quando impostato a \verb|True| stampi i cambiamenti da effettuare all'interno della parola affinché questa diventi palindroma, ad esempio:
+	\begin{lstlisting}[ frame = none]
+    Input:  "amare", print=True
+    Return: 2, "erare"
+    Output: s[0]: a->e, s[1]: m->r 
+  \end{lstlisting}
+\end{esercizio}
+
+\begin{esercizio}{Caccia al tesoro}
+	Vi viene data una mappa del tesoro, rappserentata da una lista di interi, che chiameremo \verb|map|. Ogni posizione della lista corrisponde ad un luogo geografico. \verb|map[i]| contiene la prossima posizione in cui andare per arrivare al tesoro. Una posizione contenente un tesoro viene contrassegnata da un valore $ < 0 $.
+	\vskip3mm
+	Scrivere una funzione \textit{ricorsiva} che data in input una mappa del tesoro \verb|map| e una posizione \verb|pos|, ritorni
+	\begin{itemize}
+		\item \verb|found|: booleano impostato a \verb|True| se è possibile raggiungere un tesoro dalla posizione corrente
+		\item \verb|distance|: il numero di passi per ragiungere il tesoro a partire da \verb|pos|
+		\item \verb|path|: le posizioni su cui si passa per raggiungere il tesoro, se possibile
+	\end{itemize}
+	ritornare \verb|False, -1, []| nel caso in cui non fosse possibile raggiungere alcun tesoro. Ad esempio:
+	\begin{lstlisting}[frame = none]
+    Input:  map=[3, 2, -1, 1], pos=0
+    Output: True, 3, [0, 3, 1, 2]
+
+    Input:  map=[3, 0, -1, 1], pos=1
+    Output: False, -1, []
+  \end{lstlisting}
+\end{esercizio}
+
+\subsubsection{Alberi}
 Siccome gli alberi non sono un argomento che è necessariamente affrontato a sè, specifichiamo innanzitutto come rappresentarli in python:
 \begin{definizione}{Rappresentazione albero}\label{def:albero}
 	In python, il modo più opportuno per rappresentare un albero è utilizzando un dizionario strutturato come segue:
@@ -876,7 +946,10 @@ def get_dot_notation(t: dict) -> str:
     get_dot_rec(t)
     return f"digraph T {{\n{nodes}\n{edges}}}"
   \end{lstlisting}
+
+
 In alternativa la funzione è disponibile in \texttt{\href{run:./files/python/altro/}{/files/python/altro/get\_dot\_notation.py}}
+
 
 \begin{esercizio}{Crea albero}
 	Scrivere una funzione ricorsiva che crei un albero $ k $-ario perfetto di altezza $ n $. Un albero ha questa forma:
@@ -954,6 +1027,25 @@ In alternativa la funzione è disponibile in \texttt{\href{run:./files/python/al
 			[x[x[5][6[x[x][x]]]][x[x][9][10]][x[x][x[x[x[x]][x]]]]]
 		\end{forest}
 	\end{center}
+\end{esercizio}
+
+\begin{esercizio}{File system}
+	Viene dato in input un dizionario che rappresenta un \textit{file system}(insieme di cartelle e files) e il nome di un file. E' necessario cercare all'interno di tutto il file system il nome di un file. Se il file è presente restituire la tupla \verb|(true, file_path)|, se non è presente restituire \verb|(false, numero_file_analizzati)|.
+	\begin{lstlisting}[language = python, frame = none]
+file_system = {
+    "documenti": {
+        "uni": {
+            "appunti.txt": "Ricordarsi di studiare la ricorsione"
+        },
+        "lista_spesa.txt": "Latte\nPane\nUova",
+    },
+    "immagini": {
+      "foto.jpg": "contenuto_binario"
+    },
+    "README.txt": "Ecco un file system",
+}
+  \end{lstlisting}
+	Nota: puoi usare \verb|type(x) == dict| per controllare se \verb|x| è un dizionario
 \end{esercizio}
 
 \subsubsection{Matrici}
